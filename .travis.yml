@@ -23,4 +23,4 @@ branches:
     - hexo  #只监测hexo分支
 env:
  global:
-   - GH_REF: suchenrain/suchenrain.github.io.git  #设置GH_REF
+   - GH_REF: github.com/suchenrain/suchenrain.github.io.git  #设置GH_REF
