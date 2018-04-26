@@ -87,5 +87,5 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:suchenrain/suchenrain.github.io.git
+  repo: https://__GH_Token__@github.com/suchenrain/suchenrain.github.io.git
   branch: master
