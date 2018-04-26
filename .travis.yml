@@ -5,18 +5,25 @@ node_js: stable  #设置相应的版本
 install:
   - npm install  #安装hexo及插件
 
-script:
-  - hexo cl  #清除
-  - hexo g  #生成
+before_script:
+  - git config --global user.name "suchenrain"
+  - git config --global user.email "suchenxiaoyu@gmail.com"
+  - sed -i "s/GH_Token/${GH_Token}/" _config.yml
 
-after_script:
-  - cd ./public
-  - git init
-  - git config user.name "suchenrain"  #修改name
-  - git config user.email "suchenxiaoyu@gmail.com"  #修改email
-  - git add .
-  - git commit -m "update"
-  - git push --force --quiet "https://${GH_Token}@${GH_REF}" master:master  #GH_TOKEN是在Travis中配置token的名称
+script: npm run build
+  # - hexo cl  #清除
+  # - hexo g  #生成
+  # - hexo deploy #发布
+
+
+# after_script:
+#   - cd ./public
+#   - git init
+#   - git config user.name "suchenrain"  #修改name
+#   - git config user.email "suchenxiaoyu@gmail.com"  #修改email
+#   - git add .
+#   - git commit -m "update"
+#   - git push --force --quiet "https://${GH_Token}@${GH_REF}" master:master  #GH_TOKEN是在Travis中配置token的名称
 
 branches:
   only:

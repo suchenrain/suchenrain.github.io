@@ -88,4 +88,4 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:suchenrain/suchenrain.github.io.git
-  branch: gh-pages
+  branch: master
