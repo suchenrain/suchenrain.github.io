@@ -14,6 +14,9 @@ language:
 
 timezone: 
 
+# minifier optimize
+all_minifier: true
+
 # config hexo-generator-i18n option (optional, this is default option)
 i18n:
   type: [page, post]
