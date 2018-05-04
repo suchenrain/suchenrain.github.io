@@ -23,7 +23,7 @@ i18n:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://suchenrain.github.io/
 root: /
-permalink: post/:category/:urlname
+permalink: post/:category/:urlname.html
 permalink_defaults:
   urlname: :year/:month/:day/:title/
 # Directory
