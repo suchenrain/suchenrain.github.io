@@ -95,3 +95,4 @@ deploy:
   type: git
   repo: https://__GH_Token__@github.com/suchenrain/suchenrain.github.io.git
   branch: master
+  message: Site updated at: {{ now('YYYY-MM-DD HH:mm:ss [UTC+8]') }}
