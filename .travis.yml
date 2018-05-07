@@ -2,6 +2,9 @@ language: node_js  #设置语言
 
 node_js: stable  #设置相应的版本
 
+before_install:
+  - export TZ=Asia/Shanghai #设置build环境所采用的时区
+
 install:
   - npm install  #安装hexo及插件
 
