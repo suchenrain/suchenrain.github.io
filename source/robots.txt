@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/
+Allow: /post/
+Allow: /about/
+Allow: /en/archives/
+Allow: /en/categories/
+Allow: /en/tags/
+Allow: /en/post/
+Allow: /en/about/
+
+Disallow: /vendors/
+Disallow: /js/
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /vendors/
+Disallow: /fancybox/
+
+Sitemap: https://suchenrain.github.io/sitemap.xml
+Sitemap: https://suchenrain.github.io/baidusitemap.xml
