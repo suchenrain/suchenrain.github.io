@@ -21,7 +21,7 @@ date: 2018-04-27 18:23:34
 - 将暂存区的修改提交到版本库：`git commit` -> 编辑 commit message -> 保存
     - commit message 较简单时，可以：`git commit -m "<message>"`
 - 为文件添加执行权限，并将修改添加到暂存区：`git update-index --chmod=+x <file>`
-
+<!--more-->
 ### 回退修改
 
 - 回退工作区的修改：`git checkout -- <file>`
@@ -45,7 +45,7 @@ date: 2018-04-27 18:23:34
 - 强制跟踪指定文件：`git update-index --no-assume-unchanged <file>`
 - 强制不跟踪指定文件：`git update-index --assume-unchanged <file>`
 
-<!--more-->
+
 
 ## Git 比较操作
 
