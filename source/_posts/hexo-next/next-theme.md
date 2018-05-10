@@ -15,11 +15,12 @@ license: nd
 
 记录在使用Next主题时遇到的一些点：
 - [x] 关于多选项卡`Tabs`
-<!--more-->
+
 ***
 ## Tabs
 
 在看关于markdown的语法时，突然想到可能会用到的tabs。但是发现[GitHub Flavored Markdown](https://github.github.com/gfm/#task-list-items-extension)好像没有tabs相关的语法，不过因为在gitbook里有使用过tabs的markdown语法，所以去gitbook的在线编辑页面研究了一下。最终gitbook生成的相应源代码如下：
+<!--more-->
 ```
 {% tabs %}
 {% tab title="First Tab" %}

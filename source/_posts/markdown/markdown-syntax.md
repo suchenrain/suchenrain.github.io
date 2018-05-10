@@ -11,7 +11,7 @@ abbrlink: 15918
 markdown相关语法的总结
 <!-- more -->
 {% tabs %}
-<!-- tab first tab@heart -->
+<!-- tab first@heart -->
  first
 <!-- endtab -->
 <!-- tab  second tab-->

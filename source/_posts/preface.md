@@ -1,9 +1,9 @@
 ---
-title: 测试文章
+title: 写在前面
 categories:
-  - Git系列
+  - 前言
 tags:
-  - git
+  - 前言
 abbrlink: 53323
 date: 2018-04-27 18:23:34
 ---
@@ -18,10 +18,10 @@ date: 2018-04-27 18:23:34
 
 - 添加文件到暂存区：`git add <file>`
     - 添加所有修改到暂存区：`git add .`
-- 将暂存区的修改提交到版本库：`git commit` -> 编辑 commit message -> 保存
+- 将暂存区的修改提交到版本库：`git commit` -> 编辑 commit message -> 保存<!--more-->
     - commit message 较简单时，可以：`git commit -m "<message>"`
 - 为文件添加执行权限，并将修改添加到暂存区：`git update-index --chmod=+x <file>`
-<!--more-->
+
 ### 回退修改
 
 - 回退工作区的修改：`git checkout -- <file>`
