@@ -10,4 +10,4 @@ comments: false
 有时候低冷深沉，有时候逗比狂妄。然而有时候只是有时候，平常大多是一副冷漠脸(｡◕ˇε ˇ◕｡)
 
 > 世界美好 你也是。
-> Location - GuangZhou  China
+> <i class="fa fa-map-marker" aria-hidden="true"></i> - GuangZhou  China
