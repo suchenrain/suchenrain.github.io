@@ -9,6 +9,9 @@ license: nd
 abbrlink: 64464
 date: 2018-05-12 18:23:34
 ---
+{% sfb info%}
+翻译自：[version-6-of-angular-now-available](https://blog.angular.io/version-6-of-angular-now-available-cc56b0efa7a4)
+{% endsfb %}
 
 Angular 6.0.0 已经发布啦! 这是一个重要的版本，因为我们更多地将关注点从Angular自身底层框架转移到了相关的工具链上,如何让Angular的快速开发在以后变得更加简单。
 
@@ -20,58 +23,58 @@ Angular 6.0.0 已经发布啦! 这是一个重要的版本，因为我们更多�
 
 ## ng update
 
-`ng update <package>` is a new CLI command that analyzes your `package.json` and uses its knowledge of Angular to recommend updates to your application. To see it in action, check out our [update guide](https://update.angular.io/).
+`ng update <package>` 是一个CLI的新命令。它会分析你项目的 `package.json`文件并且利用Angular的相关知识智能地为你推荐更新. 实际例子请查阅[update guide](https://update.angular.io/).
 <!--more-->
-Not only will `ng update` help you adopt the right version of dependencies, and keep your dependencies in sync, but 3rd parties can provide update scripts using [schematics](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2). If one of your dependencies provides an `ng update` schematic, they can automatically update your code when they need to make breaking changes!
+不仅可以通过`ng update` 来帮助你使用依赖包的合适版本,及保持包的同步, 第三方也可以通过[schematics](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2)提供更新脚本 . 如果你的一个依赖包提供了`ng update` schematic, 它们可以在需要进行破坏更改时自动更新代码！
 
-`ng update` will not replace your package manager, but uses npm or yarn under the hood to manage dependencies. In addition to updating dependencies and peer dependencies, `ng update` will apply needed transforms to your project.
+`ng update` 不会取代你的包管理器, 而是借助于npm或者yarn来管理依赖项。除了更新依赖项和对等的依赖项之外, 如果有需要，`ng update`会对你的项目做相应的转换。
 
-For example, the command `ng update @angular/core` will update all of the Angular framework packages as well as RxJS and TypeScript, and will run any schematics available on these packages to keep you up to date. As part of this one command, we’ll automatically install `rxjs-compat` into your application to make the adoption of RxJS v6 smoother.
+举个例子，`ng update @angular/core` 会更新所有的Angualr框架包，连同RxJS和TypeScrit。并且它会运行这些依赖项的任何可用的schematics，从而保证项目最新。作为这一命令的一部分，我们将自动将`RxJS -compat`安装到应用程序中，以使更加顺利的使用RxJS v6。
 
-We expect to see many more libraries and packages add `ng update` schematics over the coming months, and have already heard from enterprise component library teams that are planning to use `ng update` to push through important changes in an automated way to save their developers time.
+我们期望在未来的几个月里会看到更多的库和包添加`ng update`的schematics，而且我们已经从企业组件库团队那里听说过，他们计划使用`ng update`来通过自动化的方式来推动重要的变化，以节省开发人员的时间。
 
-Learn more about [how the ng update command works](https://github.com/angular/devkit/blob/master/docs/specifications/update.md). To get started creating your own `ng update` schematic, take a look at the entry in the [package.json of rxjs](https://github.com/ReactiveX/rxjs/blob/8c5d680494a8bc986e638f6138447917c7ba180f/package.json#L231-L233) and its associated [collection.json](https://github.com/ReactiveX/rxjs/blob/master/migrations/collection.json).
+Learn more about [how the ng update command works](https://github.com/angular/devkit/blob/master/docs/specifications/update.md). 想创建属于你自己的`ng update` schematic, 请移步 [package.json of rxjs](https://github.com/ReactiveX/rxjs/blob/8c5d680494a8bc986e638f6138447917c7ba180f/package.json#L231-L233) 以及 [collection.json](https://github.com/ReactiveX/rxjs/blob/master/migrations/collection.json).
 
 ## ng add
 
-Another new CLI command `ng add <package>` makes adding new capabilities to your project easy. `ng add` will use your package manager to download new dependencies and invoke an installation script (implemented as a schematic) which can update your project with configuration changes, add additional dependencies (e.g. polyfills), or scaffold package-specific initialization code.
+另一个新的CLI命令`ng add <package>`使您的项目更容易添加新的功能。`ng add`将使用你的包管理器来下载新的依赖项，并调用安装脚本(实现为schematic)，该脚本可以通过配置更改更新项目，添加额外的依赖项(例如，poly填充)，或者使用特定于包的初始化代码。
 
-Try out some of the following on your fresh `ng new` application:
- * `ng add @angular/pwa` — Turn your application into a PWA by adding an app manifest and service worker
- * `ng add @ng-bootstrap/schematics` — Add ng-bootstrap to your application
- * `ng add @angular/material` — Install and setup Angular Material and theming and register new starter components into `ng generate`
- * `ng add @clr/angular@next` — Install and setup Clarity from VMWare
- * `ng add @angular/elements` — Add the needed `document-register-element.js` polyfill and dependencies for Angular Elements (see below)
+在你的新`ng new`应用程序中尝试以下几点:
+ * `ng add @angular/pwa` — 通过添加应用程序清单和`service worker`，将应用程序转换为PWA。
+ * `ng add @ng-bootstrap/schematics` — 添加 ng-bootstrap 到你的项目中。
+ * `ng add @angular/material` — 安装和设置 Angular Material和主题，并将新的开始组件注册到`ng generate`
+ * `ng add @clr/angular@next` — 从虚拟机安装和设置Clarity
+ * `ng add @angular/elements` — 添加必须的`document-register-element.js` polyfill（填充）以及`angular elements`相关依赖 (see below)
 
- Because `ng add` is built on top of schematics and the npm registry, our hope is that libraries and the community will help us build a rich ecosystem of `ng add` supporting packages.
+因为`ng add`是建立在schematics和npm注册表之上的，我们希望相关库和社区能够帮助我们构建一个丰富的`ng add`支持包生态系统。
 
-Take a look at [Angular Material’s ng-add schematic](https://github.com/angular/material2/blob/master/src/lib/schematics/collection.json) for an example to help you get started building your own ng-add schematics.
+查阅 [Angular Material’s ng-add schematic](https://github.com/angular/material2/blob/master/src/lib/schematics/collection.json) 例子来开始构建你自己的 ng-add schematics.
 
 ## Angular Elements
 
-The first release of Angular Elements is focused on allowing you to bootstrap Angular components within an existing Angular application by registering them as Custom Elements. We use this extensively in angular.io as part of our content management system to allow dynamic bootstrapping of capabilities via embedded HTML. This replaces the need to manually bootstrap Angular components found in static html content.
+Angular Elements的第一个版本集中于允许你通过将其作为定制元素注册在现有的angular应用程序中引导angular组件。我们在angular.io上广泛使用这一点并作为我们的内容管理系统的一部分，从而允许通过嵌入的HTML对功能进行动态引导。这代替了在静态html内容中手工引导的angular组件的需要。
 
-Check out [an example of registering a component as a custom element](https://stackblitz.com/edit/angular-f3nrpv?file=app%2Fapp.module.ts) or learn more about [Angular Elements](https://angular.io/guide/elements).
+更多请查阅[an example of registering a component as a custom element](https://stackblitz.com/edit/angular-f3nrpv?file=app%2Fapp.module.ts) 或更多关于 [Angular Elements](https://angular.io/guide/elements).
 
-One of our community members has also produced an [Angular Elements Quick Start](https://www.youtube.com/watch?v=4u9_kdkvTsc) video that we highly recommend.
+油管视频 [Angular Elements Quick Start](https://www.youtube.com/watch?v=4u9_kdkvTsc) 
 
 ## Angular Material + CDK Components
 
-The biggest addition is the new tree component for displaying hierarchical data. Following patterns from the data-table component, the CDK houses the core tree directives, with Angular Material offering the same experience with Material Design styles on top. We recently gave a talk about the component, so check that out for more information (video, slides). These new tree components come in both styled (Material’s `mat-tree`) and unstyled versions (CDK’s `cdk-tree`).
+最大的变化就是用于显示分层数据的新的树组件。下面的模式来自数据表组件, CDK提供了核心树指令。使用Angular Material所提供的和Material设计一样的样式。 我们最近讨论了这个组件，所以请查看更多信息。这些新的树组件都有样式(Material’s `mat-tree`)和没有样式的版本(CDK’s `cdk-tree`)。
 
-Alongside the tree, we also have new badge and bottom-sheet components. Badges help display small bits of helpful information, such as unread item counts. Bottom-sheets are a special type of mobile-centric dialogs that come up from the bottom of the viewport, commonly used to present a list of options following an action.
+在树组件的旁边，我们也有新的徽章和底板组件。标识符有助于显示一些有用的信息，比如未读项计数。bottom -sheets是一种特殊类型的以移动为中心的对话框，它从viewport的底部出现，通常用于在操作之后呈现一个选项列表。
 
-The `@angular/cdk/overlay` package is one of the most powerful pieces of infrastructure in the CDK today. With the release of v6, this package now includes new positioning logic that helps make pop-ups that intelligently remain on-screen in all situations.
+`@angular/cdk/overlay`包是cdk中最强大的基础设施之一。随着版本6的发布，这个包现在包含了新的定位逻辑，可以帮助弹出窗口在所有情况下智能地保持在屏幕上。
 
 ## Angular Material Starter Components
 
 ![ng generate for adding a dashboard to your project](https://suchenrain-1255943826.file.myqcloud.com/Post/1_vD2u7I_a_uxs33qcdo2R6g.gif)
 
-Once you have run `ng add @angular/material` to add material to an existing application, you will also be able to generate 3 new starter components.
+一旦您运行了`ng add @angular/material`以向现有应用程序添加材料，您还将能够生成3个新的启动组件。
 
 ### Material Sidenav
 
-You can now generate a starter component including a toolbar with the app name and the side navigation. This component is responsive based on breakpoints.
+现在，您可以生成一个starter组件，包括带有应用程序名称和边导航的工具栏。该组件基于断点响应。
 
 Run:
 
@@ -79,13 +82,13 @@ Run:
 ng generate @angular/material:material-nav --name=my-nav
 ```
 
-This will create this starter component:
+这将创建这个starter组件:
 
 ![material-nav](https://suchenrain-1255943826.file.myqcloud.com/Post/1_PKi-6dOhlb61g8CM2JCx-Q.png)
 
 ### Material Dashboard
 
-You can now generate a starter dashboard component containing a dynamic grid list of cards.
+现在，您可以生成一个包含动态网格列表的starter dashboard组件。
 
 Run:
 
@@ -93,13 +96,13 @@ Run:
 ng generate @angular/material:material-dashboard --name=my-dashboard
 ```
 
-This will create this starter component:
+这将创建这个starter组件:
 
 ![material-dashboard](https://suchenrain-1255943826.file.myqcloud.com/Post/1_De1Vnm2m1yID_EL_xRYIyw.png)
 
 ### Material Data Table
 
-You can generate a starter data table component that is pre-configured with a datasource for sorting and pagination.
+您可以生成一个启动数据表组件，它预先配置了一个数据源来进行排序和分页。
 
 Run:
 
@@ -107,7 +110,7 @@ Run:
 ng generate @angular/material:material-table --name=my-table
 ```
 
-This will create this starter component:
+这将创建这个starter组件:
 
 ![material-table](https://suchenrain-1255943826.file.myqcloud.com/Post/1_2MO1hno7d30iTPIZ9CnBzw.png)
 
@@ -115,9 +118,9 @@ This will create this starter component:
 
 ## CLI Workspaces
 
-CLI v6 now has support for workspaces containing multiple projects, such as multiple applications or libraries. CLI projects will now use `angular.json` instead of `.angular-cli.json` for build and project configuration.
+CLI v6现在支持包含多个项目的工作空间，例如多个应用程序或库。CLI项目现在将使用`angular.json`替`.angular-cli.json`用于构建和项目配置。
 
-Each CLI workspace has projects, each project has targets, and each target can have configurations.
+每个CLI工作区都有项目，每个项目都有目标，每个目标都可以有配置。
 
 ```json
 {
@@ -146,7 +149,7 @@ Each CLI workspace has projects, each project has targets, and each target can h
 
 ## Library Support
 
-One of the most requested features for our CLI has been support for creating and building libraries, and we are proud to introduce:
+我们的CLI中最需要的特性之一是支持创建和构建库，我们可以很自豪地介绍:
 
 ```
 ng generate library <name>
@@ -154,13 +157,13 @@ ng generate library <name>
 
 ![ng generate library within an existing project](https://suchenrain-1255943826.file.myqcloud.com/Post/1_6uz18nxGzAtk5ftoDZv_iQ.gif)
 
-This command will create a library project within your CLI workspace, and configure it for testing and for building.
+该命令将在CLI工作区中创建一个库项目，并将其配置为测试和构建。
 
 [Learn more about creating libraries with the Angular CLI](https://github.com/angular/angular-cli/wiki/stories-create-library)
 
 ## Tree Shakable Providers
 
-To make your applications smaller, we’ve moved from modules referencing services to services referencing modules. This allows us to only bundle services into your code base in modules where they are injected.
+为了使你的应用程序更小，我们已经从模块引用服务的模式转换为服务引用模块。这意味着允许我们只将模块中注入的服务捆绑到你的代码库中。
 
 ### Before
 
@@ -183,7 +186,7 @@ export class MyService {
 
 ### After
 
-No references are needed in our NgModule.
+我们的NgModule中不需要引用。
 
 ```typescript my-service.ts
 import { Injectable } from '@angular/core';
@@ -199,34 +202,40 @@ export class MyService {
 [Read more about Dependency Injection](https://angular.io/guide/dependency-injection)
 
 ## Animations Performance Improvements
-We’ve updated our implementation of Animations to no longer need the [web animations polyfill](https://angular.io/guide/browser-support#enabling-polyfills). This means that you can remove this polyfill from your application and save approximately 47KB of bundle size, while increasing animations performance in Safari at the same time.
+
+我们已经更新了动画的实现，将不再需要[web 动画填充库](https://angular.io/guide/browser-support#enabling-polyfills). 这意味着你可以从你的程序中移除这些填充库并减少大约47KB的包大小, 同时增加Safari的动画性能。
 
 ## RxJS v6
-Angular has been updated to use v6 of RxJS. RxJS is an independent project that released v6 several weeks ago. RxJS v6 brings with it several major changes, along with a backwards compatibility package rxjs-compat that will keep your applications working.
 
-RxJS has been rearranged to make it more tree-shakable, ensuring that only the pieces of RxJS that you use are included in your production bundles.
+Angular已经更新到使用v6的RxJS。RxJS是一个独立的项目，在几周前发布了v6。RxJS v6带来了几个主要的更改，以及向后兼容包RxJS -compat，它将使您的应用程序正常工作。
 
-If you use ng update, your application should keep working, but you can learn more about the [5.5 to 6.0 migration](https://github.com/ReactiveX/rxjs/blob/master/MIGRATION.md).
+RxJS已经被重新整理，使它更容易被树摇（tree-shakable），确保只有你使用的RxJS片段包含在最终的生产包中。
+
+如果您使用`ng update`，您的应用程序应该可以继续工作，但是您可以了解更多关于[5.5 to 6.0 migration](https://github.com/ReactiveX/rxjs/blob/master/MIGRATION.md).
 
 ## Long Term Support (LTS)
-We are expanding our Long Term Support to all major releases.
 
-Previously we announced that only v4 and v6 would be LTS releases but in order to make updating from one major to the next easier, and give bigger projects more time to plan updates, we have decided to extend the long-term support to all major releases starting with v4.
+我们正在扩大对所有主要产品的长期支持。
 
-Each major release will be supported for 18 months with around 6 months of active development followed by 12 months of critical bugfixes and security patches.
+之前我们宣布只有v4和v6是LTS版本，但是为了使从一个专业升级到下一个更容易，并且给更大的项目更多的时间来计划更新，我们决定从v4开始扩展对所有主要版本的长期支持。
 
-Learn more about how [Angular versions and releases](https://angular.io/guide/releases).
+每个主要的版本将被支持18个月，大约6个月的积极开发，然后是12个月的关键补丁和安全补丁
+
+了解更多关于如何[Angular versions and releases](https://angular.io/guide/releases).
 
 ## How to update to 6.0.0
-Visit [update.angular.io](https://update.angular.io/) for information and guidance on updating your application.
 
-The update generally follows 3 steps, and will take advantage of the new ng update tool.
+访问[update.angular.io](https://update.angular.io/) 来获取关于更新应用程序的信息和指南。
+
+更新通常遵循3个步骤，并将利用新的ng update工具。
 
  1. Update @angular/cli
  2. Update your Angular framework packages
  3. Update other dependencies
-Making it easy for developers to stay up to date with the latest releases is extremely important to us, so let us know what you think about this release in the comments!
+
+让开发人员轻松地了解最新版本对我们来说非常重要，所以让我们知道您在评论中对这个版本的看法!
 
 ## What about Ivy?
-At [ng-conf we mentioned a new initiative called Ivy](https://youtu.be/dIxknqPOWms?t=1360) — our next generation rendering pipeline. Ivy is currently under active development and is not part of the 6.0 release. We will announce an opt-in preview of Ivy as soon as it is ready in the coming months. Keep an eye on this blog for the latest information.
+
+在[ng-conf我们提到了一个叫做Ivy的新项目](https://youtu.be/dIxknqPOWms?t=1360) — 我们的下一代渲染管道。Ivy目前正在开发中，并不是6.0版的一部分。我们将在接下来的几个月里宣布一项关于Ivy的选择预览。关注这个博客的最新信息。
 
