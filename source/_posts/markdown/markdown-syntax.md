@@ -27,6 +27,7 @@ markdown相关语法的总结
 ###### 这是六级标题
 ```
 
+<!--more-->
 效果：
 {% sfb pass%}
 
@@ -46,7 +47,7 @@ markdown相关语法的总结
 
 # Strikethrough(删除线)
 
-就像这样`~~like this~~`或者`<dev>直接使用html</del>`html(不推荐)
+就像这样`~~like this~~`或者`<del>直接使用html</del>`html(不推荐)
 
 ~~i hate you~~ um...i like you actually
 
@@ -71,7 +72,7 @@ __也是文字粗体__
 
 _你**可以**组合它们_
 
-# <hr>分割线
+# <hr\>分割线
 
 ```markdown
 ***
@@ -345,3 +346,9 @@ Let's rename \*our-new-project\* to \*our-old-project\*.
 
 \`\`\`
 Let's rename \*our-new-project\* to \*our-old-project\*.
+
+{% sfb info %}
+参考文献：
+[1].  [掌握这几种 Markdown 语法你就够了](https://laravel-china.org/topics/621/you-will-be-able-to-master-these-markdown-grammars)
+[2].  [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
+{% endsfb %}
