@@ -12,18 +12,21 @@ tags:
 license: nd
 abbrlink: 46722
 ---
-## Git的配置文件
+
+## Git 的配置文件
 
 Git 自带一个 git config 的工具来帮助设置控制 Git 外观和行为的配置变量。 这些变量存储在三个不同的位置，针对三个级别`System`,`User`和`Repository`：
 
-1. `/etc/gitconfig` 文件(一般是Git的安装目录): 包含系统上每一个用户及他们仓库的`通用配置`。 如果使用带有 `--system` 选项的 git config 时，它会从此文件读写配置变量。
+1.  `/etc/gitconfig` 文件(一般是 Git 的安装目录): 包含系统上每一个用户及他们仓库的`通用配置`。 如果使用带有 `--system` 选项的 git config 时，它会从此文件读写配置变量。
 
-2. `~/.gitconfig` 或 `~/.config/git/config` 文件(当前用户主目录)：只针对`当前用户`。 可以传递 `--global` 选项让 Git 读写此文件。
+2.  `~/.gitconfig` 或 `~/.config/git/config` 文件(当前用户主目录)：只针对`当前用户`。 可以传递 `--global` 选项让 Git 读写此文件。
 
-3. 当前使用仓库的 Git 目录中的 `config` 文件（就是 `.git/config`）：针对`该仓库`。
+3.  当前使用仓库的 Git 目录中的 `config` 文件（就是 `.git/config`）：针对`该仓库`。
 
-你可以通过`git config -l --show-origin`来查看当前目录下的git配置信息(`配置来源`+`配置`)：
+你可以通过`git config -l --show-origin`来查看当前目录下的 git 配置信息(`配置来源`+`配置`)：
+
 <!--more-->
+
 ```bash
 $ git config -l --show-origin
 file:"C:\\ProgramData/Git/config"       core.symlinks=false
@@ -51,10 +54,9 @@ file:.git/config        gui.wmstate=zoomed
 file:.git/config        gui.geometry=443x321+-964+107 649 330
 file:.git/config        branch.dev.remote=origin
 file:.git/config        branch.dev.merge=refs/heads/dev
-
 ```
 
-你会发现其中`user.name`在global和repository级别同时存在，此时将使用repository里的配置。即配置优先级：`Repository > Global > System`。
+你会发现其中`user.name`在 global 和 repository 级别同时存在，此时将使用 repository 里的配置。即配置优先级：`Repository > Global > System`。
 
 ## 初次使用 Git 前的配置
 
@@ -70,18 +72,18 @@ git config --global user.email suchenxiaoyu@gmail.com
 当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有 `--global` 选项的命令来进行配置。
 
 {% hint danger %}
-这里的用户信息并不是你的git账户信息，这些信息是用于每一次的提交。当然，你也可以使用你的git账号信息作为用户信息，这并没有什么不可以。
+这里的用户信息并不是你的 git 账户信息，这些信息是用于每一次的提交。当然，你也可以使用你的 git 账号信息作为用户信息，这并没有什么不可以。
 {% endhint%}
 
 ### 文本编辑器
 
-设置Git默认使用的文本编辑器, 一般可能会是 Vi 或者 Vim。如果你有其他偏好，比如 Emacs 的话，可以重新设置：
+设置 Git 默认使用的文本编辑器, 一般可能会是 Vi 或者 Vim。如果你有其他偏好，比如 Emacs 的话，可以重新设置：
 
 ```bash
 git config --global core.editor emacs
 ```
 
-如果是在windows上，假设你想设置Notepad++:
+如果是在 windows 上，假设你想设置 Notepad++:
 
 ```bash
 git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -nosession"
@@ -130,6 +132,6 @@ suchenxiaoyu
 
 {% sfb info %}
 参考：
-[1].  [Git 安装配置](http://www.runoob.com/git/git-install-setup.html)
-[2].  [First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
+[1]. [Git 安装配置](http://www.runoob.com/git/git-install-setup.html)
+[2]. [First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
 {% endsfb %}

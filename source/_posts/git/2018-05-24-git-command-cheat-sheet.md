@@ -15,7 +15,8 @@ abbrlink: 40446
 
 ## 更新日志
 
-* 2018-05-24&nbsp;&nbsp;&nbsp;&nbsp;git config
+* 2018-05-24&nbsp;&nbsp;&nbsp;&nbsp;git init
+* 2018-05-23&nbsp;&nbsp;&nbsp;&nbsp;git config
 * 2018-05-15&nbsp;&nbsp;&nbsp;&nbsp;初稿
 
 ## 关于
@@ -27,6 +28,88 @@ abbrlink: 40446
 {% endhint %}
 
 <!--more-->
+
+## git init
+
+git-init - 用于创建空的 Git 仓库或者重新初始化一个已存在的 Git 仓库。
+
+以下均假设未设置 Git 相关参数环境变量，如`GIT_DIR`，`GIT_TEMPLATE_DIR` etc.
+
+```bash 以下在git version 2.13.0.windows.1运行测试通过
+# 新建git仓库
+$ git init  # 将当前目录初始化为Git仓库
+$ git init [directory]  # 在当前路径新建`directory`目录并初始化为Git仓库
+$ pwd
+/c/WorkBench/suchenrain/temptest
+$ git init test1
+Initialized empty Git repository in C:/WorkBench/suchenrain/temptest/test1/.git/
+
+$ git init [path] # 在指定的路径`path`下初始化Git仓库
+$ git init to/test  # 相对路径即 ./to/test
+Initialized empty Git repository in C:/WorkBench/suchenrain/temptest/to/test/.git/
+
+$ git init /to/test # 根路径（Git安装路径）
+Initialized empty Git repository in C:/WorkSpace/Develop/Git/to/test/.git/
+
+# 裸仓库
+$ git init --bare # 只生成Git版本库，没有工作区(适用于git服务器)
+$ git init --bare bare
+Initialized empty Git repository in C:/WorkBench/suchenrain/temptest/bare/
+
+$ cd bare
+$ tree -F -L 1
+.
+|-- HEAD
+|-- config
+|-- description
+|-- hooks/
+|-- info/
+|-- objects/
+`-- refs/
+
+# 分离版本库（指定git版本库的路径，而不是默认的./.git。常用于移动已有仓库的版本库）
+$ git init --separate-git-dir fake src
+Initialized empty Git repository in C:/WorkBench/suchenrain/temptest/fake/
+$ tree -F -a -L 2
+.
+|-- fake/               # git版本库
+|   |-- HEAD
+|   |-- config
+|   |-- description
+|   |-- hooks/
+|   |-- info/
+|   |-- objects/
+|   `-- refs/
+`-- src/                # 工作区
+    `-- .git            # 版本库路径信息文件
+
+$ vi src/.git
+gitdir: C:/WorkBench/suchenrain/temptest/fake       # 版本库路径为fake
+~
+~
+~
+
+# 仓库访问权限
+$ git init --shared[=(false|true|umask|group|all|world|everybody|0xxx)]
+
+# false等价于umask 这是默认设置，表示使用系统默认的文件权限
+
+# group (or true) 仓库组可写。Note that the umask still applies to the other permission bits
+(e.g. if umask is 0022, using group will not remove read privileges from other (non-group) users)
+
+# all (or world or everybody)
+Same as group, but make the repository readable by all users.
+
+# 0xxx
+# u-user g-group o-others
+# rwx 
+# 4 stands for "read",
+# 2 stands for "write",
+# 1 stands for "execute", and
+# 0 stands for "no permission."
+$ git init --shared=0660 testShared
+
+```
 
 ## git config
 
@@ -77,7 +160,8 @@ file:.git/config                                        user.name te
 file:.git/config                                        user.hello te
 file:.git/config                                        xuser.name haha
 
-$ git config --remove-section  user    # remove a section: name (移除repository级别的用户节点 user.name,user.email,etc.)
+$ git config --remove-section  user    # remove a section: name
+# (移除repository级别的用户节点 user.name,user.email,etc.)
 $ git config --show-origin --get-regexp user
 file:"C:\\Program Files\\Git\\mingw64/etc/gitconfig"    user.name John Doe
 file:C:/Users/Administrator/.gitconfig                  user.email suchenxiaoyu@gmail.com
@@ -90,5 +174,5 @@ file:.git/config                                        xuser.name haha
 * [Pro Git][1]
 * [Git Community Book][2]
 
-[1]: https://git-scm.com/book/en/v2 'Pro Git'
-[2]: http://gitbook.liuhui998.com/index.html 'Git Community Book 中文版'
+[1]: https://git-scm.com/book/en/v2 "Pro Git"
+[2]: http://gitbook.liuhui998.com/index.html "Git Community Book 中文版"
