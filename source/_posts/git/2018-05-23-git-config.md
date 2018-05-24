@@ -4,10 +4,9 @@ title: git系列之配置详解
 date: '2018-05-18 20:12'
 categories:
   - git系列
-  - git命令
   - git config
 tags:
-  - git命令
+  - git
   - git系列
   - git config
 license: nd
@@ -128,3 +127,9 @@ color.diff=auto
 $ git config user.name
 suchenxiaoyu
 ```
+
+{% sfb info %}
+参考：
+[1].  [Git 安装配置](http://www.runoob.com/git/git-install-setup.html)
+[2].  [First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
+{% endsfb %}
