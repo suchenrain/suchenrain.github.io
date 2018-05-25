@@ -1,5 +1,5 @@
 ---
-title: 理解Git的工作区、暂存区和版本库
+title: 'Git系列—理解Git的工作区、暂存区和版本库'
 categories:
   - git系列
 tags:
@@ -12,7 +12,7 @@ license: nd
 
 ## Git 目录
 
-首先，让我们来看一看 Git 仓库的目录结构。作为演示，我们初始化了一个叫做 `project` 的 Git 仓库。使用`tree`查看项目结构如下：
+创建了版本库后。首先，让我们来看一看 Git 仓库的目录结构。作为演示，我们初始化了一个叫做 `project` 的 Git 仓库。使用`tree`查看项目结构如下：
 
 ```bash
 $ cd C:/Hexo/gitpost/project

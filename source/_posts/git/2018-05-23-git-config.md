@@ -1,7 +1,7 @@
 ---
 file: 2018-05-23-git-config
-title: git系列之配置详解
-date: '2018-05-18 20:12'
+title: 'Git系列—Git配置详解'
+date: '2018-05-19 20:12'
 categories:
   - git系列
   - git config
@@ -11,6 +11,7 @@ tags:
   - git config
 license: nd
 abbrlink: 46722
+updated: 2018-05-25 17:58:47
 ---
 
 ## Git 的配置文件
