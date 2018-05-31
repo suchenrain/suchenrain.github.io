@@ -11,13 +11,17 @@ tags:
   - git
 license: nd
 abbrlink: 40446
+updated: 2018-05-31 17:15:41
 ---
 
 ## 更新日志
 
+* 2018-05-31&nbsp;&nbsp;&nbsp;&nbsp;git status
 * 2018-05-24&nbsp;&nbsp;&nbsp;&nbsp;git init
 * 2018-05-23&nbsp;&nbsp;&nbsp;&nbsp;git config
 * 2018-05-15&nbsp;&nbsp;&nbsp;&nbsp;初稿
+
+---
 
 ## 关于
 
@@ -28,6 +32,8 @@ abbrlink: 40446
 {% endhint %}
 
 <!--more-->
+
+---
 
 ## git init
 
@@ -51,6 +57,7 @@ Initialized empty Git repository in C:/WorkBench/suchenrain/temptest/to/test/.gi
 $ git init /to/test # 根路径（Git安装路径）
 Initialized empty Git repository in C:/WorkSpace/Develop/Git/to/test/.git/
 
+-------------------------------------------------------------------------------------
 # 裸仓库
 $ git init --bare # 只生成Git版本库，没有工作区(适用于git服务器)
 $ git init --bare bare
@@ -67,6 +74,7 @@ $ tree -F -L 1
 |-- objects/
 `-- refs/
 
+-------------------------------------------------------------------------------------
 # 分离版本库（指定git版本库的路径，而不是默认的./.git。常用于移动已有仓库的版本库）
 $ git init --separate-git-dir fake src
 Initialized empty Git repository in C:/WorkBench/suchenrain/temptest/fake/
@@ -89,6 +97,7 @@ gitdir: C:/WorkBench/suchenrain/temptest/fake       # 版本库路径为fake
 ~
 ~
 
+-------------------------------------------------------------------------------------
 # 仓库访问权限
 $ git init --shared[=(false|true|umask|group|all|world|everybody|0xxx)]
 
@@ -102,14 +111,15 @@ Same as group, but make the repository readable by all users.
 
 # 0xxx
 # u-user g-group o-others
-# rwx 
+# rwx
 # 4 stands for "read",
 # 2 stands for "write",
 # 1 stands for "execute", and
 # 0 stands for "no permission."
 $ git init --shared=0660 testShared
-
 ```
+
+---
 
 ## git config
 
@@ -119,10 +129,12 @@ $ git config -l, --list
 # 查看配置并显示配置来源
 $ git config --show-origin -l
 
+-------------------------------------------------------------------------------------
 # 设置配置
 $ git config --system user.name "John Doe" # 设置system级别用户名
 $ git config --global user.name "suchenxiaoyu" # 设置global级别用户名
 
+-------------------------------------------------------------------------------------
 # 读取配置
 $ git config user.name # 读取最终生效的配置
 $ git config --get user.name # 读取最终生效的配置
@@ -131,6 +143,7 @@ $ git config --get-all user.name # 读取所有配置
 John Doe
 suchenxiaoyu
 
+-------------------------------------------------------------------------------------
 # 添加配置
 $ git config --add user.name test # 添加repository级别配置
 $ git config --global --add user.name test # 添加global级别配置(增加一条配置不管存在与否)
@@ -140,6 +153,7 @@ file:C:/Users/Administrator/.gitconfig                  suchenxiaoyu
 file:C:/Users/Administrator/.gitconfig                  test
 file:.git/config                                        test
 
+-------------------------------------------------------------------------------------
 # 移除配置
 $ git config --global --unset user.name # 移除global级别用户名（适合只有一条记录的配置）
 warning: user.name has multiple values
@@ -148,10 +162,12 @@ $ git config --show-origin --get-all user.name
 file:"C:\\Program Files\\Git\\mingw64/etc/gitconfig"    John Doe
 file:.git/config        test
 
+-------------------------------------------------------------------------------------
 $ git config --unset user.name #移除repository级别user.name
 $ git config --show-origin --get-all user.name
 file:"C:\\Program Files\\Git\\mingw64/etc/gitconfig"    John Doe #user.name只剩system级别配置
 
+-------------------------------------------------------------------------------------
 $ git config --show-origin --get-regexp user  # 根据正则获取配置信息，如 获取所有级别包含user的配置
 file:"C:\\Program Files\\Git\\mingw64/etc/gitconfig"    user.name John Doe
 file:C:/Users/Administrator/.gitconfig                  user.email suchenxiaoyu@gmail.com
@@ -160,6 +176,7 @@ file:.git/config                                        user.name te
 file:.git/config                                        user.hello te
 file:.git/config                                        xuser.name haha
 
+-------------------------------------------------------------------------------------
 $ git config --remove-section  user    # remove a section: name
 # (移除repository级别的用户节点 user.name,user.email,etc.)
 $ git config --show-origin --get-regexp user
@@ -169,10 +186,82 @@ file:C:/Users/Administrator/.gitconfig                  xuser.name haha
 file:.git/config                                        xuser.name haha
 ```
 
+---
+
+## git status
+
+`git status` 用于查看当前工作区文件状态。
+
+```bash 以下在git version 2.17.1.windows.2运行测试通过
+# 查看工作区当前状态
+$ git status
+
+# 短格式-输出两位字母状态码
+$ git status -s, --short
+
+-------------------------------------------------------------------------------------
+# 附加输出已暂存的具体变化，一个-v相当于 diff --cached
+# 两个-v 相当于再附加上未暂存的具体变化
+$ git status -v -v
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   test.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   readme.md
+
+Changes to be committed:
+diff --git c/test.md i/test.md
+index e77b92e..23ff8f0 100644
+--- c/test.md
++++ i/test.md
+@@ -2,3 +2,4 @@ i hate u
+ i like u
+ i love u
+ i hate you
++i like you
+--------------------------------------------------
+Changes not staged for commit:
+diff --git i/readme.md w/readme.md
+index d8ac117..4094f29 100644
+--- i/readme.md
++++ w/readme.md
+@@ -3,3 +3,4 @@ add another line
+ test1
+ test2
+ test3
++test4
+
+-------------------------------------------------------------------------------------
+# 简洁状态下也显示分支信息（搭配 -s）
+$ git status -s -b
+## master
+ M readme.md
+M  test.md
+
+-------------------------------------------------------------------------------------
+# 显示已经隐藏起来的条目数量
+$ git stash   # 隐藏当前工作目录的变化
+Saved working directory and index state WIP on master: be44449 skip staged step
+$ git status --show-stash
+On branch master
+nothing to commit, working tree clean
+Your stash currently has 1 entry
+```
+
+---
+
 ## References
 
+* [Git Reference][0]
 * [Pro Git][1]
 * [Git Community Book][2]
 
-[1]: https://git-scm.com/book/en/v2 "Pro Git"
-[2]: http://gitbook.liuhui998.com/index.html "Git Community Book 中文版"
+[0]: https://git-scm.com/docs 'Git Reference'
+[1]: https://git-scm.com/book/en/v2 'Pro Git'
+[2]: http://gitbook.liuhui998.com/index.html 'Git Community Book 中文版'

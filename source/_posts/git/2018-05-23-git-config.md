@@ -59,7 +59,11 @@ file:.git/config        branch.dev.merge=refs/heads/dev
 
 你会发现其中`user.name`在 global 和 repository 级别同时存在，此时将使用 repository 里的配置。即配置优先级：`Repository > Global > System`。
 
+---
+
 ## 初次使用 Git 前的配置
+
+---
 
 ### 用于提交的用户信息
 
@@ -76,6 +80,8 @@ git config --global user.email suchenxiaoyu@gmail.com
 这里的用户信息并不是你的 git 账户信息，这些信息是用于每一次的提交。当然，你也可以使用你的 git 账号信息作为用户信息，这并没有什么不可以。
 {% endhint%}
 
+---
+
 ### 文本编辑器
 
 设置 Git 默认使用的文本编辑器, 一般可能会是 Vi 或者 Vim。如果你有其他偏好，比如 Emacs 的话，可以重新设置：
@@ -90,6 +96,8 @@ git config --global core.editor emacs
 git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -nosession"
 ```
 
+---
+
 ### 差异分析工具
 
 还有一个比较常用的是，在解决合并冲突时使用哪种差异分析工具。比如要改用 vimdiff 的话：
@@ -101,6 +109,8 @@ git config --global merge.tool vimdiff
 Git 可以理解 kdiff3，tkdiff，meld，xxdiff，emerge，vimdiff，gvimdiff，ecmerge，和 opendiff 等合并工具的输出信息。
 
 当然，你也可以指定使用自己开发的工具，具体请参考后续文章。
+
+---
 
 ### 查看配置信息
 
@@ -130,6 +140,8 @@ color.diff=auto
 $ git config user.name
 suchenxiaoyu
 ```
+
+---
 
 {% sfb info %}
 参考：

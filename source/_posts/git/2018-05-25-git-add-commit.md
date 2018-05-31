@@ -23,6 +23,8 @@ updated: 2018-05-31 12:55:00
 
 ![git文件状态变化周期](https://suchenrain-1255943826.file.myqcloud.com/Post/lifecycle.png 'git文件状态变化周期')
 
+---
+
 ## 检查当前文件状态
 
 ```bash
@@ -49,6 +51,8 @@ nothing added to commit but untracked files present (use "git add" to track)
 
 Git 不会自动将新的文件纳入跟踪范围，除非你明明白白地告诉它“我需要跟踪该文件”， 这样的处理让你不必担心将生成的二进制文件或其它不想被跟踪的文件包含进来。
 
+---
+
 ## 跟踪新文件
 
 通过使用命令 git add 开始跟踪一个文件。
@@ -69,6 +73,8 @@ Changes to be committed:
 ```
 
 只要在 Changes to be committed 这行下面的，就说明是已暂存状态。git add 命令使用文件或目录的路径作为参数；如果参数是目录的路径，该命令将递归地跟踪该目录下的所有文件。
+
+---
 
 ## 暂存已修改文件
 
@@ -124,6 +130,8 @@ Changes not staged for commit:
 
 见鬼了？ 你会发现 readme.md 文件同时出现在暂存区和非暂存区。 这怎么可能呢？ 好吧，`实际上 Git 只不过暂存了你运行 git add 命令时的版本`， 如果你现在提交，readme.md 的版本是你最后一次运行 git add 命令时的那个版本，而不是你运行 git commit 时，在工作目录中的当前版本。 所以，运行了 git add 之后又作了修订的文件，需要重新运行 git add 把最新版本重新暂存起来。
 
+---
+
 ## 状态简览
 
 git status 命令的输出十分详细，同时也有些啰嗦。 通过 git status -s 命令或 git status --short 命令，输出将更加简洁：
@@ -137,21 +145,71 @@ MM test.md
 ?? lib/file4.zc
 ```
 
-新添加的未跟踪文件前面有 ?? 标记，新添加到暂存区中的文件前面有 A 标记，修改过的文件前面有 M 标记。 你可能注意到了 M 有两个可以出现的位置，出现在右边的 M 表示该文件被修改了但是还没放入暂存区，出现在靠左边的 M 表示该文件被修改了并放入了暂存区。 例如，上面的状态报告显示：在工作区新添加了 lib/file4.zc 文件且未追踪， lib/file3.zc 为工作区新添加文件并且放入了暂存区。readme.md 文件在工作区被修改了但是还没有将修改后的文件放入暂存区,License.txt 文件被修改了并将修改后的文件放入了暂存区。 而 test.md 在工作区被修改并提交到暂存区后又在工作区中被修改了，所以在暂存区和工作区都有该文件被修改了的记录。
+新添加的未跟踪文件前面有 ?? 标记，新添加到暂存区中的文件前面有 A 标记，修改过的文件前面有 M 标记。 你可能注意到了 M 有两个可以出现的位置，出现在右边的 M 表示该文件被修改了但是还没放入暂存区，出现在靠左边的 M 表示该文件被修改了并放入了暂存区。 例如，上面的状态报告显示：
 
-{% hint warning%}
-**如何理解上述标记？**
+* 在工作区新添加了 lib/file4.zc 文件且未追踪
+* lib/file3.zc 为工作区新添加文件并且放入了暂存区。
+* readme.md 文件在工作区被修改了但是还没有将修改后的文件放入暂存区
+* License.txt 文件被修改了并将修改后的文件放入了暂存区
+* test.md 在工作区被修改并提交到暂存区后又在工作区中被修改了，所以在暂存区和工作区都有该文件被修改了的记录。
 
-可以用如下表格描述上面的输出，比如 readme.md，它在工作区被修改了，但暂存区无变化，说明文件在工作区被修改但未放入暂存区。再比如 lib/file4.zc，它在工作区和暂存区均未知状态，说明是工作区新的未追踪文件。
-{% endhint %}
+---
+
+**`如何理解上述短格式？`**
+
+短格式使用两位字母的状态码`XY`。
+
+对于合并冲突的路径，X 和 Y 显示合并的每一边的修改状态。对于那些没有合并冲突的路径，`X 显示了索引(暂存区)的状态`，并且 `Y 显示了工作树(工作目录)的状态`。对于未被追踪的路径，XY 是`??`其他状态码可以解释如下：
+
+* '' = unmodified
+* M = modified
+* A = added
+* D = deleted
+* R = renamed
+* C = copied
+* U = updated but unmerged
+
+```
+X          Y     Meaning
+-------------------------------------------------
+         [AMD]   not updated
+M        [ MD]   updated in index
+A        [ MD]   added to index
+D                deleted from index
+R        [ MD]   renamed in index
+C        [ MD]   copied in index
+[MARC]           index and work tree matches
+[ MARC]     M    work tree changed since index
+[ MARC]     D    deleted in work tree
+[ D]        R    renamed in work tree
+[ D]        C    copied in work tree
+-------------------------------------------------
+D           D    unmerged, both deleted
+A           U    unmerged, added by us
+U           D    unmerged, deleted by them
+U           A    unmerged, added by them
+D           U    unmerged, deleted by us
+A           A    unmerged, both added
+U           U    unmerged, both modified
+-------------------------------------------------
+?           ?    untracked
+!           !    ignored
+-------------------------------------------------
+```
+
+所以可以用如下表格描述上面的输出，比如 readme.md，它在工作区被修改了，但暂存区无变化，说明文件在工作区被修改但未放入暂存区。再比如 lib/file4.zc，它在工作区和暂存区均未知状态，说明是工作区新的未追踪文件。
 
 | 暂存区状态 | 工作区状态 | 文件         |
 | ---------- | ---------- | ------------ |
 | M          |            | License.txt  |
 | A          |            | lib/file3.zc |
-| M          | readme.md  |
+|            | M          | readme.md    |
 | M          | M          | test.md      |
 | ?          | ?          | lib/file4.zc |
+
+更多请参阅[git status](https://git-scm.com/docs/git-status)
+
+---
 
 ## 忽略特定文件
 
@@ -168,13 +226,9 @@ $ cat .gitignore
 文件 .gitignore 的格式规范如下：
 
 * 所有空行或者以 ＃ 开头的行都会被 Git 忽略。
-
 * 可以使用标准的 glob 模式匹配。
-
 * 匹配模式可以以（/）开头防止递归。
-
 * 匹配模式可以以（/）结尾指定目录。
-
 * 要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。
 
 所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。 星号（）匹配零个或多个任意字符；[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号（?）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9] 表示匹配所有 0 到 9 的数字）。 使用两个星号（） 表示匹配任意中间目录，比如`a/**/z` 可以匹配 a/z, a/b/z 或 `a/b/c/z`等。
@@ -213,6 +267,8 @@ GitHub 在 https://github.com/github/gitignore 中针对几十种项目和程序
 一般来说，一个 git 仓库会在根目录有这样一个.gitignore 文件, 它依次作用于整个仓库目录。然而，子目录也可以有自己的.gitignore 文件。这些嵌套的.gitignore 文件中的规则只适用于它们所在目录下的文件。
 
 更多详情可以参见`man gitignore`。
+
+---
 
 ## 查看已暂存和未暂存的修改
 
@@ -281,6 +337,8 @@ index f7ec434..f44d5bd 100644
 git 默认使用 git diff 来分析文件差异。 但是，如果你喜欢通过图形化的方式或其它格式输出方式的话，可以使用 git difftool 命令来用 Araxis ，emerge 或 vimdiff 等软件输出 diff 分析结果。 使用 git difftool --tool-help 命令来看你的系统支持哪些 Git Diff 插件。
 {% endhint %}
 
+---
+
 ## 提交更新
 
 到此，相信你已经准备好将暂存区的修改提交到版本库了。每次准备提交前，先用 `git status` 看下，是不是都已暂存起来了， 然后再运行提交命令 `git commit`：
@@ -310,6 +368,8 @@ $ git commit -m 'first commit'
  2 files changed, 2 insertions(+)
 ```
 
+---
+
 ## 跳过使用暂存区域
 
 尽管使用暂存区域的方式可以精心准备要提交的细节，但有时候这么做略显繁琐。 Git 提供了一个跳过使用暂存区域的方式， 只要在提交的时候，给 git commit 加上 -a 选项，Git 就会自动把所有`已经跟踪过的文件`暂存起来一并提交，从而跳过 git add 步骤：
@@ -331,6 +391,8 @@ $ git status -s
 {% hint warning%}
 只是针对 tracked 的文件，未追踪的文件还是在工作区！
 {% endhint %}
+
+---
 
 ## 移除文件
 
@@ -391,6 +453,8 @@ $ git rm \*~
 
 删除以 ~ 结尾的所有文件。
 
+---
+
 ## 移动文件(重命名)
 
 要在 Git 中对文件改名，可以这么做：
@@ -406,6 +470,7 @@ Changes to be committed:
 
     renamed:    README.md -> README
 ```
+
 其实，运行 git mv 就相当于运行了下面三条命令：
 
 ```bash
@@ -413,10 +478,12 @@ $ mv README.md README
 $ git rm README.md
 $ git add README
 ```
+
 如此分开操作，Git 也会意识到这是一次改名，所以不管何种方式结果都一样。 两者唯一的区别是，mv 是一条命令而另一种方式需要三条命令，直接用 git mv 轻便得多。
+
+---
 
 {% sfb info %}
 参考：
 [1]. [Git Basics - Recording Changes to the Repository](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
 {% endsfb %}
-````
