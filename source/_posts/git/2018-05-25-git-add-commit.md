@@ -8,7 +8,7 @@ tags:
 license: nd
 abbrlink: 20456
 date: 2018-05-26 17:54:55
-updated: 2018-05-29 21:55:00
+updated: 2018-05-31 12:55:00
 ---
 
 到了这里相信你的机器上已经有了一个 Git 仓库，并且工作区里也签出了工作副本。通常，当项目达到想要记录的状态时，我们开始对文件进行更改并将这些变更的快照提交到存储库中。
@@ -177,7 +177,7 @@ $ cat .gitignore
 
 * 要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。
 
-所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。 星号（_）匹配零个或多个任意字符；[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号（?）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9] 表示匹配所有 0 到 9 的数字）。 使用两个星号（_) 表示匹配任意中间目录，比如`a/**/z` 可以匹配 a/z, a/b/z 或 `a/b/c/z`等。
+所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。 星号（）匹配零个或多个任意字符；[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号（?）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9] 表示匹配所有 0 到 9 的数字）。 使用两个星号（） 表示匹配任意中间目录，比如`a/**/z` 可以匹配 a/z, a/b/z 或 `a/b/c/z`等。
 
 我们再看一个 .gitignore 文件的例子：
 
@@ -206,11 +206,217 @@ doc/**/*.pdf
 {% hint info%}
 **Tip**
 
-如果你的项目管理想要有個好开头，GitHub 在 https://github.com/github/gitignore 中针对几十种项目和程序语言维护了一个很完整、好用的 .gitignore 范例文件列表。
+GitHub 在 https://github.com/github/gitignore 中针对几十种项目和程序语言维护了一个很完整、好用的 .gitignore 范例文件列表，你可以试试。
 
 {% endhint%}
+
+一般来说，一个 git 仓库会在根目录有这样一个.gitignore 文件, 它依次作用于整个仓库目录。然而，子目录也可以有自己的.gitignore 文件。这些嵌套的.gitignore 文件中的规则只适用于它们所在目录下的文件。
+
+更多详情可以参见`man gitignore`。
+
+## 查看已暂存和未暂存的修改
+
+`git status`告诉你的只是哪些文件发生了什么样的变化，如果你想知道具体的更改，那么你需要使用`git diff`命令。通常它用于回答两个问题：
+
+* 当前做的哪些更改还没有暂存？（`git diff`）
+* 有哪些更新已经暂存起来准备好了下次提交？（`git diff --staged`）
+
+假设我们项目当前状态如下：
+
+```bash
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   readme.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   test.md
+```
+
+要查看尚未暂存的文件更新了哪些部分，不加参数直接输入 git diff：
+
+```bash
+$ git diff
+diff --git a/test.md b/test.md
+index 8e86c6b..e77b92e 100644
+--- a/test.md
++++ b/test.md
+@@ -1,3 +1,4 @@
+ i hate u
+ i like u
+ i love u
++i hate you
+```
+
+此命令比较的是`工作目录中当前文件和暂存区域快照之间的差异`， 也就是修改之后还没有暂存起来的变化内容。
+
+若要查看已暂存的将要添加到下次提交里的内容，可以用 git diff --cached 命令。（Git 1.6.1 及更高版本还允许使用 git diff --staged，效果是相同的，但更好记些。）
+
+```bash
+$ git diff --staged
+diff --git a/readme.md b/readme.md
+index f7ec434..f44d5bd 100644
+--- a/readme.md
++++ b/readme.md
+@@ -1,2 +1,3 @@
+ add a line
+ add another line
++test1
+```
+
+{% hint success%}
+**小结**
+`git diff` &nbsp;(查看工作区和暂存区的差异)
+`git diff --staged`&nbsp; (查看暂存区和版本库的差异)
+{% endhint %}
+
+{% hint info%}
+**Git Diff 的插件版本**
+
+git 默认使用 git diff 来分析文件差异。 但是，如果你喜欢通过图形化的方式或其它格式输出方式的话，可以使用 git difftool 命令来用 Araxis ，emerge 或 vimdiff 等软件输出 diff 分析结果。 使用 git difftool --tool-help 命令来看你的系统支持哪些 Git Diff 插件。
+{% endhint %}
+
+## 提交更新
+
+到此，相信你已经准备好将暂存区的修改提交到版本库了。每次准备提交前，先用 `git status` 看下，是不是都已暂存起来了， 然后再运行提交命令 `git commit`：
+
+```bash
+$ git commit
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Changes to be committed:
+#       modified:   readme.md
+#       modified:   test.md
+#
+~
+~
+```
+
+这会启动文本编辑器以便输入本次提交的说明。 (默认会启用 shell 的环境变量 $EDITOR 所指定的软件，一般都是 vim 或 emacs。输入你的提交信息，保存退出完成提交。
+
+另外，你也可以在 commit 命令后添加 -m 选项，将提交信息与命令放在同一行，如下所示：
+
+```bash
+$ git commit -m 'first commit'
+[master 643c866] first commit
+ 2 files changed, 2 insertions(+)
+```
+
+## 跳过使用暂存区域
+
+尽管使用暂存区域的方式可以精心准备要提交的细节，但有时候这么做略显繁琐。 Git 提供了一个跳过使用暂存区域的方式， 只要在提交的时候，给 git commit 加上 -a 选项，Git 就会自动把所有`已经跟踪过的文件`暂存起来一并提交，从而跳过 git add 步骤：
+
+```bash
+$ git status -s
+ M readme.md
+?? demofile.zc
+
+$ git commit -a -m 'skip staged step'
+[master be44449] skip staged step
+ 1 file changed, 1 insertion(+)
+
+# untracked files remain
+$ git status -s
+?? demofile.zc
+```
+
+{% hint warning%}
+只是针对 tracked 的文件，未追踪的文件还是在工作区！
+{% endhint %}
+
+## 移除文件
+
+假设由于不小心将某文件提交了版本库，那么如何移除呢？
+
+要从 Git 中移除某个文件，就必须要从已跟踪文件清单中移除（确切地说，是从暂存区域移除），然后提交。 可以用 `git rm` 命令完成此项工作，并`连带从工作目录中删除指定的文件`，这样以后就不会出现在未跟踪文件清单中了。
+
+如果只是简单地从工作目录中手工删除文件，运行 `git status` 时就会在 “Changes not staged for commit” 部分（也就是 未暂存清单）看到：
+
+```bash
+$ rm test.md
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        deleted:    test.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+然后再运行 `git rm` 记录此次移除文件的操作：
+
+```bash
+$ git rm test.md
+rm 'test.md'
+
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        deleted:    test.md
+```
+
+下一次提交时，该文件就不再纳入版本管理了。
+
+如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 -f（译注：即 force 的首字母）。 这是一种安全特性，用于防止误删还没有添加到快照的数据，这样的数据不能被 Git 恢复。
+
+另外一种情况是，我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。 换句话说，你想让文件保留在磁盘，但是并不想让 Git 继续跟踪。 当你忘记添加 .gitignore 文件，不小心把一个很大的日志文件或一堆 .a 这样的编译生成文件添加到暂存区时，这一做法尤其有用。 为达到这一目的，使用 --cached 选项：
+
+```bash
+$ git rm --cached test.md
+```
+
+`git rm` 命令后面可以列出文件或者目录的名字，也可以使用 glob 模式。 比方说：
+
+```bash
+$ git rm log/\*.log
+```
+
+注意到星号 \* 之前的反斜杠 \， 因为 Git 有它自己的文件模式扩展匹配方式，所以我们不用 shell 来帮忙展开。 此命令删除 log/ 目录下扩展名为 .log 的所有文件。 类似的比如：
+
+```bash
+$ git rm \*~
+```
+
+删除以 ~ 结尾的所有文件。
+
+## 移动文件(重命名)
+
+要在 Git 中对文件改名，可以这么做：
+
+`$ git mv file_from file_to` 它会恰如预期般正常工作。 实际上，即便此时查看状态信息，也会明白无误地看到关于重命名操作的说明：
+
+```bash
+$ git mv README.md README
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+    renamed:    README.md -> README
+```
+其实，运行 git mv 就相当于运行了下面三条命令：
+
+```bash
+$ mv README.md README
+$ git rm README.md
+$ git add README
+```
+如此分开操作，Git 也会意识到这是一次改名，所以不管何种方式结果都一样。 两者唯一的区别是，mv 是一条命令而另一种方式需要三条命令，直接用 git mv 轻便得多。
 
 {% sfb info %}
 参考：
 [1]. [Git Basics - Recording Changes to the Repository](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)
 {% endsfb %}
+````
