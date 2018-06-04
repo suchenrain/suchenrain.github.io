@@ -16,6 +16,8 @@ updated: 2018-05-31 17:15:41
 
 ## 更新日志
 
+* 2018-06-04&nbsp;&nbsp;&nbsp;&nbsp;git log
+* 2018-06-03&nbsp;&nbsp;&nbsp;&nbsp;git add + git commit
 * 2018-05-31&nbsp;&nbsp;&nbsp;&nbsp;git status
 * 2018-05-24&nbsp;&nbsp;&nbsp;&nbsp;git init
 * 2018-05-23&nbsp;&nbsp;&nbsp;&nbsp;git config
@@ -253,6 +255,271 @@ On branch master
 nothing to commit, working tree clean
 Your stash currently has 1 entry
 ```
+
+---
+
+## git add
+
+add 命令用于将工作区变化放入暂存区。
+
+```bash 以下在git version 2.17.1.windows.2运行测试通过
+# 特定文件
+$ git add readme.md
+
+# 指定目录下(包括子目录)的所有变化
+$ git add lib = git add lib/
+# 当前目录下所有变化
+$ git add .
+
+# 暂存已忽略的文件
+$ git add -f temp.dll
+
+# 进入交互模式
+$ git add -i [path]
+
+           staged     unstaged path
+  1:    unchanged        +1/-0 lib/file4.zc
+  2:    unchanged        +1/-0 readme.md
+  3:        +2/-0        +1/-0 test.md
+
+*** Commands ***
+  1: status       2: update       3: revert       4: add untracked
+  5: patch        6: diff         7: quit         8: help
+What now>
+
+# 交互式地选择补丁(等同于交互模式下选择patch子命令)
+$ git add -p, -patch
+```
+
+---
+
+**`交互模式`**
+
+进入交互模式后默认输出 status 子命令的结果，并且处于交互命令循环中。此时光标以一个`>`结尾，可以通过键入选项数字或者类似`s`,`sta`等使选择唯一的字母。
+
+主命令循环有 6 个子命令：
+
+### status
+
+用于显示暂存区和版本库及工作区的变化
+
+* staged - 显示暂存区版本库当前版本的变化，即将会提交的变化。
+* unstaged - 显示工作区与暂存区的变化，即可以暂存的变化。
+
+```bash
+           staged     unstaged path
+  1:    unchanged        +1/-0 lib/file4.zc
+  2:    unchanged        +1/-0 readme.md
+  3:        +2/-0        +1/-0 test.md # 已暂存的变化（新增2行内容），未暂存的变化（新增一行内容）
+```
+
+### update
+
+用于暂存选择的变化。
+
+```bash
+*** Commands ***
+  1: status       2: update       3: revert       4: add untracked
+  5: patch        6: diff         7: quit         8: help
+What now> 2
+           staged     unstaged path
+  1:    unchanged        +1/-0 lib/file4.zc
+  2:    unchanged        +1/-0 readme.md
+  3:        +2/-0        +1/-0 test.md
+Update>>
+```
+
+注意此时已经在 update 子命令下`>>`，你可以通过如下方式选择你需要暂存的变化：
+
+* `1,2` 以`,`分隔多个选择
+* `1-3`或 `1-`进行范围选择
+* `-2`取消选中
+
+选择完之后，已选中的变化会以`*`高亮显示。`空行回车`即可暂存所选中的变化。
+
+```bash 以下在git version 2.17.1.windows.2运行测试通过
+Update>> 3
+           staged     unstaged path
+  1:    unchanged        +1/-0 lib/file4.zc
+  2:    unchanged        +1/-0 readme.md
+* 3:        +2/-0        +1/-0 test.md
+Update>>
+updated 1 path
+
+*** Commands ***
+  1: status       2: update       3: revert       4: add untracked
+  5: patch        6: diff         7: quit         8: help
+What now> 1
+           staged     unstaged path
+  1:    unchanged        +1/-0 lib/file4.zc
+  2:    unchanged        +1/-0 readme.md
+  3:        +3/-0      nothing test.md  # 工作区变化已经全部暂存
+```
+
+### revert
+
+类似 update 命令，用于将选中的已暂存变化回退至版本库中的当前版本。如果是新路径，即将新追踪的文件回退至未追踪状态。
+
+### add untracked
+
+类似 update 和 revert，用于追踪新文件。
+
+### patch
+
+类似 update 但是更细致化，当你选择需要暂存的变化后，会将暂存区与工作区的差异（即将要放入暂存区的变化）依次显示并询问你的动作。这实际上相当于更加`细粒度的暂存`你选择的那些变化。
+
+可用的动作：
+
+* y - stage this hunk(暂存当前变化块)
+* n - do not stage this hunk(不暂存)
+* q - quit; do not stage this hunk or any of the remaining ones(退出 patch)
+* a - stage this hunk and all later hunks in the file(暂存所有)
+* d - do not stage this hunk or any of the later hunks in the file(不暂存当前文件的此处及之后的变化块)
+* g - select a hunk to go to(跳转至其它变化块)
+* / - search for a hunk matching the given regex(搜索指定的变化块)
+* j - leave this hunk undecided, see next undecided hunk(跳过当前变化块，跳至`下一个未决定`的变化块)
+* J - leave this hunk undecided, see next hunk(跳过当前变化块，跳至`下一个`变化块)
+* k - leave this hunk undecided, see previous undecided hunk(跳过当前变化块，跳至`前一个未决定`的变化块)
+* K - leave this hunk undecided, see previous hunk(跳过当前变化块，跳至`前一个`的变化块)
+* s - split the current hunk into smaller hunks(将当前变化块分割成更小的变化块,`细粒度`)
+* e - manually edit the current hunk(手动编辑当前变化块+ -操作)
+* ? - print h
+
+### diff
+
+用于查看将要提交的内容（暂存区与版本库当前版本）。
+
+---
+
+## git commit
+
+用于将暂存区的变化更新到版本库中，在新的提交中储存暂存区的当前内容，以及来自用户描述更改的日志消息。
+
+```bash 以下在git version 2.17.1.windows.2运行测试通过
+# 自动暂存所有被修改或删除的已追踪文件并提交
+# (未追踪文件不受影响)
+# 用于跳过手动stage
+$ git commit -a, --all
+
+# 交互式地选择补丁提交
+$ git commit -p, --patch
+
+# 交互式模式
+$ git commit --interactive
+
+# 复用指定的提交信息
+$ git commit -C <commit>, --reuse-message=<commit>
+$ git commit -c <commit>, --reedit-message=<commit> # 可以另外再编辑
+
+# 指定作者信息(override)
+$ git commit --author=author@example.com
+
+# 指定提交信息 (-m 与 -c,-C及-F互斥)
+$ git commit -m 'commit message'
+$ git commit -m 'first message' -m 'second message' # 最终以段落形式串联
+$ git log -1
+commit fe9e1ce441873311a532239a3cca709acbd2d59f (HEAD -> master)
+Author: suchenxiaoyu <suchenxiaoyu@gmail.com>
+Date:   Mon Jun 4 18:20:11 2018 +0800
+
+    first
+
+    second
+
+# 替换/修正上一次提交
+$ git commit --amend  # 默认使用上一次提交的所有信息
+$ git commit --amend -m 'replace message'
+
+# 预提交(模拟提交)
+$ git commit --dry-run
+```
+
+---
+
+## git log
+
+用于查看历史提交日志。
+
+```bash
+# 查看最近2次提交并显示内容差异
+$ git log -p -2
+
+# 提交的简略统计信息
+$ git log --stat
+commit 817c17b5d37a6f1f44b0d5a87466895a2b327cfa (HEAD -> master)
+Author: suchenxiaoyu <suchenxiaoyu@gmail.com>
+Date:   Mon Jun 4 18:20:11 2018 +0800
+
+    test
+
+ readme.md | 1 +
+ 1 file changed, 1 insertion(+)
+
+# 只显示 --stat 中最后的行数修改添加移除统计
+$ git log --shortstat
+
+---------------------------------------------------------------
+# 仅在提交信息后显示已修改的文件清单
+$ git log --name-only
+# 显示新增、修改、删除的文件清单(状态码)
+$ git log --name-status
+
+# 仅显示 SHA-1 的前几个字符
+$ git log --abbrev-commit
+
+# 使用较短的相对时间显示（比如，“2 weeks ago”）
+$ git log --relative-date
+
+# ASCII图形(显示分支与合并)
+$ git log --graph
+
+---------------------------------------------------------------
+# 指定日志展示的格式（oneline | short | full |fuller）
+$ git log --pretty=oneline
+817c17b5d37a6f1f44b0d5a87466895a2b327cfa (HEAD -> master) test
+be444493d956aee03d387276a883358ebe77410e skip staged step
+05cb82feb2f77d9d83642b61c14835c35b138258 skip stage step
+643c8668bf7857ce49ebf7a4d778a3c69623881e first commit
+0f6c323da12fd853d640146f12dd70b8d6d516d2 demo 1
+82af2fec9c052826abbb642b26948d0ff932dd93 test
+84b6ea98f62b7d06b98b4a94c515ae6a548376f2 initial project version
+
+---------------------------------------------------------------
+# 自定义日志格式
+$ git log --pretty=format:"%h - %an, %ar : %s"
+817c17b - suchenxiaoyu, 38 minutes ago : test
+be44449 - suchenxiaoyu, 4 days ago : skip staged step
+643c866 - suchenxiaoyu, 4 days ago : first commit
+0f6c323 - John Doe, 4 days ago : demo 1
+82af2fe - John Doe, 5 days ago : test
+84b6ea9 - suchenxiaoyu, 11 days ago : initial project version
+
+---------------------------------------------------------------
+```
+
+`git log --pretty=format` 常用的选项:
+
+```bash
+%H    提交对象（commit）的完整哈希字串
+%h    提交对象的简短哈希字串
+%T    树对象（tree）的完整哈希字串
+%t    树对象的简短哈希字串
+%P    父对象（parent）的完整哈希字串
+%p    父对象的简短哈希字串
+%an   作者（author）的名字
+%ae   作者的电子邮件地址
+%ad   作者修订日期（可以用 --date= 选项定制格式）
+%ar   作者修订日期，按多久以前的方式显示
+%cn   提交者（committer）的名字
+%ce   提交者的电子邮件地址
+%cd   提交日期
+%cr   提交日期，按多久以前的方式显示
+%s    提交说明
+```
+
+{% hint info %}
+**作者**指的是实际作出修改的人，**提交者**指的是最后将此工作成果提交到仓库的人。(分布式 Git)
+{% endhint %}
 
 ---
 
