@@ -11,7 +11,7 @@ tags:
   - git
 license: nd
 abbrlink: 40446
-updated: 2018-05-31 17:15:41
+updated: 2018-06-05 11:56:59
 ---
 
 ## 更新日志
@@ -474,6 +474,34 @@ $ git log --relative-date
 $ git log --graph
 
 ---------------------------------------------------------------
+# 仅显示最近的n条提交
+$ git log -n
+
+# 仅显示指定时间之前/后的提交
+$ git log --since,--after=<time format>
+$ git log --until,--before=<time format>
+
+$ git log --since=2.days  # 两天前开始的提交
+$ git log --since="2018-06-02"
+$ git log --since="3 days 5 minutes ago" # 距现在3天零5分钟内的提交
+
+# 指定作者的提交
+$ git log --author=gitster
+# 指定提交者的提交
+$ git log --committer=commiter
+
+# 提交说明中包含指定关键字的提交（多个关键字时需要使用--all-match,否则是或关系）
+$ git log --grep=<text>
+$ git log --grep=skip --grep=staged --all-match # 同时包含'skip'和'staged'
+
+# 显示添加或移除了某些字符串的提交
+$ git log -Slove # 显示新加或者删除'love'改动的提交
+
+# 只关心特定文件或目录的历史提交
+$ git log -- lib/file1.zc # 特定文件
+$ git log -- lib # 特定目录
+
+---------------------------------------------------------------
 # 指定日志展示的格式（oneline | short | full |fuller）
 $ git log --pretty=oneline
 817c17b5d37a6f1f44b0d5a87466895a2b327cfa (HEAD -> master) test
@@ -487,6 +515,7 @@ be444493d956aee03d387276a883358ebe77410e skip staged step
 ---------------------------------------------------------------
 # 自定义日志格式
 $ git log --pretty=format:"%h - %an, %ar : %s"
+$ git log --pretty="%h , %s" # 简写形式
 817c17b - suchenxiaoyu, 38 minutes ago : test
 be44449 - suchenxiaoyu, 4 days ago : skip staged step
 643c866 - suchenxiaoyu, 4 days ago : first commit
@@ -520,6 +549,13 @@ be44449 - suchenxiaoyu, 4 days ago : skip staged step
 {% hint info %}
 **作者**指的是实际作出修改的人，**提交者**指的是最后将此工作成果提交到仓库的人。(分布式 Git)
 {% endhint %}
+
+```bash
+# 显示从2018/6/1开始到1分钟之前这段时间内由'suchenxiaoyu'对文件'readme.md'的非合并提交
+$ git log --pretty="%h - %s" --author=suchenxiaoyu --since="2018-06-01" \
+> --before="a minute ago" --no-merges -- readme.md
+817c17b - test
+```
 
 ---
 
