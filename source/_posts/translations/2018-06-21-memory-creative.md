@@ -1,5 +1,5 @@
 ---
-title: 'This 10-Minute Routine Will Increase Your Memory And Creativity'
+title: '日常 10 分钟提升记忆力和创造力'
 categories:
   - 翻译分享
 tags:
@@ -7,6 +7,7 @@ tags:
   - 好文分享
 abbrlink: 32469
 date: 2018-06-21 21:50:36
+updated: 2018-06-22 21:52:36
 ---
 
 ## 日常 10 分钟提升记忆力和创造力
