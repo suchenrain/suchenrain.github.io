@@ -8,10 +8,11 @@ tags:
   - syntax
 abbrlink: 15918
 ---
-markdown相关语法的总结
+
+markdown 相关语法的总结
 
 {% sfb warn%}
-注意：这里介绍的只是通用的markdown语法，一些平台特有的语法的比如GFM(GitHub Flavored Markdown)的`@`等将不涉及。
+注意：这里介绍的只是通用的 markdown 语法，一些平台特有的语法的比如 GFM(GitHub Flavored Markdown)的`@`等将不涉及。
 {% endsfb %}
 
 # Headers(标题)
@@ -20,14 +21,20 @@ markdown相关语法的总结
 
 ```markdown
 # 这是一级标题
+
 ## 这是二级标题
+
 ### 这是三级标题
+
 #### 这是四级标题
+
 ##### 这是五级标题
+
 ###### 这是六级标题
 ```
 
 <!--more-->
+
 效果：
 {% sfb pass%}
 
@@ -54,11 +61,11 @@ markdown相关语法的总结
 # Emphasis(强调)
 
 ```markdown
-*文字斜体*
+_文字斜体_
 _也是文字斜体_
 
 **文字粗体**
-__也是文字粗体__
+**也是文字粗体**
 
 _你**可以**组合它们_
 ```
@@ -68,32 +75,36 @@ _你**可以**组合它们_
 _也是文字斜体_
 
 **文字粗体**
-__也是文字粗体__
+**也是文字粗体**
 
 _你**可以**组合它们_
 
 # <hr\>分割线
 
 ```markdown
-***
 ---
+
+---
+
 ---- 三个以上短线
-___  三个下划线
+\_\_\_ 三个下划线
 ```
 
 效果：
 
-***
 ---
 
-----
-___
+---
+
+---
+
+---
 
 # 超链接
 
 ```markdown
 [连接名称](address , alt)
-[我是链接名](https://suchenrain.github.io, "我是标题")
+[我是链接名](https://suchenrain.github.io, '我是标题')
 [<i class="fa fa-refresh"></i> 点我刷新](/sonfilename/)
 
 另一种超链接写法：[链接名][链接代号]
@@ -104,13 +115,13 @@ ___
 直接展示链接的写法：<https://suchenrain.github.io>
 ```
 
-[我是链接名](https://suchenrain.github.io, "我是标题")
+[我是链接名](https://suchenrain.github.io, '我是标题')
 [<i class="fa fa-refresh"></i>点我刷新](/sonfilename/)
 
 [here][3]
 <https://suchenrain.github.io>
 
-[3]: https://suchenrain.github.io "suchenrain"
+[3]: https://suchenrain.github.io 'suchenrain'
 
 # 键盘键
 
@@ -128,38 +139,30 @@ ___
 ```markdown
 `var example=true` //内联样式
 
-//换行并缩进4格
+//换行并缩进 4 格
 
 ....if(isAwesome){
-      return true
-    }
-
-//使用3个反引号,忽略括号
-(```)
-if (isAwesome){
-  return true
+return true
 }
-(```)
+
+//使用 3 个反引号,忽略括号
+(`) if (isAwesome){ return true } (`)
 
 //指定代码高亮语言
-(```javascript)
-if (isAwesome){
-  return true
-}
-(```)
+(`javascript) if (isAwesome){ return true } (`)
 ```
 
 效果：
 
 `var example=true` //内联样式
 
-//换行并缩进4格
+//换行并缩进 4 格
 
     if(isAwesome){
       return true
     }
 
-//使用3个反引号
+//使用 3 个反引号
 
 ```
 if (isAwesome){
@@ -170,8 +173,8 @@ if (isAwesome){
 //指定代码高亮语言
 
 ```javascript
-if (isAwesome){
-  return true
+if (isAwesome) {
+  return true;
 }
 ```
 
@@ -179,41 +182,43 @@ if (isAwesome){
 
 ## 无序列表(Unordered)
 
-使用 -/*/+ 加一个空格
+使用 -/\*/+ 加一个空格
+
 ```markdown
-//层次使用一个Tab或者两个空格缩进
-* Item 1
-* Item 2
-  * Item 2a
-  * Item 2b
+//层次使用一个 Tab 或者两个空格缩进
 
 - Item 1
 - Item 2
   - Item 2a
   - Item 2b
 
-+ Item 1
-+ Item 2
-  + Item 2a
-  + Item 2b
+* Item 1
+* Item 2
+  - Item 2a
+  - Item 2b
+
+- Item 1
+- Item 2
+  - Item 2a
+  - Item 2b
 ```
 
 效果：
 
-* Item 1
-* Item 2
-  * Item 2a
-  * Item 2b
-
 - Item 1
 - Item 2
   - Item 2a
   - Item 2b
 
-+ Item 1
-+ Item 2
-  + Item 2a
-  + Item 2b
+* Item 1
+* Item 2
+  - Item 2a
+  - Item 2b
+
+- Item 1
+- Item 2
+  - Item 2a
+  - Item 2b
 
 ## 有序列表(Ordered)
 
@@ -224,23 +229,28 @@ if (isAwesome){
 1.Item 1
 1.Item 2
 1.Item 3
-   1.Item 3a
-   1.Item 3b
+1.Item 3a
+1.Item 3b
 ```
 
-1. Item 1
-1. Item 2
-1. Item 3
-   1. Item 3a
-   1. Item 3b
+1.  Item 1
+1.  Item 2
+1.  Item 3
+    1.  Item 3a
+    1.  Item 3b
 
 # 图片(Image)
 
 ```markdown
-![Alt text](src "Optional title")
+![Alt text](src 'Optional title')
+
+# 图片+指定链接(其实就是链接结合图片)
+
+[![Alt text](src 'sub title')](link)
 ```
 
 ![Alt text](https://suchenrain-1255943826.file.myqcloud.com/Post/1_V3Kfghg_jIV0ubxmAnCXBA.jpeg '副标题')
+[![Alt text](https://suchenrain-1255943826.file.myqcloud.com/Post/1_V3Kfghg_jIV0ubxmAnCXBA.jpeg '我链接到百度哦')](https://www.baidu.com)
 
 # 段落(Paragraph)
 
@@ -250,8 +260,9 @@ if (isAwesome){
 -----假装我是空行------
 我是一段话。
 我真的是一段话。
------假装我是空行------
+---
 
+--假装我是空行------
 ```
 
 效果：
@@ -262,29 +273,31 @@ if (isAwesome){
 # 块引用(Blockquotes)
 
 ```markdown
->给引用的文本开始位置都加一个 '>'，
->便可组成一个块引用。在块引用中，可以结合
->其他markdown元素一块使用，比如列表。
->**强调**
-也可以只在第一行加大于号，其他位置不加。
+> 给引用的文本开始位置都加一个 '>'，
+> 便可组成一个块引用。在块引用中，可以结合
+> 其他 markdown 元素一块使用，比如列表。
+> **强调**
+> 也可以只在第一行加大于号，其他位置不加。
 >
->- 块引用里使用列表，需要和上面的内容隔开一个空行
->- 记得加空格哦。
+> - 块引用里使用列表，需要和上面的内容隔开一个空行
+> - 记得加空格哦。
 ```
+
 效果(以下效果仅供参考...因为我修改了样式)：
->给引用的文本开始位置都加一个 '>'，
->便可组成一个块引用。在块引用中，可以结合
->其他markdown元素一块使用，比如列表。
->**强调**
-也可以只在第一行加大于号，其他位置不加。
+
+> 给引用的文本开始位置都加一个 '>'，
+> 便可组成一个块引用。在块引用中，可以结合
+> 其他 markdown 元素一块使用，比如列表。
+> **强调**
+> 也可以只在第一行加大于号，其他位置不加。
 >
->* 块引用里使用列表，需要和上面的内容隔开一个空行
->* 记得加空格哦。
+> - 块引用里使用列表，需要和上面的内容隔开一个空行
+> - 记得加空格哦。
 
 # Task Lists(任务清单)
 
 ```markdown
-- [x]  [links](), **formatting**, and <del>tags</del> supported
+- [x] [links](), **formatting**, and <del>tags</del> supported
 - [x] list syntax required (any unordered or ordered list supported)
 - [x] this is a complete item
 - [ ] this is an incomplete item
@@ -292,7 +305,7 @@ if (isAwesome){
 
 效果：
 
-- [x]  [links](), **formatting**, and <del>tags</del> supported
+- [x] [links](), **formatting**, and <del>tags</del> supported
 - [x] list syntax required (any unordered or ordered list supported)
 - [x] this is a complete item
 - [ ] this is an incomplete item
@@ -304,40 +317,39 @@ You can create tables by assembling a list of words and dividing them with hyphe
 ```markdown
 example 1:
 
-First Header | Second Header
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
+| First Header                | Second Header                |
+| --------------------------- | ---------------------------- |
+| Content from cell 1         | Content from cell 2          |
+| Content in the first column | Content in the second column |
 
 example 2:
 
-Item     | Value
--------- | ---
-Computer | $1600
-Phone    | $12
-Pipe     | $1
+| Item     | Value |
+| -------- | ----- |
+| Computer | $1600 |
+| Phone    | $12   |
+| Pipe     | $1    |
 ```
 
 效果：
 example 1
 
-First Header | Second Header
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
+| First Header                | Second Header                |
+| --------------------------- | ---------------------------- |
+| Content from cell 1         | Content from cell 2          |
+| Content in the first column | Content in the second column |
 
 example 2
 
-Item     | Value
--------- | ---
-Computer | $1600
-Phone    | $12
-Pipe     | $1
+| Item     | Value |
+| -------- | ----- |
+| Computer | $1600 |
+| Phone    | $12   |
+| Pipe     | $1    |
 
+# 忽略 markdown 语法
 
-# 忽略markdown语法
-
-使用`\`来忽略markdown语法
+使用`\`来忽略 markdown 语法
 
 ```markdown
 \`\`\`
@@ -349,6 +361,6 @@ Let's rename \*our-new-project\* to \*our-old-project\*.
 
 {% sfb info %}
 参考文献：
-[1].  [掌握这几种 Markdown 语法你就够了](https://laravel-china.org/topics/621/you-will-be-able-to-master-these-markdown-grammars)
-[2].  [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
+[1]. [掌握这几种 Markdown 语法你就够了](https://laravel-china.org/topics/621/you-will-be-able-to-master-these-markdown-grammars)
+[2]. [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
 {% endsfb %}
