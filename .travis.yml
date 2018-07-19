@@ -11,6 +11,7 @@ install:
 before_script:
   - git config --global user.name "suchenrain"
   - git config --global user.email "suchenxiaoyu@gmail.com"
+  - sed -i "s/__Baidu_Push_Token__/${Baidu_Push_Token}" _config.yml
   - sed -i "s/__GH_Token__/${GH_Token}/" _config.yml
 
 script: npm run build
