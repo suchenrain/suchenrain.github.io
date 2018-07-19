@@ -90,7 +90,7 @@ theme: next
 
 # Baidu url pusher
 baidu_url_pusher:
-  count: 1  # 推送的链接数
+  count: 50  # 推送的链接数
   path: baidu_urls.txt  # 将要推送的链接的保存路径,默认为 baidu_urls.txt
   host: https://suchenrain.github.io  # 在百度搜索资源平台验证的站点，比如www.example.com
   token: __Baidu_Push_Token__  # 在搜索资源平台申请的推送用的准入密钥（不要保存在开放的源码中！可以配置在Travis CI中比如）
