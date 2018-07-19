@@ -8,7 +8,7 @@ tags:
 license: nd
 abbrlink: 44663
 date: 2018-07-18 17:12:27
-updated: 2018-07-18 19:17:40
+updated: 2018-07-19 11:28:47
 ---
 
 建立正常运作的 Python 环境是一个具有挑战性的主题。本文的目的在于如何帮助 python 开发者更好的管理相应的环境。
@@ -101,7 +101,7 @@ conda env list
 
 在通道列表中添加一个通道作为最低优先级是一个很好的做法。通过这种方式，你可以包含“特殊的”软件包，它们不是默认设置的（连续体通道）的一部分。因此，在最后你可以得到所有的缺省包——不存在通过较低优先级通道重写它们的风险——以及需要的“特殊”选项。
 
-[图 1 - channels work flow]
+![图 1 - channels work flow](http://suchenrain-1255943826.file.myqcloud.com/Post/python/channels.jpeg 'channels work flow')
 
 要安装一个无法在这些默认通道中找到的软件包，你可以在[这里](https://anaconda.org/anaconda/repo)搜索特定的软件包。注意：并不是所有的包都可以在所有平台上使用。
 
@@ -120,7 +120,7 @@ conda config --get channels
 值得注意的是，如果多个通道都包含了同一个包的不同版本，那么通道的层次优先级决定了最终将会被安装的包版本，即使优先级高的通道包含更旧的版本。
 {% endhint%}
 
-[图 2- priority > version]
+![图 2- priority > version](http://suchenrain-1255943826.file.myqcloud.com/Post/python/1_MlQ3bR4i6tYs_Jx-DEVPWg.jpeg 'priority > version')
 
 **搜索/安装/移除 包**
 
@@ -180,7 +180,7 @@ conda install python=3.4.2
 conda update python
 ```
 
-`**添加PIP包**`
+**`添加PIP包`**
 在本文开始的时候，我建议使用 Conda 作为包和环境管理器（而不是 PIP）。正如我上面提到的，PIP 包也可以作为一个包安装到 Conda 环境中。
 
 因此，如果一个包在 Conda 通道不可用时，你可以尝试从[PyPI 包索引](https://pypi.python.org/pypi)中安装它。可以通过使用 pip 命令来做到这一点（默认情况下，Conda 安装程序可以使用这个命令，因此你可以在任何活动环境中应用它）。例如，如果你想要安装 lightgbm 包（它是一个梯度增强框架），运行：
