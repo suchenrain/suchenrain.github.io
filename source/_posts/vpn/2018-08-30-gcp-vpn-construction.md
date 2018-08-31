@@ -22,6 +22,8 @@ _仅供技术学习探索，请合理科学上网，遵纪守法。_
 
 ## \# 申请谷歌云服务
 
+<!--more-->
+
 #### \# 准备工作
 
 - 能够科学上网（搭建过程需要爬梯）
@@ -33,14 +35,18 @@ _仅供技术学习探索，请合理科学上网，遵纪守法。_
 **申请地址：** https://cloud.google.com/free/?hl=zh-cn
 
 - 国家和地区资料填写，我们在右侧栏可以看到 12 个月有效期的 300 刀赠额说明。国家地区选择真实所在地，这里我选择中国，勾选同意条款，点击同意并继续：
-
+  ![VPN](http://suchenrain-1255943826.file.myqcloud.com/Post/vpn/vpn1.png)
 - 接下来进行个人资料和信用卡资料的填写，个人资料和信用卡资料如实填写就好了。账号类型选择个人，个人资料和信用卡信息填写完成之后直接点击开始免费试用选项即可。
+  ![VPN](http://suchenrain-1255943826.file.myqcloud.com/Post/vpn/vpn2.png)
 
 - 接着你的信用卡账户消费 1 美金，这是谷歌为了确认你不是机器人用于验证账户的， 5 分钟内你会收到账户撤销 1 美金的消费操作，1 美元会返回你的账户，整个过程完全免费。另外除非你主动确认升级成付费账号，300 美金的赠款消费完毕以后并不会直接从你的信用卡账户续费扣款。
+  ![VPN](http://suchenrain-1255943826.file.myqcloud.com/Post/vpn/vpn3.png)
+  ![VPN](http://suchenrain-1255943826.file.myqcloud.com/Post/vpn/vpn4.png '结算账号信息')
 
 #### \# 创建实例
 
 直接访问 https://console.cloud.google.com/compute/instances 或登录 GCP 控制台后, 点击计算引擎 - 创建实例. 如图:
+![VPN](http://suchenrain-1255943826.file.myqcloud.com/Post/vpn/vpn5.png)
 
 ```bash
 　　# 可免费使用1年，价值300美金。
