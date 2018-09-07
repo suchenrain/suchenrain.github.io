@@ -80,6 +80,25 @@ fs.rename('./dist/main.bundle.js', './dist/myproject.js');
 }
 ```
 
+{% tabs %}
+
+<!-- tab first tab@heart -->
+
+{% codeblock %}
+alert('Hello World!');
+{% endcodeblock %}
+
+<!-- endtab -->
+<!-- tab  second tab-->
+
+second
+
+<!-- endtab -->
+<!-- tab  third tab-->
+{% gist 796a51b5d6801ffccb90d360d9900777  %}
+<!-- endtab -->
+
+{% endtabs %}
 [TO BE UPDATED IN FUTURE]
 
 references:
