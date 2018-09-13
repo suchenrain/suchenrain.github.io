@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .gt-btn {
+            padding: 0.75em 1.25em;
+            display: inline-block;
+            line-height: 1;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid #6190e8;
+            border-radius: 5px;
+            background-color: #6190e8;
+            color: #fff;
+            outline: none;
+            font-size: 1em;
+        }
+    </style>
+    <script>
+
+        var count = 0;
+        function imissu() {
+
+            // the time in hours when you see the `greeting`  message
+            var messageReadAt = new Date();
+            var currentHours = messageReadAt.getHours();
+
+
+            // print what chen says to you
+            if (count < 2) {
+                if (currentHours < 12)
+                    alert("Chen says 'Good morning'");
+                else if (currentHours < 18)
+                    alert("Chen says 'Good afternoon'");
+                else if (currentHours < 22)
+                    alert("Chen says 'Good evening'");
+                else
+                    alert("Chen says 'Good night'");
+            }
+            else {
+                switch (count) {
+                    case 2:
+                        alert('one more time?');
+                        break;
+                    case 3:
+                        alert("Actually i miss u as well haha~")
+                        break;
+                    case 4:
+                        alert('okay~ i know u are missing me');
+                        break;
+                    case 5:
+                        alert('我真的知道了...');
+                        break;
+                    default:
+                        alert('i am missing you...')
+                        break
+                }
+            }
+
+
+            count++;
+        }
+        (function () {
+            imissu();
+        })();
+
+
+    </script>
+</head>
+
+<body>
+    <div style="text-align: center;">
+        <button class="gt-btn gt-btn-login" onclick="imissu()">i miss u</button>
+    </div>
+</body>
+
+</html>
