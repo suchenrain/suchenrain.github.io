@@ -28,6 +28,8 @@ usage: <div app-demo></div>
 usage: <div class='app-demo'></div>
 ```
 
+<!-- more -->
+
 ## Data Binding
 
 ---
