@@ -102,3 +102,47 @@ _**Important**_ : For Two-Way-Binding (covered in the next lecture) to work, you
 You then also need to add the import from `@angular/forms` in the app.module.ts file:
 `import { FormsModule } from '@angular/forms';`
 {% endnote %}
+
+## Directives(指令)
+
+Directives are Instructions(说明) in the DOM!
+
+### Structural Directive
+
+this type of directive will change the structure of our dom: add or remove elements.
+
+**Built in directives**
+
+prefix with `*ng`.
+
+- ** \*ngIf **: output data conditionally
+  - `syntax`: `<element *ngIf="expression"></element>`
+  - `usage`: when expression eval as `true` then add this element to dom otherwise remove it.
+- ** \*ngIf else**:
+  - `syntax`:
+    ```html
+    <element *ngIf="expression; else someRef">
+    <ng-template #someRef></ng-template>
+    ```
+  - `usage`: when expression eval as `false` then add the corresponding template to dom.
+- ** \*ngFor **
+  - `syntax`: `<element *ngFor="let x of someArray ; let i = index"></element>`
+  - `usage`: iterate each item of someArray as the template context.
+
+{% note warning%}
+**Tip**: Performance improvement when using ngFor to loop over an array in templates, use it with a `trackBy` function which will return an unique identifier for each item.
+{% endnote %}
+
+### Attribute Directive
+
+Unlike structural directives, attribute directives only change the element they were placed on.
+
+**Built in directives**
+
+- **ngStyle**
+  - `syntax`: `<element [ngStyle]="styleObject"></element>`
+  - `styleObject`: e.g. `{backgroundColor: getColor()}` or `{'background-color': someVarible}`
+- **ngClass**
+  - `syntax`: `<element [ngClass]="{className: expression}"></element>`
+  - `className`: CSS class name
+  - `expression`: expression evaluated as boolean. `True` add the class above.
