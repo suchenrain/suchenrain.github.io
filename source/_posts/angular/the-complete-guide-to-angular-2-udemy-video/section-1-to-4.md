@@ -1,5 +1,5 @@
 ---
-title: Notes of Angular 7 (formerly Angular 2) - The Complete Guide | Udemy Video
+title: Angular 7 (formerly Angular 2) - The Complete Guide | Part 1
 author: 橙橙GG
 categories:
   - Angular 2
@@ -10,7 +10,7 @@ tags:
   - the complete guide to angular 2
 abbrlink: 4782
 date: 2018-10-31 16:35:21
-updated: 2018-11-01 20:19:52
+updated: 2018-11-07 11:44:46
 ---
 
 ## Component Selector
@@ -146,3 +146,13 @@ Unlike structural directives, attribute directives only change the element they 
   - `syntax`: `<element [ngClass]="{className: expression}"></element>`
   - `className`: CSS class name
   - `expression`: expression evaluated as boolean. `True` add the class above.
+
+## Debugging
+
+- `Syntax Error`: error message details in console.
+- `Logic Error`: debug source code directly or through source map.
+
+{% note info%}
+`Augury`: you can install this extension tool to help analyse the code.
+{% endnote %}
+
