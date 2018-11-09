@@ -19,12 +19,70 @@ Usually we splitting `Apps` into `Components`. so how does `component communicat
 
 ### Property Binding
 
+Generally all properties or components are only accessible inside these components not from outside. But you can expose property to the world by adding `@Input` decorator, so that any parent component is now able to pass data to our exposed properties `downstream`.
+
 <!-- more -->
 
-- Binding to custom properties
-- Alias
+- **`Binding to custom properties`**
+
+* **Syntax**
+
+```
+// component
+@Input() customPropertyName: Type;
+
+// template
+<selector [customPropertyName]="expression">
+```
+
+- **Alias**
+
+```
+// component
+@Input('alias') customPropertyName: Type;
+
+// template
+<selector [alias]="expression">
+```
 
 ### Event Binding
 
-- Binding to custom events
+The other direction(upstream) what if we have a component and something changes in there and we want inform the parent component.
+
+- **`Binding to custom events`**
+
+  - **Syntax**
+
+  ```
+  // child component
+  @Output() someEvent: new EventEmitter<dataType>();
+
+  onOtherEvent(){
+      this.someEvent.emit(data)
+  }
+
+  // child template
+  <element (otherEvent)="onOtherEvent()">
+
+  //==================================================
+
+  // host template
+  <selector (someEvent)="someEvented($event)"></selector>
+
+  // parent component
+  someEvented(data: dataType){
+
+  }
+  ```
+
 - Alias
+  ```
+  @Output('alias') someEvent: new EventEmitter<dataType>();
+  ...
+  <selector (alias)="someEvented($event)"></selector>
+  ....
+  ```
+
+### View Encapsulation
+
+### Local References
