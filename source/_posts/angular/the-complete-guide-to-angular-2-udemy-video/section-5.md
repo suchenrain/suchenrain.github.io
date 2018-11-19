@@ -10,7 +10,7 @@ tags:
   - the complete guide to angular 2
 abbrlink: 54676
 date: 2018-11-07 20:18:59
-updated: 2018-11-07 20:25:41
+updated: 2018-11-19 19:33:34
 ---
 
 ## Components & Databinding Deep Dive
@@ -85,4 +85,80 @@ The other direction(upstream) what if we have a component and something changes 
 
 ### View Encapsulation
 
-### Local References
+- `Emulated: 0`: default behavior. Use shimmed CSS that emulates the native behavior.
+- `Native: 1`: Use shadow roots. This works only if natively available on the platform.
+- `None: 2`
+- `ShadowDom: 3`: Use Shadow DOM to encapsulate styles.
+
+usage:
+
+```
+@Component({
+  ...
+  encapsulations: ViewEncapsulation.ShadowDom
+})
+```
+
+### Local References and @ViewChild
+
+In template place a local reference on element then it will hold a reference to this element. you can use it directly only in current template context.
+usage:
+
+```
+<element #someRef ></element>
+<button (click)='demo(someRef.value)'></button>
+```
+
+if you want getting access to the template&DOM, using `@ViewChild`.
+
+```
+@ViewChild('someRef') someEle: ElementRef;
+...
+someEle.nativeElement.value;
+
+```
+
+### ng-content and @ContentChild
+
+projecting content into component dynamically. such as Tabs
+
+```
+// component 'demo' template code
+<div class="panel-heading"></div>
+<div class="panel-body">
+  <ng-content></content>
+</div>
+
+// another component template
+<demo>
+  <p #projected >this is the content i want project into demo component</p>
+</demo>
+
+
+// final html we will see
+<div class="panel-heading"></div>
+<div class="panel-body">
+  <p>this is the content i want project into demo component</p>
+</div>
+```
+
+A question: how demo component get access to the projected content? The answer is `@ContentChild`
+
+```
+// same as above
+...
+// demo component code
+@ContentChild('projected') somePropertyName: ElementRef;
+
+```
+
+### Lifecycle
+
+- **ngOnChanges**: called after a bound input property changes.
+- **ngOnInit**: called once the component is initialized.
+- **ngDoCheck**: called during every change detection run.
+- **ngAfterContentInit**: called after content(ng-content) has been projected into view.
+- **ngAfterContentChecked**: called every time the projected content has been checked
+- **ngAfterViewInit**: called after the component's view(and child views) has been initialized.
+- **ngAfterViewChecked**: called every time the view(and child views) have been checked.
+- **ngOnDestroy**: called once the component is about to be destroyed.
