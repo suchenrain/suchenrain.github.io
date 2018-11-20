@@ -79,8 +79,7 @@ Don't mix property binding and string interpolation. **{\{ expression \}\}** won
 **Syntax**:
 
 ```html
-// use parentheses
-<element (event)="func()"></element>
+// use parentheses <element (event)="func()"></element>
 ```
 
 _`event`_ the `bindable` event name, e.g. `click` `keyup` `mouseenter`
@@ -91,8 +90,7 @@ _`func`_ the callback function when event triggered.
 **Syntax**:
 
 ```html
-// use square brackets and parentheses
-<element [(ngModel)]="model"></element>
+// use square brackets and parentheses <element [(ngModel)]="model"></element>
 ```
 
 _`ngModel`_ the built-in angular directive.
@@ -121,8 +119,7 @@ prefix with `*ng`.
 - ** \*ngIf else**:
   - `syntax`:
     ```html
-    <element *ngIf="expression; else someRef">
-    <ng-template #someRef></ng-template>
+    <element *ngIf="expression; else someRef"> <ng-template #someRef></ng-template></element>
     ```
   - `usage`: when expression eval as `false` then add the corresponding template to dom.
 - ** \*ngFor **
@@ -143,9 +140,19 @@ Unlike structural directives, attribute directives only change the element they 
   - `syntax`: `<element [ngStyle]="styleObject"></element>`
   - `styleObject`: e.g. `{backgroundColor: getColor()}` or `{'background-color': someVarible}`
 - **ngClass**
+
   - `syntax`: `<element [ngClass]="{className: expression}"></element>`
   - `className`: CSS class name
   - `expression`: expression evaluated as boolean. `True` add the class above.
+
+  ```
+  <div [ngClass]="{'class1 class2':expression}"></div>
+  <div [ngClass]="{class3: expression1, class4: expression2}"></div>
+  <div [ngClass]="{'class-with-dash': expression}"></div>
+
+  // [class.<class-name>]='truthy expression'
+  <div [class.text-success]="expression"></div>
+  ```
 
 ## Debugging
 
@@ -155,4 +162,3 @@ Unlike structural directives, attribute directives only change the element they 
 {% note info%}
 `Augury`: you can install this extension tool to help analyse the code.
 {% endnote %}
-
