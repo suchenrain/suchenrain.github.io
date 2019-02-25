@@ -10,7 +10,7 @@ tags:
   - the complete guide to angular 2
 abbrlink: 5461
 date: 2018-11-20 17:24:47
-updated: 2018-11-20 17:24:56
+updated: 2018-11-26 20:30:57
 ---
 
 ## Using Services & Dependency Injection
