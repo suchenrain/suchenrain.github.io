@@ -7,19 +7,20 @@ categories:
 tags:
   - Angular实战
 date: 2019-01-02 20:55:57
-updated: 2019-01-02 21:57:27
+updated: 2019-02-26 16:44:58
 license: nd
 ---
 
 本系列教程的第一部分将介绍如何为实际的 Angular 应用程序设置云托管的 MongoDB 数据库、Node 服务器和前端。
 
 1.  [介绍：我们打算做什么？](#介绍：我们打算做什么？)
-1.  [配置 Angular 应用](#配置Angular应用)
-1.  [配置托管的 MongoDB](#配置托管的MongoDB)
-1.  [Auth0 的配置](#Auth0的配置)
-1.  [Node.js 服务器设置](#Node.js服务器设置)
-1.  [Angular: 创建 HomeComponent](#Angular-创建HomeComponent)
+1.  [配置 Angular 应用](#配置-Angular-应用)
+1.  [配置托管的 MongoDB](#配置托管的-MongoDB)
+1.  [Auth0 的配置](#Auth0-的配置)
+1.  [Node.js 服务器设置](#Node-js-服务器设置)
+1.  [Angular: 创建 HomeComponent](#Angular-创建-HomeComponent)
 1.  [Angular: 布局和全局组件](#Angular-布局和全局组件)
+    <!--more-->
 
 ### 介绍：我们打算做什么？
 
@@ -489,3 +490,246 @@ export class HomeComponent implements OnInit {
 文档标题和标题现在应该显示在浏览器中。我们已经有了路由和 home 组件，接下来我们可以开始 Angular 应用的全局布局了。
 
 ### Angular: 布局和全局组件
+
+接下来我们将会设置 Angular 应用的布局和全局元素，比如页眉、导航和页脚。我们希望应用程序可以在任何大小的浏览器中工作，因此我们将实现非画布导航。为此，我们需要向根应用程序组件`AppComponent`添加一些标记和功能，以及创建一个页眉和页脚。
+
+```
+$ ng g component header
+$ ng g component footer
+```
+
+{% note danger%}
+整个项目将会忽略相应的测试代码`.spec.ts`。
+{% endnote%}
+
+#### Header Component
+
+打开生成的`HeaderComponent`:
+
+```typescript
+// src/app/header/header.component.ts
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
+})
+export class HeaderComponent implements OnInit {
+  @Output() navToggled = new EventEmitter();
+  navOpen = false;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    // If nav is open after routing, close it
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationStart && this.navOpen))
+      .subscribe(event => this.toggleNav());
+  }
+
+  toggleNav() {
+    this.navOpen = !this.navOpen;
+    this.navToggled.emit(this.navOpen);
+  }
+}
+```
+
+`HeaderComponent`包含了一个导航链接和折叠开关，我们通过`@Output`声明一个`EventEmitter`用于和父组件进行交互，通知折叠按钮的闭合。
+
+`navOpen`属性默认是闭合的，所以我们在组件的`ngOnInit()`钩子中通过观察路由事件，在路由开始时，闭合菜单面板。
+
+当用户点击折叠按钮，会调用`toggleNav()`方法，它改变折叠状态，并向父组件传递新的状态，通知折叠按钮的变化。
+
+`header.component.html`相关模板：
+
+```html HTML
+<!-- src/app/header/header.component.html -->
+<header id="header" class="header">
+  <div class="header-page bg-primary">
+    <a class="toggle-offcanvas bg-primary" (click)="toggleNav()"
+      ><span></span
+    ></a>
+    <h1 class="header-page-siteTitle">
+      <a routerLink="/">RSVP</a>
+    </h1>
+  </div>
+
+  <nav id="nav" class="nav" role="navigation">
+    <ul class="nav-list">
+      <li>
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Events</a
+        >
+      </li>
+    </ul>
+  </nav>
+</header>
+```
+
+```scss CSS
+/* src/app/header/header.component.scss */
+/*--------------------
+       HEADER
+--------------------*/
+
+@import '../../assets/scss/partials/layout.vars';
+
+/*-- Navigation --*/
+...
+/*-- Hamburger toggle --*/
+...
+
+/*-- Header and title --*/
+...
+```
+
+详细代码请查阅源码，这个文件提供了`nav`和`header`的样式，以及将折叠图标动画成`X`和`back`的 CSS 样式。值得注意的是，当访问当前组件外部的类时，可以使用特殊的选择器`:host-context(.ancestor-class)`来访问组件的封装之外的类并向上访问树。
+
+#### Footer Component
+
+我们的底部非常简单,打开`footer.component.html`和`footer.component.scss`:
+
+```html HTML
+<!-- src/app/footer/footer.component.html -->
+<p class="text-center">
+  MIT 2018
+</p>
+```
+
+```scss CSS
+/* src/app/footer/footer.component.scss */
+/*--------------------
+       FOOTER
+--------------------*/
+
+:host {
+  display: block;
+  padding-bottom: 10px;
+}
+p {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+```
+
+上面把底部的 margin/padding（边距/填充） 移到宿主元素，这样段落边距就不会影响下一步窗口高度的计算。
+
+#### App Component
+
+现在我们可以在根组件里使用 Header 和 Footer 了。打开`app.component.ts`:
+
+```typescript TS
+// src/app/app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent implements OnInit {
+  navOpen: boolean;
+  minHeight: string;
+  private _initWinHeight = 0;
+
+  constructor() {}
+
+  ngOnInit() {
+    fromEvent(window, 'resize')
+      .pipe(debounceTime(200))
+      .subscribe(event => this._resizeFn(event));
+
+    this._initWinHeight = window.innerHeight;
+    this._resizeFn(null);
+  }
+
+  navToggledHandler(e: boolean) {
+    this.navOpen = e;
+  }
+
+  private _resizeFn(e) {
+    const winHeight: number = e ? e.target.innerHeight : this._initWinHeight;
+    this.minHeight = `${winHeight}px`;
+  }
+}
+```
+
+上面创建了一个`navOpen`属性来存储`HeaderComponent`导航面板的状态。`navToggledHandler`将处理子组件 Header 发出的`navToggled`事件，并同步更新`navOpen`的值。同时，观察订阅窗口大小调整事件,调用`_resizeFn()`处理程序，以确保布局画布的高度与浏览器视图的高度匹配。
+
+{%note info%}
+我们也可以通过 layout canvas 元素上设置`height: 100vh`样式来达到同样的效果，但是由于在移动浏览器中与 vh 不一致，所以采用了 JS 代码的方式。
+{%endnote%}
+
+打开`app.component.html`编辑模板：
+
+```html
+<!-- src/app/app.component.html -->
+<div class="layout-overflow">
+  <div
+    class="layout-canvas"
+    [ngClass]="{ 'nav-open': navOpen, 'nav-closed': !navOpen }"
+    [style.min-height]="minHeight"
+  >
+    <!-- HEADER -->
+    <app-header (navToggled)="navToggledHandler($event)"></app-header>
+
+    <!-- CONTENT -->
+    <div id="layout-view" class="layout-view">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- FOOTER -->
+    <app-footer></app-footer>
+  </div>
+  <!-- /.layout-canvas -->
+</div>
+<!-- /.layout-overflow -->
+```
+
+上面使用了几个布局容器来管理导航面板，同时通过`navOpen`属性来动态添加/移除样式。
+{%note warning%}
+还记得之前 Header 组件里提到的`:host-context()`吗，Header 组件的样式里就利用了上面的`nav-open`等这些类。
+{%endnote%}
+
+利用`[style.min-height]`可以动态改变元素的高度。
+{%note danger%}
+注意这是一个 `DOM` 属性，而不是 `HTML` 属性。注意到其中的差别是很重要的。请务必通读绑定语法:[HTML 属性 vs. DOM 属性](https://angular.cn/guide/template-syntax#html-attribute-vs-dom-property)
+{%endnote%}
+
+最后是`app.component.scss`,具体请查阅源码。
+
+至此，我们已经完成了项目的基础结构和全局组件，可以进一步开发了。
+
+### 总结
+
+这一部分介绍了 MEAN 技术栈应用程序所需的软件和工具的设置以及依赖关系。还建立了 Angular 前端的基本布局和架构。在 Angular 系列的[下一部分](/posts/64307)中，我们将讨论身份验证和授权、功能模块规划和数据建模。
+
+---
+
+> _**系列索引**_
+>
+> - [~~Angular 实战系列 - Part 1: MEAN 配置 & Angular 架构~~`(你现在在这里)`][91]
+> - [Angular 实战系列 - Part 2: 身份验证和数据建模][92]
+> - [Angular 实战系列 - Part 3: 抓取和展示数据][93]
+> - [Angular 实战系列 - Part 4: 访问控制，管理和详情页面][94]
+> - [Angular 实战系列 - Part 5: 动画和模板驱动表单][95]
+> - [Angular 实战系列 - Part 6: 响应式表单和自定义验证][96]
+> - [Angular 实战系列 - Part 7: 相关数据和令牌更新][97]
+> - [Angular 实战系列 - Part 8: 延迟加载，生产部署和 SSL][98]
+
+[91]: /posts/30078
+[92]: /posts/64307
+[93]: /posts/65062
+[94]: /posts/48469
+[95]: /posts/7096
+[96]: /posts/5650
+[97]: /posts/32171
+[98]: /posts/25434
