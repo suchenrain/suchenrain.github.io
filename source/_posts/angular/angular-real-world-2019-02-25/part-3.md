@@ -543,7 +543,175 @@ import { FilterSortService } from './core/filter-sort.service';
 
 ### Angular: 首页活动事件列表
 
----
+组件应该获取和显示事件列表。我们已经创建了 Node API 来返回该数据，并实现了 API 服务来获取它。现在我们需要在组件里订阅这些数据并显示在页面。
+
+为了使用[`ngModel`](https://angular.io/api/forms/NgModel)指令，我们需要在根模块导入`FormsModule`:
+
+```ts
+// src/app/app.module.ts
+...
+import { FormsModule } from '@angular/forms';
+...
+@NgModule({
+  ...,
+  imports: [
+    ...,
+    FormsModule
+  ],
+  ...
+})
+...
+```
+
+接着，更新我们的主页组件，让它可以显示公开的活动信息。
+
+```ts
+// src/app/pages/home/home.component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ApiService } from './../../core/api.service';
+import { UtilsService } from './../../core/utils.service';
+import { FilterSortService } from './../../core/filter-sort.service';
+import { Subscription } from 'rxjs';
+import { EventModel } from './../../core/models/event.model';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
+})
+export class HomeComponent implements OnInit, OnDestroy {
+  pageTitle = 'Events';
+  eventListSub: Subscription;
+  eventList: EventModel[];
+  filteredEvents: EventModel[];
+  loading: boolean;
+  error: boolean;
+  query: '';
+
+  constructor(
+    private title: Title,
+    public utils: UtilsService,
+    private api: ApiService,
+    public fs: FilterSortService
+  ) {}
+
+  ngOnInit() {
+    this.title.setTitle(this.pageTitle);
+    this._getEventList();
+  }
+
+  private _getEventList() {
+    this.loading = true;
+    // Get future, public events
+    this.eventListSub = this.api.getEvents$().subscribe(
+      res => {
+        this.eventList = res;
+        this.filteredEvents = res;
+        this.loading = false;
+      },
+      err => {
+        console.error(err);
+        this.loading = false;
+        this.error = true;
+      }
+    );
+  }
+
+  searchEvents() {
+    this.filteredEvents = this.fs.search(
+      this.eventList,
+      this.query,
+      '_id',
+      'mediumDate'
+    );
+  }
+
+  resetQuery() {
+    this.query = '';
+    this.filteredEvents = this.eventList;
+  }
+
+  ngOnDestroy() {
+    this.eventListSub.unsubscribe();
+  }
+}
+```
+
+```html
+<!-- src/app/pages/home/home.component.html -->
+<h1 class="text-center">{{ pageTitle }}</h1>
+<app-loading *ngIf="loading"></app-loading>
+
+<ng-template [ngIf]="utils.isLoaded(loading)">
+  <ng-template [ngIf]="eventList">
+    <ng-template [ngIf]="eventList.length">
+      <!-- Search events -->
+      <label class="sr-only" for="search">Search</label>
+      <div class="search input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Search</div>
+        </div>
+        <input
+          id="search"
+          type="text"
+          class="form-control"
+          [(ngModel)]="query"
+          (keyup)="searchEvents()"
+        />
+        <span class="input-group-append">
+          <button
+            class="btn btn-danger"
+            (click)="resetQuery()"
+            [disabled]="!query"
+          >
+            &times;
+          </button>
+        </span>
+      </div>
+
+      <!-- No search results -->
+      <p
+        *ngIf="fs.noSearchResults(filteredEvents, query)"
+        class="alert alert-warning"
+      >
+        No events found for <em class="text-danger">{{ query }}</em>, sorry!
+      </p>
+
+      <!-- Events listing -->
+      <section class="list-group">
+        <a
+          *ngFor="let event of fs.orderByDate(filteredEvents, 'startDatetime')"
+          [routerLink]="['/event', event._id]"
+          class="list-group-item list-group-item-action flex-column align-items-start"
+        >
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1" [innerHTML]="event.title"></h5>
+            <small
+              >{{ utils.eventDates(event.startDatetime, event.endDatetime)
+              }}</small
+            >
+          </div>
+        </a>
+      </section>
+    </ng-template>
+
+    <!-- No upcoming public events available -->
+    <p *ngIf="!eventList.length" class="alert alert-info">
+      No upcoming public events available.
+    </p>
+  </ng-template>
+
+  <!-- Error loading events -->
+  <p *ngIf="error" class="alert alert-danger">
+    <strong>Oops!</strong> There was an error retrieving event data.
+  </p>
+</ng-template>
+```
+
+### 小结
+
+我们已经介绍了如何使用 Node API 从数据库中获取数据，以及如何在 Angular 中操作和显示数据。在本系列教程的[下一部分](/posts/48469)中，我们将处理访问管理、显示管理事件列表以及开发带有选项卡子组件的事件详细信息页面。
 
 > _**系列索引**_
 >
