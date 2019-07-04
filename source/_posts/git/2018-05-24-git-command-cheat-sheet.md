@@ -11,17 +11,17 @@ tags:
   - git
 license: nd
 abbrlink: 40446
-updated: 2018-06-05 11:56:59
+updated: 2019-07-04 23:16:08
 ---
 
 ## 更新日志
 
-* 2018-06-04&nbsp;&nbsp;&nbsp;&nbsp;git log
-* 2018-06-03&nbsp;&nbsp;&nbsp;&nbsp;git add + git commit
-* 2018-05-31&nbsp;&nbsp;&nbsp;&nbsp;git status
-* 2018-05-24&nbsp;&nbsp;&nbsp;&nbsp;git init
-* 2018-05-23&nbsp;&nbsp;&nbsp;&nbsp;git config
-* 2018-05-15&nbsp;&nbsp;&nbsp;&nbsp;初稿
+- 2018-06-04&nbsp;&nbsp;&nbsp;&nbsp;git log
+- 2018-06-03&nbsp;&nbsp;&nbsp;&nbsp;git add + git commit
+- 2018-05-31&nbsp;&nbsp;&nbsp;&nbsp;git status
+- 2018-05-24&nbsp;&nbsp;&nbsp;&nbsp;git init
+- 2018-05-23&nbsp;&nbsp;&nbsp;&nbsp;git config
+- 2018-05-15&nbsp;&nbsp;&nbsp;&nbsp;初稿
 
 ---
 
@@ -119,6 +119,29 @@ Same as group, but make the repository readable by all users.
 # 1 stands for "execute", and
 # 0 stands for "no permission."
 $ git init --shared=0660 testShared
+```
+
+---
+
+## git clone
+
+```sh
+# 克隆仓库到当前目录下
+$ git clone <repo>
+
+# 克隆仓库到指定目录
+$ git clone <repo> <directory>
+
+# 克隆仓库并签出指定分支（默认为master分支）
+$ git clone -b <branch> <repo>
+
+# 克隆带有子模块的仓库，正常命令只会包含子模块的空目录
+# 自动初始化并更新仓库中的每一个子模块
+$ git clone --recursive <repo>
+
+# 或者
+$ git submodule init
+$ git submodule update
 ```
 
 ---
@@ -303,8 +326,8 @@ $ git add -p, -patch
 
 用于显示暂存区和版本库及工作区的变化
 
-* staged - 显示暂存区版本库当前版本的变化，即将会提交的变化。
-* unstaged - 显示工作区与暂存区的变化，即可以暂存的变化。
+- staged - 显示暂存区版本库当前版本的变化，即将会提交的变化。
+- unstaged - 显示工作区与暂存区的变化，即可以暂存的变化。
 
 ```bash
            staged     unstaged path
@@ -331,9 +354,9 @@ Update>>
 
 注意此时已经在 update 子命令下`>>`，你可以通过如下方式选择你需要暂存的变化：
 
-* `1,2` 以`,`分隔多个选择
-* `1-3`或 `1-`进行范围选择
-* `-2`取消选中
+- `1,2` 以`,`分隔多个选择
+- `1-3`或 `1-`进行范围选择
+- `-2`取消选中
 
 选择完之后，已选中的变化会以`*`高亮显示。`空行回车`即可暂存所选中的变化。
 
@@ -370,20 +393,20 @@ What now> 1
 
 可用的动作：
 
-* y - stage this hunk(暂存当前变化块)
-* n - do not stage this hunk(不暂存)
-* q - quit; do not stage this hunk or any of the remaining ones(退出 patch)
-* a - stage this hunk and all later hunks in the file(暂存所有)
-* d - do not stage this hunk or any of the later hunks in the file(不暂存当前文件的此处及之后的变化块)
-* g - select a hunk to go to(跳转至其它变化块)
-* / - search for a hunk matching the given regex(搜索指定的变化块)
-* j - leave this hunk undecided, see next undecided hunk(跳过当前变化块，跳至`下一个未决定`的变化块)
-* J - leave this hunk undecided, see next hunk(跳过当前变化块，跳至`下一个`变化块)
-* k - leave this hunk undecided, see previous undecided hunk(跳过当前变化块，跳至`前一个未决定`的变化块)
-* K - leave this hunk undecided, see previous hunk(跳过当前变化块，跳至`前一个`的变化块)
-* s - split the current hunk into smaller hunks(将当前变化块分割成更小的变化块,`细粒度`)
-* e - manually edit the current hunk(手动编辑当前变化块+ -操作)
-* ? - print h
+- y - stage this hunk(暂存当前变化块)
+- n - do not stage this hunk(不暂存)
+- q - quit; do not stage this hunk or any of the remaining ones(退出 patch)
+- a - stage this hunk and all later hunks in the file(暂存所有)
+- d - do not stage this hunk or any of the later hunks in the file(不暂存当前文件的此处及之后的变化块)
+- g - select a hunk to go to(跳转至其它变化块)
+- / - search for a hunk matching the given regex(搜索指定的变化块)
+- j - leave this hunk undecided, see next undecided hunk(跳过当前变化块，跳至`下一个未决定`的变化块)
+- J - leave this hunk undecided, see next hunk(跳过当前变化块，跳至`下一个`变化块)
+- k - leave this hunk undecided, see previous undecided hunk(跳过当前变化块，跳至`前一个未决定`的变化块)
+- K - leave this hunk undecided, see previous hunk(跳过当前变化块，跳至`前一个`的变化块)
+- s - split the current hunk into smaller hunks(将当前变化块分割成更小的变化块,`细粒度`)
+- e - manually edit the current hunk(手动编辑当前变化块+ -操作)
+- ? - print h
 
 ### diff
 
@@ -561,9 +584,9 @@ $ git log --pretty="%h - %s" --author=suchenxiaoyu --since="2018-06-01" \
 
 ## References
 
-* [Git Reference][0]
-* [Pro Git][1]
-* [Git Community Book][2]
+- [Git Reference][0]
+- [Pro Git][1]
+- [Git Community Book][2]
 
 [0]: https://git-scm.com/docs 'Git Reference'
 [1]: https://git-scm.com/book/en/v2 'Pro Git'
