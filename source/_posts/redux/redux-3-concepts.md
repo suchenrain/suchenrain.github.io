@@ -1,14 +1,14 @@
 ---
-title: 'Redux三大概念（Action、Reducer和Store）'
+title: Redux三大基础概念（Action、Reducer和Store）
 categories:
   - Redux
 tags:
   - redux
   - flux
-
+license: nd
+abbrlink: 45864
 date: 2019-07-04 12:46:05
 updated: 2019-07-04 13:26:04
-license: nd
 ---
 
 本文源码地址：[GitHub 传送门][3]
@@ -25,6 +25,8 @@ license: nd
 ```
 
 它其实就是一个普通 `JavaScript` 对象，用来描述发生了什么。按照约定，action 内必须使用一个字符串类型的 `type` 字段来表示将要执行的动作。多数情况下，type 会被定义成字符串常量。当应用规模越来越大时，建议使用单独的模块或文件来存放 actions。
+
+<!-- more -->
 
 ```js
 import { ADD_TODO, REMOVE_TODO } from '../actionTypes';
@@ -66,6 +68,8 @@ function addTodoWithDispatch(text) {
 ```
 
 ## Reducer
+
+`Reducer`: `n.[助剂] 还原剂`。还记得化学实验课上用的各种试剂吗？它们通过各种反应生成不同的产物。类似的，上面提到的`Action`只是描述了 _有事情发生_ 这一事实，而没有描述如何发生，应用将如何更新 state。`Reducer`正是为此，它描述了事情将如何发生，它本质上是一个`纯函数`，接受旧的 state 和 action，并根据 action 的 type 对旧的 state 加以处理，返回一个新的 state。（**注意**：reducer 不会修改 state,而是返回一个新的对象，保持纯净）
 
 [0]: https://github.com/redux-utilities/flux-standard-action
 [1]: http://facebook.github.io/flux
