@@ -16,7 +16,7 @@ date: 2019-10-09 18:23:34
 在解释跨域的概念之前，先让我们来了解下浏览器的同源策略，这也是为什么会有跨域的由来。
 
 同源策略是一项约定，是浏览器的行为，限制了从同一个源下的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。
-<!--more-->
+
 所谓**同源**是指 **`协议`**+**`域名`**+**`端口`** 三者都相同，不满足这个条件即为**非同源**，即使两个不同域名指向同一 IP 地址。 **当协议、子域名、主域名、端口号中任意一个不相同时，都算作不同域。** 不同域之间相互请求资源，就算作`跨域`。
 
 | 协议     | 子域名 | 主域名  | 端口号 | 资源地址           |
@@ -46,7 +46,7 @@ date: 2019-10-09 18:23:34
 
 利用`<script>`标签不受跨域限制，将回调函数名作为参数附带在请求中，服务器接受到请求后，进行特殊处理：把接收到的函数名和需要给它的数据拼接成一个字符串返回，客户端会调用相应声明的函数，对返回的数据进行处理。
 
-![image](https://user-gold-cdn.xitu.io/2019/12/19/16f1e64563f18d1f?w=774&h=275&f=png&s=16082)
+![image](https://user-images.githubusercontent.com/7972688/70301816-67620880-1836-11ea-92a6-2189966be65c.png)
 
 #### 2) 示例
 
@@ -193,7 +193,7 @@ server.listen(4000, () => {
 });
 ```
 
-![image](https://user-gold-cdn.xitu.io/2019/12/19/16f1e6454adbe65f?w=741&h=273&f=png&s=16327)
+![image](https://user-images.githubusercontent.com/7972688/70307150-74392900-1843-11ea-902c-dd15f2c424cb.png)
 
 #### 2) 复杂请求
 
@@ -266,9 +266,9 @@ app.listen(4000, () => {
 });
 ```
 
-上述代码由`http://localhost:3000/index.html`向`http://localhost:4000/`跨域请求，正如我们上面所说的，后端是实现 CORS 通信的关键，需要对引起跨域的因素在 OPTION 中进行相应的处理。
+上述代码由http://localhost:3000/index.html向http://localhost:4000/跨域请求，正如我们上面所说的，后端是实现 CORS 通信的关键，需要对引起跨域的因素在 OPTION 中进行相应的处理。
 
-### 3.nginx 反向代理
+### 3.ngnix 反向代理
 
 #### 1) 跨域原理
 
@@ -278,7 +278,7 @@ app.listen(4000, () => {
 
 通过`nginx`配置一个代理服务器（域名与 domain1 相同，端口不同）做跳板机，反向代理访问 domain2 接口，并且可以顺便修改 cookie 中 domain 信息，方便当前域 cookie 写入，实现跨域登录。
 
-![image](https://user-gold-cdn.xitu.io/2019/12/19/16f1e6526fc9ce0e?w=739&h=450&f=png&s=24976)
+![image](https://user-images.githubusercontent.com/7972688/70318876-05b49500-185c-11ea-8bc3-4a4d7baffc49.png)
 
 #### 3) 示例代码
 
@@ -348,7 +348,7 @@ console.log('Server is running at port 8080...');
 
 原理和上面的 nginx 大致相同，都是利用服务器之间无需遵守同源策略，通过一个代理服务器，实现请求的转发以及设置 CORS。
 
-![image](https://user-gold-cdn.xitu.io/2019/12/19/16f1e6c449e95757?w=819&h=402&f=png&s=123186)
+![image](https://user-images.githubusercontent.com/7972688/70419499-84017900-1aa0-11ea-94ea-257159001358.png)
 
 #### 2) 实现思路
 
