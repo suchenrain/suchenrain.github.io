@@ -14,6 +14,8 @@ date: 2019-12-29 19:23:34
 
 **如果你觉得本文对你有所帮助，欢迎猛戳** :star: [Github(梳理前端知识体系全集)](https://github.com/suchenrain/FrontEnd-Roadmap)
 
+<!--more-->
+
 ![HTML思维导图](https://user-images.githubusercontent.com/7972688/71576321-34f0b600-2b2b-11ea-9b82-d77fe1bb598c.jpg)
 
 ## 是什么
