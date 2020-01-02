@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redux,flux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文源码地址：GitHub 传送门 Action什么是Action? Action 是把数据从应用（这里之所以不叫 view 是因为这些数据有可能是服务器响应，用户输入或其它非 view 的数据 ）传到 store 的有效载荷（payload）。它是 store 数据的唯一来源。一般来说你会通过 store.dispatch() 将 action 传到 store。来看几个例子：">
+<meta name="keywords" content="redux,flux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redux三大基础概念（Action、Reducer和Store）">
+<meta property="og:url" content="https://suchenrain.github.io/en/posts/45864/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="本文源码地址：GitHub 传送门 Action什么是Action? Action 是把数据从应用（这里之所以不叫 view 是因为这些数据有可能是服务器响应，用户输入或其它非 view 的数据 ）传到 store 的有效载荷（payload）。它是 store 数据的唯一来源。一般来说你会通过 store.dispatch() 将 action 传到 store。来看几个例子：">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-07-04T05:26:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redux三大基础概念（Action、Reducer和Store）">
+<meta name="twitter:description" content="本文源码地址：GitHub 传送门 Action什么是Action? Action 是把数据从应用（这里之所以不叫 view 是因为这些数据有可能是服务器响应，用户输入或其它非 view 的数据 ）传到 store 的有效载荷（payload）。它是 store 数据的唯一来源。一般来说你会通过 store.dispatch() 将 action 传到 store。来看几个例子：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/en/posts/45864/"/>
+
+
+
+
+
+  <title>Redux三大基础概念（Action、Reducer和Store） | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/en/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/en/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/en/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/en/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/en/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/en/posts/45864/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Redux三大基础概念（Action、Reducer和Store）</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-04T12:46:05+08:00">
+                2019-07-04 12:46
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-04T12:46:05+08:00">
+                2019-07-04 12:46
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-07-04T13:26:04+08:00">
+                2019-07-04 13:26
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/en/categories/Redux/" itemprop="url" rel="index">
+                    <span itemprop="name">Redux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  3,443
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  15&nbsp;mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <p>本文源码地址：<a href="https://github.com/suchenrain/redux-wheel/tree/master/threeConcepts" target="_blank" rel="noopener">GitHub 传送门</a></p>
+<h2 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h2><p>什么是<code>Action</code>? Action 是把数据从应用（这里之所以不叫 view 是因为这些数据有可能是服务器响应，用户输入或其它非 view 的数据 ）传到 <code>store</code> 的有效载荷（payload）。它是 <code>store</code> 数据的唯一来源。一般来说你会通过 store.dispatch() 将 <code>action</code> 传到 <code>store</code>。<br>来看几个例子：</p>
+<a id="more"></a>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; type: 'ADD_TODO', text: 'Go to swimming pool' &#125;</span><br><span class="line">&#123; type: 'TOGGLE_TODO', index: 1 &#125;</span><br><span class="line">&#123; type: 'SET_VISIBILITY_FILTER', filter: 'SHOW_ALL' &#125;</span><br></pre></td></tr></table></figure>
+<p>它其实就是一个普通 <code>JavaScript</code> 对象，用来描述发生了什么。按照约定，action 内必须使用一个字符串类型的 <code>type</code> 字段来表示将要执行的动作。多数情况下，type 会被定义成字符串常量。当应用规模越来越大时，建议使用单独的模块或文件来存放 actions。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ADD_TODO, REMOVE_TODO &#125; <span class="keyword">from</span> <span class="string">'../actionTypes'</span>;</span><br></pre></td></tr></table></figure>
+<p>除了 <code>type</code> 字段外，action 对象的结构完全由你自己决定。参照 <a href="https://github.com/redux-utilities/flux-standard-action" target="_blank" rel="noopener">Flux 标准 Action</a> 获取关于如何构造 action 的建议。</p>
+<div class="note danger"><p><strong>注意</strong>：应该尽量减少在 action 中传递的数据</p></div>
+<h3 id="Action-创建函数"><a href="#Action-创建函数" class="headerlink" title="Action 创建函数"></a>Action 创建函数</h3><p><strong><code>Action 创建函数</code></strong> 就是生成 action 的方法。“action” 和 “action 创建函数” 这两个概念很容易混在一起，使用时最好注意区分。</p>
+<p>在 Redux 中 action 创建函数只是简单的返回一个 action 对象，然后通过 store 的<code>dispatch()</code>方法发起一次 dispatch 过程。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: ADD_TODO,</span><br><span class="line">    text</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// dispatch</span></span><br><span class="line">store.dispatch(addTodo(<span class="string">'some text'</span>));</span><br></pre></td></tr></table></figure>
+<p>而在 <a href="http://facebook.github.io/flux" target="_blank" rel="noopener">传统的 Flux</a> 实现中，当调用 action 创建函数时，一般会触发一个 dispatch，像这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addTodoWithDispatch</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> action = &#123;</span><br><span class="line">    type: ADD_TODO,</span><br><span class="line">    text</span><br><span class="line">  &#125;;</span><br><span class="line">  dispatch(action);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Reducer"><a href="#Reducer" class="headerlink" title="Reducer"></a>Reducer</h2><p>让我们来看一下<a href="/posts/1659/#Reducer">Reducer</a>的签名：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Reducer&lt;S, A&gt; = <span class="function">(<span class="params">state: S, action: A</span>) =&gt;</span> S;</span><br></pre></td></tr></table></figure>
+<p><code>Reducer</code>: <code>n.[助剂] 还原剂</code>。还记得化学实验课上用的各种试剂吗？它们通过各种反应生成不同的产物。类似的，上面提到的<code>Action</code>只是描述了 <em>有事情发生</em> 这一事实，而没有描述如何发生，应用将如何更新 state。<code>Reducer</code>正是为此，它描述了事情将如何发生，它本质上是一个<code>纯函数</code>，接受旧的 state 和 action，并根据 action 的 type 对旧的 state 加以处理，返回一个新的 state。（<strong>注意</strong>：reducer 不会修改 state,而是返回一个新的对象，保持纯净）</p>
+<h3 id="State-结构"><a href="#State-结构" class="headerlink" title="State 结构"></a>State 结构</h3><p>在 Redux 中，所有的的 state 都被保存在一个单一的对象中。建议在写代码前先想一下这个对象的结构。如何才能以最简的形式把应用的 state 用对象描述出来？</p>
+<p>以 todo 应用为例，需要保存两种不同的数据：</p>
+<ul>
+<li>当前选中的任务过滤条件；</li>
+<li>完整的任务列表。</li>
+</ul>
+<p>通常，这个 state 树还需要存放其它一些数据，以及一些 UI 相关的 state。这样做没问题，但尽量把这些数据与 UI 相关的 state 分开。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  visibilityFilter: <span class="string">'SHOW_ALL'</span>,</span><br><span class="line">  todos: [</span><br><span class="line">    &#123;</span><br><span class="line">      text: <span class="string">'Consider using Redux'</span>,</span><br><span class="line">      completed: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      text: <span class="string">'Keep all state in a single tree'</span>,</span><br><span class="line">      completed: <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="note info"><p><strong>处理 Reducer 关系时的注意事项</strong><br>开发复杂的应用时，不可避免会有一些数据相互引用。建议你尽可能地把 state 范式化，不存在嵌套。把所有数据放到一个对象里，每个数据以 ID 为主键，不同实体或列表间通过 ID 相互引用数据。把应用的 state 想像成数据库。这种方法在 <a href="https://github.com/paularmstrong/normalizr" target="_blank" rel="noopener">normalizr</a> 文档里有详细阐述。例如，实际开发中，在 state 里同时存放 todosById: { id -&gt; todo } 和 todos: array<id> 是比较好的方式，本文中为了保持示例简单没有这样处理。</id></p></div>
+<h3 id="Action-处理"><a href="#Action-处理" class="headerlink" title="Action 处理"></a>Action 处理</h3><p>确定了 state 对象的结构，就可以开始开发 reducer。reducer 就是一个纯函数，接收旧的 state 和 action，返回新的 state。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(previousState, action) =&gt; newState;</span><br></pre></td></tr></table></figure>
+<p>之所以将这样的函数称之为 reducer，是因为这种函数与被传入 <code>Array.prototype.reduce(reducer, ?initialValue)</code> 里的回调函数属于相同的类型。保持 reducer 纯净非常重要。<strong><code>永远不要</code></strong>在 reducer 里做这些操作：</p>
+<ul>
+<li>修改传入参数；</li>
+<li>执行有副作用的操作，如 API 请求和路由跳转；</li>
+<li>调用非纯函数，如 Date.now() 或 Math.random()。</li>
+</ul>
+<p>在<a href="https://www.redux.org.cn/docs/advanced/" target="_blank" rel="noopener">React 官方文档里</a>有介绍如何执行有副作用的操作。现在只需要谨记 reducer 一定要保持纯净。<code>只要传入参数相同，返回计算得到的下一个 state 就一定相同。没有特殊情况、没有副作用，没有 API 请求、没有变量修改，单纯执行计算。</code></p>
+<p>明白了这些之后，就可以开始编写 reducer，并让它来处理之前定义过的 action。</p>
+<p>我们将以指定 state 的初始状态作为开始。Redux 首次执行时，state 为 undefined，此时我们可借机设置并返回应用的初始 state。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">todoApp</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 这里暂不处理任何 action，</span></span><br><span class="line">  <span class="comment">// 仅返回传入的 state。</span></span><br><span class="line">  <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在可以处理 SET_VISIBILITY_FILTER。需要做的只是改变 state 中的 visibilityFilter。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">todoApp</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> SET_VISIBILITY_FILTER:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</span><br><span class="line">        visibilityFilter: action.filter</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意:</p>
+<ul>
+<li><p><strong>不要修改 state</strong>。 使用 Object.assign() 新建了一个副本。不能这样使用 Object.assign(state, { visibilityFilter: action.filter })，因为它会改变第一个参数的值。你必须把第一个参数设置为空对象。</p>
+</li>
+<li><p><strong>在 default 情况下返回旧的 state</strong>。遇到未知的 action 时，一定要返回旧的 state。</p>
+</li>
+</ul>
+<h3 id="处理多个-Action"><a href="#处理多个-Action" class="headerlink" title="处理多个 Action"></a>处理多个 Action</h3><p>还有两个 action 需要处理。就像我们处理 <code>SET_VISIBILITY_FILTER</code> 一样，我们引入 <code>ADD_TODO</code> 和 <code>TOGGLE_TODO</code> 两个 actions 并且扩展我们的 reducer 去处理 <code>ADD_TODO</code>.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  ADD_TODO,</span><br><span class="line">  TOGGLE_TODO,</span><br><span class="line">  SET_VISIBILITY_FILTER,</span><br><span class="line">  VisibilityFilters</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'./actions'</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">todoApp</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> SET_VISIBILITY_FILTER:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</span><br><span class="line">        visibilityFilter: action.filter</span><br><span class="line">      &#125;)</span><br><span class="line">    <span class="keyword">case</span> ADD_TODO:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</span><br><span class="line">        todos: [</span><br><span class="line">          ...state.todos,</span><br><span class="line">          &#123;</span><br><span class="line">            text: action.text,</span><br><span class="line">            completed: <span class="literal">false</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;)</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上，不直接修改 <code>state</code> 中的字段，而是返回新对象。新的 <code>todos</code> 对象就相当于旧的 <code>todos</code> 在末尾加上新建的 todo。而这个新的 todo 又是基于 action 中的数据创建的。</p>
+<p><code>最后，TOGGLE_TODO</code> 的实现也很好理解：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> TOGGLE_TODO:</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</span><br><span class="line">    todos: state.todos.map(<span class="function">(<span class="params">todo, index</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (index === action.index) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, todo, &#123;</span><br><span class="line">          completed: !todo.completed</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> todo</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<p>我们需要修改数组中指定的数据项而又不希望导致<code>突变</code>, 因此我们的做法是在创建一个新的数组后, 将那些无需修改的项原封不动移入, 接着对需修改的项用新生成的对象替换。(译者注：Javascript 中的对象存储时均是由值和指向值的引用两个部分构成。此处<code>突变</code>指直接修改引用所指向的值, 而引用本身保持不变。) 如果经常需要这类的操作，可以选择使用帮助类 <a href="https://facebook.github.io/react/docs/update.html" target="_blank" rel="noopener">React-addons-update</a>，<a href="https://github.com/substantial/updeep" target="_blank" rel="noopener">updeep</a>，或者使用原生支持深度更新的库 <a href="http://facebook.github.io/immutable-js/" target="_blank" rel="noopener">Immutable</a>。最后，时刻谨记永远不要在克隆 state 前修改它。</p>
+<h3 id="拆分-Reducer"><a href="#拆分-Reducer" class="headerlink" title="拆分 Reducer"></a>拆分 Reducer</h3><p>这里的 <code>todos</code> 和 <code>visibilityFilter</code> 的更新看起来是相互独立的。有时 state 中的字段是相互依赖的，需要认真考虑，但在这个案例中我们可以把 todos 更新的业务逻辑拆分到一个单独的函数里：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">todos</span>(<span class="params">state = [], action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> ADD_TODO:</span><br><span class="line">      <span class="keyword">return</span> [</span><br><span class="line">        ...state,</span><br><span class="line">        &#123;</span><br><span class="line">          text: action.text,</span><br><span class="line">          completed: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">      ];</span><br><span class="line">    <span class="keyword">case</span> TOGGLE_TODO:</span><br><span class="line">      <span class="keyword">return</span> state.map(<span class="function">(<span class="params">todo, index</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (index === action.index) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, todo, &#123;</span><br><span class="line">            completed: !todo.completed</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> todo;</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">todoApp</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> SET_VISIBILITY_FILTER:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</span><br><span class="line">        visibilityFilter: action.filter</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">case</span> ADD_TODO:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</span><br><span class="line">        todos: todos(state.todos, action)</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">case</span> TOGGLE_TODO:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, state, &#123;</span><br><span class="line">        todos: todos(state.todos, action)</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意 <code>todos</code> 依旧接收 <code>state</code>，但它变成了一个数组！现在 <code>todoApp</code> 只把需要更新的一部分 state 传给 <code>todos</code> 函数，<code>todos</code> 函数自己确定如何更新这部分数据。这就是所谓的 <code>reducer 合成，它是开发 Redux 应用最基础的模式。</code></p>
+<p>下面深入探讨一下如何做 reducer 合成。能否抽出一个 reducer 来专门管理 visibilityFilter？当然可以：</p>
+<p>首先引用, 让我们使用 ES6 对象结构 去声明 SHOW_ALL:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; SHOW_ALL &#125; = VisibilityFilters;</span><br></pre></td></tr></table></figure>
+<p>接下来：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">visibilityFilter</span>(<span class="params">state = SHOW_ALL, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> SET_VISIBILITY_FILTER:</span><br><span class="line">      <span class="keyword">return</span> action.filter;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们可以开发一个函数来做为主 reducer，它调用多个子 reducer 分别处理 state 中的一部分数据，然后再把这些数据合成一个大的单一对象。主 reducer 并不需要设置初始化时完整的 state。初始时，如果传入 undefined, 子 reducer 将负责返回它们的默认值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">todos</span>(<span class="params">state = [], action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> ADD_TODO:</span><br><span class="line">      <span class="keyword">return</span> [</span><br><span class="line">        ...state,</span><br><span class="line">        &#123;</span><br><span class="line">          text: action.text,</span><br><span class="line">          completed: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">      ];</span><br><span class="line">    <span class="keyword">case</span> TOGGLE_TODO:</span><br><span class="line">      <span class="keyword">return</span> state.map(<span class="function">(<span class="params">todo, index</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (index === action.index) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, todo, &#123;</span><br><span class="line">            completed: !todo.completed</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> todo;</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">visibilityFilter</span>(<span class="params">state = SHOW_ALL, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> SET_VISIBILITY_FILTER:</span><br><span class="line">      <span class="keyword">return</span> action.filter;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">todoApp</span>(<span class="params">state = &#123;&#125;, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    visibilityFilter: visibilityFilter(state.visibilityFilter, action),</span><br><span class="line">    todos: todos(state.todos, action)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意每个 reducer 只负责管理全局 state 中它负责的一部分。每个 reducer 的 state 参数都不同，分别对应它管理的那部分 state 数据。</strong></p>
+<p>现在看起来好多了！随着应用的膨胀，我们还可以将拆分后的 reducer 放到不同的文件中, 以保持其独立性并用于专门处理不同的数据域。</p>
+<p>最后，Redux 提供了 <a href="https://www.redux.org.cn/docs/api/combineReducers.html" target="_blank" rel="noopener">combineReducers()</a> 工具类来做上面 <code>todoApp</code> 做的事情，这样就能消灭一些样板代码了。有了它，可以这样重构 todoApp：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; combineReducers &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> todoApp = combineReducers(&#123;</span><br><span class="line">  visibilityFilter,</span><br><span class="line">  todos</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> todoApp;</span><br></pre></td></tr></table></figure>
+<p>注意上面的写法和下面完全等价：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">todoApp</span>(<span class="params">state = &#123;&#125;, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    visibilityFilter: visibilityFilter(state.visibilityFilter, action),</span><br><span class="line">    todos: todos(state.todos, action)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你也可以给它们设置不同的 key，或者调用不同的函数。下面两种合成 reducer 方法完全等价：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> reducer = combineReducers(&#123;</span><br><span class="line">  a: doSomethingWithA,</span><br><span class="line">  b: processB,</span><br><span class="line">  c: c</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reducer</span>(<span class="params">state = &#123;&#125;, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    a: doSomethingWithA(state.a, action),</span><br><span class="line">    b: processB(state.b, action),</span><br><span class="line">    c: c(state.c, action)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.redux.org.cn/docs/api/combineReducers.html" target="_blank" rel="noopener"><code>combineReducers()</code></a> 所做的只是生成一个函数，这个函数来调用你的一系列 reducer，每个 reducer <strong>根据它们的 key 来筛选出 state 中的一部分数据并处理</strong>，然后这个生成的函数再将所有 reducer 的结果合并成一个大的对象。<strong>没有任何魔法</strong>。正如其他 reducers，如果 combineReducers() 中包含的所有 reducers 都没有更改 state，那么也就不会创建一个新的对象。</p>
+<div class="note warning"><p><strong>ES6 用户使用注意</strong><br><code>combineReducers</code> 接收一个对象，可以把所有顶级的 reducer 放到一个独立的文件中，通过 <code>export</code> 暴露出每个 reducer 函数，然后使用 <code>import * as reducers</code> 得到一个以它们名字作为 key 的 object：</p>
+<p><em><code>import { combineReducers } from &#39;redux&#39;;</code></em><br><em><code>import \* as reducers from &#39;./reducers&#39;;</code></em><br><em><code>const todoApp = combineReducers(reducers);</code></em></p>
+<p>由于 <code>import *</code> 还是比较新的语法，为了避免困惑，我们不会在本文档中使用它。但在一些社区示例中你可能会遇到它们。</p></div>
+<h2 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h2><p>前面我们知道了<a href="https://www.redux.org.cn/docs/basics/Actions.html" target="_blank" rel="noopener">action</a>用来描述<code>发生了什么</code>，和使用<a href="/posts/1659/#Reducer">reducers</a>来根据 action 更新 state.</p>
+<p><strong><code>Store</code></strong> 就是把它们联系到一起的对象。Store 有以下职责：</p>
+<ul>
+<li>维持应用的 state；</li>
+<li>提供 getState() 方法获取 state；</li>
+<li>提供 dispatch(action) 方法更新 state；</li>
+<li>通过 subscribe(listener) 注册监听器;</li>
+<li>通过 subscribe(listener) 返回的函数注销监听器。</li>
+</ul>
+<p>再次强调一下 <strong><code>Redux 应用只有一个单一的 store</code></strong>。当需要拆分数据处理逻辑时，你应该使用 reducer 组合 而不是创建多个 store。</p>
+<p>根据已有的 reducer 来创建 store 是非常容易的。在前一个章节中，我们使用 <code>combineReducers()</code> 将多个 reducer 合并成为一个。现在我们将其导入，并传递 <code>createStore()</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"><span class="keyword">import</span> todoApp <span class="keyword">from</span> <span class="string">'./reducers'</span>;</span><br><span class="line"><span class="keyword">let</span> store = createStore(todoApp);</span><br></pre></td></tr></table></figure>
+<p><code>createStore()</code> 的第二个参数是可选的, 用于设置 state 初始状态。这对开发<a href="https://zhuanlan.zhihu.com/p/43774895" target="_blank" rel="noopener">同构应用</a>时非常有用，服务器端 redux 应用的 state 结构可以与客户端保持一致, 那么客户端可以将从网络接收到的服务端 state 直接用于本地数据初始化。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> store = createStore(todoApp, <span class="built_in">window</span>.STATE_FROM_SERVER);</span><br></pre></td></tr></table></figure>
+<h3 id="发起-Actions"><a href="#发起-Actions" class="headerlink" title="发起 Actions"></a>发起 Actions</h3><p>现在我们已经创建好了 store ，让我们来验证一下！</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  addTodo,</span><br><span class="line">  toggleTodo,</span><br><span class="line">  setVisibilityFilter,</span><br><span class="line">  VisibilityFilters</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'./actions'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印初始状态</span></span><br><span class="line"><span class="built_in">console</span>.log(store.getState());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 每次 state 更新时，打印日志</span></span><br><span class="line"><span class="comment">// 注意 subscribe() 返回一个函数用来注销监听器</span></span><br><span class="line"><span class="keyword">const</span> unsubscribe = store.subscribe(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(store.getState()));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发起一系列 action</span></span><br><span class="line">store.dispatch(addTodo(<span class="string">'Learn about actions'</span>));</span><br><span class="line">store.dispatch(addTodo(<span class="string">'Learn about reducers'</span>));</span><br><span class="line">store.dispatch(addTodo(<span class="string">'Learn about store'</span>));</span><br><span class="line">store.dispatch(toggleTodo(<span class="number">0</span>));</span><br><span class="line">store.dispatch(toggleTodo(<span class="number">1</span>));</span><br><span class="line">store.dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 停止监听 state 更新</span></span><br><span class="line">unsubscribe();</span><br></pre></td></tr></table></figure>
+<p><strong>Output</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ node .\dist\index.js</span><br><span class="line"></span><br><span class="line">&#123; visibilityFilter: <span class="string">'SHOW_ALL'</span>, todos: [] &#125;</span><br><span class="line">&#123; visibilityFilter: <span class="string">'SHOW_ALL'</span>,</span><br><span class="line">  todos: [ &#123; text: <span class="string">'Learn about actions'</span>, completed: <span class="literal">false</span> &#125; ] &#125;</span><br><span class="line">&#123; visibilityFilter: <span class="string">'SHOW_ALL'</span>,</span><br><span class="line">  todos:</span><br><span class="line">   [ &#123; text: <span class="string">'Learn about actions'</span>, completed: <span class="literal">false</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about reducers'</span>, completed: <span class="literal">false</span> &#125; ] &#125;</span><br><span class="line">&#123; visibilityFilter: <span class="string">'SHOW_ALL'</span>,</span><br><span class="line">  todos:</span><br><span class="line">   [ &#123; text: <span class="string">'Learn about actions'</span>, completed: <span class="literal">false</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about reducers'</span>, completed: <span class="literal">false</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about store'</span>, completed: <span class="literal">false</span> &#125; ] &#125;</span><br><span class="line">&#123; visibilityFilter: <span class="string">'SHOW_ALL'</span>,</span><br><span class="line">  todos:</span><br><span class="line">   [ &#123; text: <span class="string">'Learn about actions'</span>, completed: <span class="literal">true</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about reducers'</span>, completed: <span class="literal">false</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about store'</span>, completed: <span class="literal">false</span> &#125; ] &#125;</span><br><span class="line">&#123; visibilityFilter: <span class="string">'SHOW_ALL'</span>,</span><br><span class="line">  todos:</span><br><span class="line">   [ &#123; text: <span class="string">'Learn about actions'</span>, completed: <span class="literal">true</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about reducers'</span>, completed: <span class="literal">true</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about store'</span>, completed: <span class="literal">false</span> &#125; ] &#125;</span><br><span class="line">&#123; visibilityFilter: <span class="string">'SHOW_COMPLETED'</span>,</span><br><span class="line">  todos:</span><br><span class="line">   [ &#123; text: <span class="string">'Learn about actions'</span>, completed: <span class="literal">true</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about reducers'</span>, completed: <span class="literal">true</span> &#125;,</span><br><span class="line">     &#123; text: <span class="string">'Learn about store'</span>, completed: <span class="literal">false</span> &#125; ] &#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--Last updated: 2019-07-04 13:26 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://suchenrain.github.io/posts/45864/" title="Redux三大基础概念（Action、Reducer和Store）">https://suchenrain.github.io/posts/45864/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/en/tags/redux/" rel="tag"># redux</a>
+          
+            <a href="/en/tags/flux/" rel="tag"># flux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/en/posts/28774/" rel="next" title="Redux介绍">
+                <i class="fa fa-chevron-left"></i> Redux介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/en/posts/1659/" rel="prev" title="Redux核心概念词汇表">
+                Redux核心概念词汇表 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/en/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/en/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/en/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Action"><span class="nav-number">1.</span> <span class="nav-text">Action</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Action-创建函数"><span class="nav-number">1.1.</span> <span class="nav-text">Action 创建函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reducer"><span class="nav-number">2.</span> <span class="nav-text">Reducer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#State-结构"><span class="nav-number">2.1.</span> <span class="nav-text">State 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Action-处理"><span class="nav-number">2.2.</span> <span class="nav-text">Action 处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理多个-Action"><span class="nav-number">2.3.</span> <span class="nav-text">处理多个 Action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拆分-Reducer"><span class="nav-number">2.4.</span> <span class="nav-text">拆分 Reducer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Store"><span class="nav-number">3.</span> <span class="nav-text">Store</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发起-Actions"><span class="nav-number">3.1.</span> <span class="nav-text">发起 Actions</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

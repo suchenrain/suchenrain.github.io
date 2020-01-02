@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="angular 6,angular library," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="随着Angular 6的发布, Angular CLI在一定程度上可以说是有了很大的提升。Angular CLI集成ng-packagr构建生成 Angular 库就是其中之一。ng-packagr 是由 David Herges 创建的一个很棒的工具，用于将你的库代码转换成官方约定的Angular 包格式。 接下来的内容中，你将体验创建一个自己的 Angular 库的具体过程。并且，为了避免陷入">
+<meta name="keywords" content="angular 6,angular library">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular Library系列 - 使用CLI创建自己的库">
+<meta property="og:url" content="https://suchenrain.github.io/posts/8912/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="随着Angular 6的发布, Angular CLI在一定程度上可以说是有了很大的提升。Angular CLI集成ng-packagr构建生成 Angular 库就是其中之一。ng-packagr 是由 David Herges 创建的一个很棒的工具，用于将你的库代码转换成官方约定的Angular 包格式。 接下来的内容中，你将体验创建一个自己的 Angular 库的具体过程。并且，为了避免陷入">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-09-07T10:45:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular Library系列 - 使用CLI创建自己的库">
+<meta name="twitter:description" content="随着Angular 6的发布, Angular CLI在一定程度上可以说是有了很大的提升。Angular CLI集成ng-packagr构建生成 Angular 库就是其中之一。ng-packagr 是由 David Herges 创建的一个很棒的工具，用于将你的库代码转换成官方约定的Angular 包格式。 接下来的内容中，你将体验创建一个自己的 Angular 库的具体过程。并且，为了避免陷入">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/posts/8912/"/>
+
+
+
+
+
+  <title>Angular Library系列 - 使用CLI创建自己的库 | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            时间轴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/posts/8912/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Angular Library系列 - 使用CLI创建自己的库</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T14:04:55+08:00">
+                2018-09-06 14:04
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T14:04:55+08:00">
+                2018-09-06 14:04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-09-07T18:45:58+08:00">
+                2018-09-07 18:45
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/Library/" itemprop="url" rel="index">
+                    <span itemprop="name">Library</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,239
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9&nbsp;分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="">
+
+      
+      
+
+      
+        <p>随着<code>Angular 6</code>的发布, <code>Angular CLI</code>在一定程度上可以说是有了很大的提升。<code>Angular CLI</code>集成<a href="https://github.com/ng-packagr/ng-packagr" target="_blank" rel="noopener"><code>ng-packagr</code></a>构建生成 Angular 库就是其中之一。<strong>ng-packagr</strong> 是由 David Herges 创建的一个很棒的工具，用于将你的库代码转换成官方约定的<a href="https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview" target="_blank" rel="noopener">Angular 包格式</a>。</p>
+<p>接下来的内容中，你将体验创建一个自己的 Angular 库的具体过程。并且，为了避免陷入不必要的麻烦，创建的过程中我会着重强调一些实用的规则。</p>
+<p>相应的<a href="https://github.com/suchenrain/example-ng6-lib" target="_blank" rel="noopener">GitHub 代码</a></p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>通过<code>ng new</code> Angular CLI 为我们创建了一个新的工作区(workspace).</p>
+<a id="more"></a>
+<p>在这个 Angular <strong>workspace</strong>中我们将创建两个项目：</p>
+<ul>
+<li>A library Project<br>这是包含我们想要创建的组件和服务的库。<br>这些代码是我们可以发布到<strong>npm</strong>等第三方库提供商的。</li>
+<li>An application project<br>这个项目用来测试展示我们的库。有时候此项目用作库的文档说明或者用例演示。</li>
+</ul>
+<p>这里还会有 Angular CLI 默认为我们创建的 e2e 测试项目，不过本文中我们将忽略它。</p>
+<p>现在我们已经对我们的 Angular workspace 有了一个大概的认识，接下来是本教程一些具体的目标：</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>使用 Angular CLI 创建一个与我们打算创建的库名称一样的工作区(workspace)：<strong>example-ng6-lib</strong></li>
+<li>创建名为<code>example-ng6-lib-app</code>的应用</li>
+<li>创建名为<code>example-ng6-lib</code>库</li>
+<li>使用<code>enl</code>作为库前缀</li>
+<li>在<code>example-ng6-lib-app</code>里导入<code>example-ng6-lib</code>库并使用</li>
+</ul>
+<h1 id="Angular-6"><a href="#Angular-6" class="headerlink" title="Angular 6"></a>Angular 6</h1><p>在写作本文的时候，Angular 6 还是刚出来不久，所以和以前的版本会有些细小的出入。</p>
+<p>Angular CLI 的版本号开始和 Angular 保持一致：从 1.7 跳跃到 6.0.0</p>
+<p>Angular CLI 的配置文件将使用<code>angular.json</code>替换原有的<code>angular-cli.json</code></p>
+<p>现在 CLI 生成的工作区(workspace)同时支持多个项目</p>
+<h1 id="创建-Angular-工作区"><a href="#创建-Angular-工作区" class="headerlink" title="创建 Angular 工作区"></a>创建 Angular 工作区</h1><p>我们的第一个目标是创建一个名为<code>example-ng6-lib</code>的<strong>Angular 工作区</strong>。由于 CLI 现有的工作方式，我们需要以一种循环的方式来做这件事。我们需要创建一个名为<code>example-ng6-lib-app</code>的工作空间，然后将其重命名为<code>example-ng6-lib</code>(因为 CLI 默认会生成与工作区同名的 application 和 e2e 项目)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ng new example-ng6-lib-app</span><br><span class="line">rename example-ng6-lib-app example-ng6-lib</span><br><span class="line">cd example-ng6-lib</span><br><span class="line">ng serve</span><br></pre></td></tr></table></figure>
+<p>如果想要支持 IE, 需要做额外的一些工作：<a href="https://blog.angularindepth.com/angular-and-internet-explorer-5e59bb6fb4e9" target="_blank" rel="noopener">Angular 和 IE</a></p>
+<h1 id="Angular-6-配置：angular-json"><a href="#Angular-6-配置：angular-json" class="headerlink" title="Angular 6 配置：angular.json"></a>Angular 6 配置：angular.json</h1><p>在我们进行下一步创建库之前，先让我们快速的看一下新的 Angular 配置文件:angular.json</p>
+<p>相较于旧的 angular-cli.json, 配置内容变化许多。</p>
+<p>最主要的是新增的<code>projects</code>对象,每个项目对应一个条目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&quot;projects&quot;: &#123;</span><br><span class="line">  &quot;example-ng6-lib-app&quot;: &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;example-ng6-lib-app-e2e&quot;: &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>到目前为止，我们只有两个 project:</p>
+<ul>
+<li><strong>example-ng6-lib-app</strong>: 这是我们打算用来测试库的应用项目</li>
+<li><strong>example-ng6-lib-app-e2e</strong>:这是默认的端到端测试项目（暂时忽略）</li>
+</ul>
+<p>请记住，我们告诉 CLI 创建名为:<code>example-ng6-lib-app</code>的工作空间.</p>
+<p>然后，CLI 我们创建了一个名为<code>example-ng6-lib-app</code>的默认应用程序。这让我们有机会将库项目命名为：<code>example-ng6-lib</code>。一旦我们创建了我们的库，对应的条目将添加到这个 projects 对象中。</p>
+<div class="hint info"><p><strong>Notes</strong>：使用<code>库+app</code>来命名工作区，然后将其重命名为库的名称。</p></div>
+<h1 id="创建库模块"><a href="#创建库模块" class="headerlink" title="创建库模块"></a>创建库模块</h1><p>现在让我们在工作区创建名为<code>example-ng6-lib</code>的库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate library example-ng6-lib --prefix=enl</span><br></pre></td></tr></table></figure>
+<p>上面我们使用了<code>--prefix</code>选项，使得库元素特定的前缀。否则将默认使用 lib 作为前缀。</p>
+<p>generate library 具体做了什么呢？</p>
+<ul>
+<li>在<code>angular.json</code>文件中添加<strong>example-ng6-lib project</strong>条目</li>
+<li>在<code>package.json</code>中为 ng-packagr 添加相应的依赖</li>
+<li>在<code>tsconfig.json</code>文件里为 example-ng6-lib 添加构建路径的引用</li>
+<li>在<code>projects/example-ng6-lib</code>路径下创建初始源代码</li>
+</ul>
+<p>我们可以再具体深入地看看各自做了啥？</p>
+<h2 id="example-ng6-lib-project-in-angular-json"><a href="#example-ng6-lib-project-in-angular-json" class="headerlink" title="example-ng6-lib project in angular.json"></a>example-ng6-lib project in angular.json</h2><p>仔细瞧瞧<strong>angular.json</strong>,你会发现<code>projects</code>下面多了一条记录：<strong>example-ng6-lib</strong></p>
+<script src="//gist.github.com/796a51b5d6801ffccb90d360d9900777.js?file=example-ng6-lib-angular.json"></script>
+<p>这里有几个值得注意的元素：</p>
+<p><code>root</code><br>指向库项目的根文件夹。</p>
+<p><code>sourceRoot</code><br>指向存放库的实际源代码的根路径。</p>
+<p><code>projectType</code><br>项目类型:<code>library</code> 和<code>application</code>.</p>
+<p><code>prefix</code><br>CLI 生成组件的选择器前缀标识符</p>
+<p><code>architect</code><br>包含很多个部分比如<code>build</code>,<code>test</code>和<code>lint</code>,这些设置告诉 Angular CLI 如何处理相应的 process.请注意，在构建的部分，使用的是<strong>ng-packagr</strong>.</p>
+<h2 id="ng-packagr-dependency-in-package-json"><a href="#ng-packagr-dependency-in-package-json" class="headerlink" title="ng-packagr dependency in package.json"></a>ng-packagr dependency in package.json</h2><p>当我们创建库的时候 Angular CLI 自己就已经意识到它需要用到<strong>ng-packagr</strong>，所以它在我们的工作区 package.json 里面添加了相应的<strong>devDependencies</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;ng-packagr&quot;: &quot;^3.0.0&quot;,</span><br></pre></td></tr></table></figure>
+<h2 id="build-path-in-tsconfig-json"><a href="#build-path-in-tsconfig-json" class="headerlink" title="build path in tsconfig.json"></a>build path in tsconfig.json</h2><p>当我们想测试我们的 example-ng6-lib 的时候，我们希望能像引入第三方库一样使用它，而不是作为应用的一组文件集。通常，当我们在项目中使用第三方类库时，我们通过<code>npm install</code>将库安装到<strong>node_modules</strong>文件夹内。</p>
+<p>尽管如此，example-ng6-lib 并不会安装到<strong>node_modules</strong>，而是将被构建到我们工作空间的<code>dist</code>文件夹的子文件夹中。Angular CLI 把这个文件夹添加到<strong>tsconfig.json</strong>中使得它可以作为一个库导入到应用中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&quot;paths&quot;: &#123;</span><br><span class="line">    &quot;example-ng6-lib&quot;: [</span><br><span class="line">    &quot;dist/example-ng6-lib&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;example-ng6-lib/*&quot;: [</span><br><span class="line">    &quot;dist/example-ng6-lib/*&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="example-ng6-lib-源代码"><a href="#example-ng6-lib-源代码" class="headerlink" title="example-ng6-lib 源代码"></a>example-ng6-lib 源代码</h2><p><strong>src</strong>文件夹位于<code>projects/example-ng6-lib</code>. Angular CLI 默认为新库创建了一个包含服务和组件的模块，此外还有另外一些文件：</p>
+<p><code>package.json</code><br>这是针对库的特定 package.json 文件。当库作为一个<strong>npm</strong>包发布时，这个文件一会一同发布，所以当别人通过 npm 使用我们的库时，就会安装这个文件里指定的依赖。</p>
+<p><code>public_api.ts</code><br>这就是所谓的入口文件。它定义了我们库的哪些部分是外部可见的。你可能会问：这不是模块中的<code>export</code>做的事情吗？的确是的，但这可能比那更复杂一点。我们会在后面再讨论这个。</p>
+<p><code>ng-package.json</code><br><strong>ng-packagr</strong>的配置文件。如果是在以前，我们需要熟悉它的内容。但是现在，新的 Angular CLI 足以告诉 ng-packagr 在哪里找到我们的入口文件以及在哪里构建我们的库。</p>
+<h1 id="库构建"><a href="#库构建" class="headerlink" title="库构建"></a>库构建</h1><p>在使用我们新创建的库之前，我们需要对它进行编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build --prod example-ng6-lib</span><br></pre></td></tr></table></figure>
+<p>编译后的库文件将会放在<code>example-ng6-lib-app\dist\example-ng6-lib</code></p>
+<p>使用<code>--prod</code>选项可以确保我们更早地发现预编译错误。</p>
+<h1 id="在项目应用中使用库"><a href="#在项目应用中使用库" class="headerlink" title="在项目应用中使用库"></a>在项目应用中使用库</h1><p>构建一个库的核心思想之一就是，我们通常有一个和库一起构建的应用程序，以便测试它。</p>
+<p>这里<strong>example-ng6-lib-app</strong>将会使用我们的库。</p>
+<h2 id="导入-example-ng6-lib-模块"><a href="#导入-example-ng6-lib-模块" class="headerlink" title="导入 example-ng6-lib 模块"></a>导入 example-ng6-lib 模块</h2><p>修改<strong>AppModule</strong>模块：src\app\app.module.ts</p>
+<p>把<code>ExampleNg6LibModule</code>添加到<code>imports</code>数组中。可能你使用的 IDE 会提示你引入相应的模块文件，但是请不要相信它！我们应该通过库名称导入它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &#123; ExampleNg6LibModule &#125; from &quot;example-ng6-lib&quot;;</span><br></pre></td></tr></table></figure>
+<p>这是可行的，因为当以名称导入库时，Angular CLI 首先查找<code>tsconfig.json paths</code>，然后是 node_modules。</p>
+<div class="hint danger"><p><strong>NOTE</strong>：在测试应用程序中，使用名称而不是单独的文件来导入库。</p></div>
+<p>至此，app.module.ts 文件应该差不多像这样：<br><script src="//gist.github.com/796a51b5d6801ffccb90d360d9900777.js?file=example-ng6-lib-app.module.ts"></script></p>
+<h2 id="使用-example-ng6-lib-组件"><a href="#使用-example-ng6-lib-组件" class="headerlink" title="使用 example-ng6-lib 组件"></a>使用 example-ng6-lib 组件</h2><p>简单起见，我们在 AppComponent 模板里面使用类库默认创建的组件。</p>
+<p>我们替换 AppComponent 模板的下半部分代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;enl-example-ng6-lib&gt;&lt;/enl-example-ng6-lib&gt;</span><br></pre></td></tr></table></figure>
+<p>修改后的<strong>src\app\app.component.html</strong><br><script src="//gist.github.com/796a51b5d6801ffccb90d360d9900777.js?file=example-ng6-lib-app.component.html"></script></p>
+<p>最后运行<code>ng serve</code>查看效果。</p>
+<h1 id="拓展我们的库"><a href="#拓展我们的库" class="headerlink" title="拓展我们的库"></a>拓展我们的库</h1><p>到目前为止我们已经知道如何构建并运行测试我们的类库。接下来给我们的类库添加一个新的组件。</p>
+<p>下面是将要进行的步骤：</p>
+<ol>
+<li>在类库中创建新的组件</li>
+<li>将创建的组件在模块文件中导出</li>
+<li>将新的组件添加到入口文件总</li>
+<li>重新编译我们的类库</li>
+<li>在测试应用中使用新的组件</li>
+</ol>
+<h2 id="创建类库组件"><a href="#创建类库组件" class="headerlink" title="创建类库组件"></a>创建类库组件</h2><p>通过<code>--project</code>选项告诉 Angular CLI 我们想要给指定的类库项目创建新的组件。现在创建一个简单的名叫<code>foo</code>的类库组件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate component foo --project=example-ng6-lib</span><br></pre></td></tr></table></figure>
+<p>CLI 自动帮我们创建了这个组件并将它添加到类库模块文件(<code>projects\example-ng6-lib\src\lib\example-ng6-lib.module.ts</code>)的<code>declarations</code>数组中.</p>
+<h2 id="从类库模块中导出组件"><a href="#从类库模块中导出组件" class="headerlink" title="从类库模块中导出组件"></a>从类库模块中导出组件</h2>
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--上次更新: 2018-09-07 18:45 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>加油</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://suchenrain.github.io/posts/8912/" title="Angular Library系列 - 使用CLI创建自己的库">https://suchenrain.github.io/posts/8912/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular-6/" rel="tag"># angular 6</a>
+          
+            <a href="/tags/angular-library/" rel="tag"># angular library</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/37388/" rel="next" title="谷歌云搭建免费VPN">
+                <i class="fa fa-chevron-left"></i> 谷歌云搭建免费VPN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/4782/" rel="prev" title="Angular 7 (formerly Angular 2) - The Complete Guide | Part 1">
+                Angular 7 (formerly Angular 2) - The Complete Guide | Part 1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Angular-6"><span class="nav-number">2.</span> <span class="nav-text">Angular 6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建-Angular-工作区"><span class="nav-number">3.</span> <span class="nav-text">创建 Angular 工作区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Angular-6-配置：angular-json"><span class="nav-number">4.</span> <span class="nav-text">Angular 6 配置：angular.json</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建库模块"><span class="nav-number">5.</span> <span class="nav-text">创建库模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#example-ng6-lib-project-in-angular-json"><span class="nav-number">5.1.</span> <span class="nav-text">example-ng6-lib project in angular.json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ng-packagr-dependency-in-package-json"><span class="nav-number">5.2.</span> <span class="nav-text">ng-packagr dependency in package.json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#build-path-in-tsconfig-json"><span class="nav-number">5.3.</span> <span class="nav-text">build path in tsconfig.json</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#example-ng6-lib-源代码"><span class="nav-number">5.4.</span> <span class="nav-text">example-ng6-lib 源代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#库构建"><span class="nav-number">6.</span> <span class="nav-text">库构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在项目应用中使用库"><span class="nav-number">7.</span> <span class="nav-text">在项目应用中使用库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#导入-example-ng6-lib-模块"><span class="nav-number">7.1.</span> <span class="nav-text">导入 example-ng6-lib 模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-example-ng6-lib-组件"><span class="nav-number">7.2.</span> <span class="nav-text">使用 example-ng6-lib 组件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拓展我们的库"><span class="nav-number">8.</span> <span class="nav-text">拓展我们的库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建类库组件"><span class="nav-number">8.1.</span> <span class="nav-text">创建类库组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从类库模块中导出组件"><span class="nav-number">8.2.</span> <span class="nav-text">从类库模块中导出组件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

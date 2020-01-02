@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Angular实战," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本系列教程的第一部分将介绍如何为实际的 Angular 应用程序设置云托管的 MongoDB 数据库、Node 服务器和前端。  介绍：我们打算做什么？ 配置 Angular 应用 配置托管的 MongoDB Auth0 的配置 Node.js 服务器设置 Angular: 创建 HomeComponent Angular: 布局和全局组件">
+<meta name="keywords" content="Angular实战">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular 实战系列 - Part 1: MEAN 配置 &amp; Angular 架构">
+<meta property="og:url" content="https://suchenrain.github.io/en/posts/30078/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="本系列教程的第一部分将介绍如何为实际的 Angular 应用程序设置云托管的 MongoDB 数据库、Node 服务器和前端。  介绍：我们打算做什么？ 配置 Angular 应用 配置托管的 MongoDB Auth0 的配置 Node.js 服务器设置 Angular: 创建 HomeComponent Angular: 布局和全局组件">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-02-26T08:44:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular 实战系列 - Part 1: MEAN 配置 &amp; Angular 架构">
+<meta name="twitter:description" content="本系列教程的第一部分将介绍如何为实际的 Angular 应用程序设置云托管的 MongoDB 数据库、Node 服务器和前端。  介绍：我们打算做什么？ 配置 Angular 应用 配置托管的 MongoDB Auth0 的配置 Node.js 服务器设置 Angular: 创建 HomeComponent Angular: 布局和全局组件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/en/posts/30078/"/>
+
+
+
+
+
+  <title>Angular 实战系列 - Part 1: MEAN 配置 & Angular 架构 | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/en/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/en/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/en/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/en/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/en/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/en/posts/30078/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Angular 实战系列 - Part 1: MEAN 配置 & Angular 架构</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-02T20:55:57+08:00">
+                2019-01-02 20:55
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-02T20:55:57+08:00">
+                2019-01-02 20:55
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-02-26T16:44:58+08:00">
+                2019-02-26 16:44
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/en/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/en/categories/Angular/Angular实战系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular实战系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  4,248
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  19&nbsp;mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <p>本系列教程的第一部分将介绍如何为实际的 Angular 应用程序设置云托管的 MongoDB 数据库、Node 服务器和前端。</p>
+<ol>
+<li><a href="#介绍：我们打算做什么？">介绍：我们打算做什么？</a></li>
+<li><a href="#配置-Angular-应用">配置 Angular 应用</a></li>
+<li><a href="#配置托管的-MongoDB">配置托管的 MongoDB</a></li>
+<li><a href="#Auth0-的配置">Auth0 的配置</a></li>
+<li><a href="#Node-js-服务器设置">Node.js 服务器设置</a></li>
+<li><a href="#Angular-创建-HomeComponent">Angular: 创建 HomeComponent</a></li>
+<li><a href="#Angular-布局和全局组件">Angular: 布局和全局组件</a><a id="more"></a>
+</li>
+</ol>
+<h3 id="介绍：我们打算做什么？"><a href="#介绍：我们打算做什么？" class="headerlink" title="介绍：我们打算做什么？"></a>介绍：我们打算做什么？</h3><p>本系列教程将教你如何构建一个真实的基于<code>MEAN技术栈</code>的应用程序，涵盖从构思和数据建模到生产部署的所有内容。</p>
+<p>为了了解生产级的 JavaScript web 应用程序开发的来龙去脉，我们将会构建一个围绕事件的应用程序。通过 RSVP 应用程序，管理员能够发布、更新和删除事件信息；其他用户能够回复事件。这个 RSVP 应用程序的功能将包括以下:</p>
+<ul>
+<li>身份验证和角色授权（客户端和服务端）</li>
+<li>使用 API 进行 CRUD 操作</li>
+<li>搜索和过滤</li>
+<li>模版驱动的表单</li>
+<li>具有自定义验证的响应式表单</li>
+<li>简单的动画</li>
+<li>延迟加载</li>
+<li>在 VPS 上使用 nginx 和 SSL 进行生产部署</li>
+</ul>
+<p>废话不多说，开始吧！</p>
+<h3 id="配置-Angular-应用"><a href="#配置-Angular-应用" class="headerlink" title="配置 Angular 应用"></a>配置 Angular 应用</h3><p>整个系列我们将使用<code>Angular CLI</code> 进行构建开发，所以保证你已经全局安装了 CLI:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g @angular/cli</span><br></pre></td></tr></table></figure>
+<div class="note success"><p><strong>Angular CLI</strong>: <code>6.1.5</code> <strong>Node</strong>: <code>10.7.0</code> <strong>Angular</strong>: <code>6.1.10</code></p></div>
+<h4 id="创建-Angular-项目"><a href="#创建-Angular-项目" class="headerlink" title="创建 Angular 项目"></a>创建 Angular 项目</h4><p>安装好 CLI 后，打开终端并进入你想创建项目的路径，执行下面的命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng new mean-rsvp --routing --style scss</span><br></pre></td></tr></table></figure>
+<p>CLI 会生成一个带有<code>路由模块</code>和 <code>SCSS</code> 支持的 Angular 项目。一旦项目依赖安装完成，我们就可以着手开发了。</p>
+<h4 id="添加-Title-服务"><a href="#添加-Title-服务" class="headerlink" title="添加 Title 服务"></a>添加 Title 服务</h4><p>为了能够在路由时动态地改变页面标题，我们需要使用 Angular 内置的<code>Title</code>服务。这是因为我们创建的是一个单页应用，<code>&lt;title&gt;</code>标签并不在我们的 Angular 应用程序内，所以我们无法对它进行操作。</p>
+<figure class="highlight typescript"><figcaption><span>app.module</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app.module.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123;BrowserModule,Title&#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  providers:[</span><br><span class="line">    Title</span><br><span class="line">  ],</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="添加-Bootstrap"><a href="#添加-Bootstrap" class="headerlink" title="添加 Bootstrap"></a>添加 Bootstrap</h4><p>打开<code>src/index.html</code>并添加<code>Bootstrap</code>样式 CDN：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/index.html --&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>RSVP<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span></span></span><br><span class="line"><span class="tag">    <span class="attr">rel</span>=<span class="string">"stylesheet"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">href</span>=<span class="string">"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">integrity</span>=<span class="string">"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">crossorigin</span>=<span class="string">"anonymous"</span></span></span><br><span class="line"><span class="tag">  /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>或者通过<code>angular.json</code>配置<code>styles</code>引入 bootstrap 样式（此处略）。</p>
+<h4 id="全局-SCSS"><a href="#全局-SCSS" class="headerlink" title="全局 SCSS"></a>全局 SCSS</h4><p>现在我们将添加一些 SCSS 来管理应用程序的全局样式,包含基本的布局和媒体查询。</p>
+<p>首先在<code>src/assets</code>下创建新的<code>scss</code>文件夹，然后将<code>src/styles.scss</code>移动到这个新建的路径。接着修改 angular.json 中对应项目的<code>styles</code>：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">      "styles": [</span><br><span class="line">        <span class="string">"assets/scss/styles.scss"</span></span><br><span class="line">      ],</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+<p>做完这些，项目的样式将管理在在 <code>assets</code> 文件夹中。</p>
+<h5 id="BASE-STYLES"><a href="#BASE-STYLES" class="headerlink" title="BASE STYLES"></a>BASE STYLES</h5><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* src/assets/scss/_base.scss */</span></span><br><span class="line"><span class="comment">/*--------------------</span></span><br><span class="line"><span class="comment">       BASICS</span></span><br><span class="line"><span class="comment">--------------------*/</span></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">min-width</span>: <span class="number">320px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*-- Cursor --*/</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">a</span>,</span><br><span class="line"><span class="selector-tag">input</span><span class="selector-attr">[type=button]</span>,</span><br><span class="line"><span class="selector-tag">input</span><span class="selector-attr">[type=submit]</span>,</span><br><span class="line"><span class="selector-tag">button</span> &#123;</span><br><span class="line">  <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*-- Link Buttons --*/</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">/*-- Forms --*/</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">/*-- Helpers --*/</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>Bootstrap 提供了大量样式，<code>_base.scss</code>则提供了一些基本的帮助和改进样式。</p>
+<h5 id="VARIABLES-AND-PARTIALS"><a href="#VARIABLES-AND-PARTIALS" class="headerlink" title="VARIABLES AND PARTIALS"></a>VARIABLES AND PARTIALS</h5><p>创建新的文件夹<code>src/assets/scss/partials</code>,添加<code>_layout_vars.scss</code>文件：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* src/assets/scss/partials/_layout.vars.scss */</span></span><br><span class="line"><span class="comment">/*--------------------</span></span><br><span class="line"><span class="comment">   LAYOUT VARIABLES</span></span><br><span class="line"><span class="comment">--------------------*/</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$padding-screen-small</span>: <span class="number">3%</span>;</span><br><span class="line"><span class="variable">$padding-screen-large</span>: <span class="number">1.5%</span> <span class="number">3%</span>;</span><br></pre></td></tr></table></figure>
+<p>再添加<code>_responsive.partial.scss</code>文件：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* src/assets/scss/partials/_responsive.partial.scss */</span></span><br><span class="line"><span class="comment">/*--------------------</span></span><br><span class="line"><span class="comment">      RESPONSIVE</span></span><br><span class="line"><span class="comment">--------------------*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*-- Variables --*/</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$large</span>: <span class="string">'screen and (min-width: 768px)'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*-- Mixins --*/</span></span><br><span class="line"></span><br><span class="line">@<span class="keyword">mixin</span> mq(<span class="variable">$mqString</span>) &#123;</span><br><span class="line">  @<span class="keyword">media</span> #&#123;<span class="variable">$mqString</span>&#125; &#123;</span><br><span class="line">    @<span class="keyword">content</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>文件包含了一个<code>$large</code>变量，其中包含一个用于大屏幕大小的媒体查询，以及一个<code>mq()</code> 混合，用于在 SCSS 中轻松定位媒体查询。如果有必要，我们可以随着应用程序的增长向该文件添加更多变量。</p>
+<h5 id="IMPORT-GLOBAL-SCSS"><a href="#IMPORT-GLOBAL-SCSS" class="headerlink" title="IMPORT GLOBAL SCSS"></a>IMPORT GLOBAL SCSS</h5><p>最后，我们整合这些创建的样式，以导入项目中。还记得前面项目样式放在<code>assets/scss/styles.scss</code>吗, 所以只需：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* src/assets/scss/styles.scss */</span></span><br><span class="line"><span class="comment">// partials</span></span><br><span class="line">@<span class="keyword">import</span> <span class="string">'partials/layout.vars'</span>;</span><br><span class="line">@<span class="keyword">import</span> <span class="string">'partials/responsive.partial'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// global styles</span></span><br><span class="line">@<span class="keyword">import</span> <span class="string">'base'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="配置托管的-MongoDB"><a href="#配置托管的-MongoDB" class="headerlink" title="配置托管的 MongoDB"></a>配置托管的 MongoDB</h3><p><a href="https://docs.mongodb.com/manual/" target="_blank" rel="noopener"><code>MongoDB</code></a>是一个开源的文档数据库。为了提高速度和易用性，我们将在应用程序的数据库中使用<a href="https://mlab.com/plans/pricing/#plan-type=sandbox" target="_blank" rel="noopener"><code>mLab</code></a>的免费云托管 MongoDB 部署。我们还将通过<a href="https://mongobooster.com/" target="_blank" rel="noopener"><code>MongoBooster</code></a>连接管理 MongoDB。</p>
+<p>具体的账号注册，数据库创建连接管理这里就不再赘述，相信电脑前聪明的你很快就能搞定！</p>
+<h3 id="Auth0-的配置"><a href="#Auth0-的配置" class="headerlink" title="Auth0 的配置"></a>Auth0 的配置</h3><p>到了这里说明你已经配置好数据库啦，真棒！接下来，我们的 Angular 应用程序和 Node API 将使用 IDaaS(身份即服务)平台<a href="https://auth0.com/" target="_blank" rel="noopener"><code>Auth0</code></a>进行身份验证和路由授权。</p>
+<h4 id="注册免费账号"><a href="#注册免费账号" class="headerlink" title="注册免费账号"></a>注册免费账号</h4><p>我们需要一个 Auth0 帐户来管理身份验证。你可以在<a href="https://auth0.com/signup" target="_blank" rel="noopener">这里注册</a>一个免费帐户。接下来，设置一个 Auth0 应用程序和 API，这样 Auth0 就可以与 Angular 应用程序和 Node API 进行交互。</p>
+<h4 id="配置应用程序"><a href="#配置应用程序" class="headerlink" title="配置应用程序"></a>配置应用程序</h4><ol>
+<li>进入 Dashboard，创建新的应用程序，如<code>RSVP MEAN App</code>，并选择<code>SPA</code>.</li>
+<li>切换到<code>Settings</code>页面,<strong>Allowed Callback URLs</strong>:添加<code>http://localhost:8083/callback</code>和<code>http://localhost:4200/callback</code>.</li>
+<li><strong>Allowed Web Origins</strong>,添加<code>http://localhost:8083</code> 和 <code>http://localhost:4200</code>.</li>
+<li><strong>Allowed Logout URLs</strong>, 添加 <code>http://localhost:4200</code>.</li>
+<li>高级设置的 OAuth 下的 <strong>JsonWebToken Signature Algorithm</strong>,确保设置为 <code>RS256</code>.</li>
+</ol>
+<p>我们在回调 url 中添加了两个端口，并允许 web 源，因为我们将在开发期间从这两个端口运行和测试应用程序。端口 <code>4200</code> 是 Angular CLI 服务于 Angular 应用的端口。端口 <code>8083</code> 是我们的 Node API 和服务器使用的端口:为了测试产品构建，这是必要的。项目部署后，我们将替换这些设置为生产环境。</p>
+<h4 id="配置-API"><a href="#配置-API" class="headerlink" title="配置 API"></a>配置 API</h4><ol>
+<li>切换到 API，创建 API 配置。输入 API 的名称(例如:RSVP 表示 API)。</li>
+<li>将标识符设置为 API 端点 URL。此标识符是授权调用的<code>audience</code>参数。在我们的应用程序中，是<code>http://localhost:8083/api/</code>。</li>
+<li>签名算法配置为<code>RS256</code>。</li>
+</ol>
+<h3 id="Node-js-服务器设置"><a href="#Node-js-服务器设置" class="headerlink" title="Node.js 服务器设置"></a>Node.js 服务器设置</h3><p>紧接着就是我们的 Node 服务器和 API 了。</p>
+<h4 id="安装依赖项"><a href="#安装依赖项" class="headerlink" title="安装依赖项"></a>安装依赖项</h4><p>在我们的 Angular 项目根目录下，运行下面命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install express body-parser express-jwt jwks-rsa method-override mongoose cors --save</span><br></pre></td></tr></table></figure>
+<h4 id="服务端文件结构"><a href="#服务端文件结构" class="headerlink" title="服务端文件结构"></a>服务端文件结构</h4><p>在项目根目录下创建<code>server</code>文件夹并在其中添加两个文件:<code>server/api.js</code>和<code>server/config.js</code>，同时在根目录下创建<code>server.js</code>文件。至此文件结构大概如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">server/</span><br><span class="line">  |- api.js</span><br><span class="line">  |- config.js</span><br><span class="line">src/</span><br><span class="line">...</span><br><span class="line">server.js</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="配置项"><a href="#配置项" class="headerlink" title="配置项"></a>配置项</h4><p>打开<code>server/config.js</code>,添加如下配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  AUTH0_DOMAIN: <span class="string">'[YOUR_AUTH0_DOMAIN]'</span>, <span class="comment">// e.g. suchenrain.auth0.com</span></span><br><span class="line">  AUTH0_API_AUDIENCE: <span class="string">'[YOUR_AUTH0_API]'</span>, <span class="comment">// e.g. `http://localhost:8083/api/`</span></span><br><span class="line">  MONGO_URI: <span class="string">'mongodb://[USER]:[PWD]@[DS######].mlab.com:[PORT]/[DB_NAME]'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>记住将上述的相应值替换成你的配置，这些配置可以在 Auth0 和 mLab 账号里找到。</p>
+<h4 id="Node-Server"><a href="#Node-Server" class="headerlink" title="Node Server"></a>Node Server</h4><p>打开<code>server.js</code>,添加如下配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server.js</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Dependencies</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Modules</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'body-parser'</span>);</span><br><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">'mongoose'</span>);</span><br><span class="line"><span class="keyword">const</span> methodOverride = <span class="built_in">require</span>(<span class="string">'method-override'</span>);</span><br><span class="line"><span class="keyword">const</span> cors = <span class="built_in">require</span>(<span class="string">'cors'</span>);</span><br><span class="line"><span class="comment">// Config</span></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'./server/config'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | MongoDB</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">mongoose.connect(config.MONGO_URI);</span><br><span class="line"><span class="keyword">const</span> monDb = mongoose.connection;</span><br><span class="line"></span><br><span class="line">monDb.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.error(</span><br><span class="line">    <span class="string">'MongoDB Connection Error. Please make sure that'</span>,</span><br><span class="line">    config.MONGO_URI,</span><br><span class="line">    <span class="string">'is running.'</span></span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">monDb.once(<span class="string">'open'</span>, <span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.info(<span class="string">'Connected to MongoDB:'</span>, config.MONGO_URI);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | App</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123; <span class="attr">extended</span>: <span class="literal">false</span> &#125;));</span><br><span class="line">app.use(methodOverride(<span class="string">'X-HTTP-Method-Override'</span>));</span><br><span class="line">app.use(cors());</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set port</span></span><br><span class="line"><span class="keyword">const</span> port = process.env.PORT || <span class="string">'8083'</span>;</span><br><span class="line">app.set(<span class="string">'port'</span>, port);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set static path to Angular app in dist</span></span><br><span class="line"><span class="comment">// Don't run in dev</span></span><br><span class="line"><span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'dev'</span>) &#123;</span><br><span class="line">  app.use(<span class="string">'/'</span>, express.static(path.join(__dirname, <span class="string">'./dist'</span>)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Routes</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'./server/api'</span>)(app, config);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Pass routing to Angular app</span></span><br><span class="line"><span class="comment">// Don't run in dev</span></span><br><span class="line"><span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'dev'</span>) &#123;</span><br><span class="line">  app.get(<span class="string">'*'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    res.sendFile(path.join(__dirname, <span class="string">'/dist/index.html'</span>));</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Server</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">app.listen(port, () =&gt; <span class="built_in">console</span>.log(<span class="string">`Server running on localhost:<span class="subst">$&#123;port&#125;</span>`</span>));</span><br></pre></td></tr></table></figure>
+<p>请注意，有几个部分是与环境相关的。对于开发，我们希望能够利用 Angular CLI 提供和监视文件的功能，而不需要每次检查工作时都构建一个完整的项目。为了便于实现这一点，我们将从开发中分离 Node.js 服务器和 Angular 前端开始。</p>
+<p>这样，我们就可以在<code>localhost:8083</code>上运行 Node API，而 Angular 应用程序在<code>localhost:4200</code>上运行。对于生产环境，我们希望 Node 服务器运行 API 并使用静态路径来提供前端服务。</p>
+<h4 id="API-路由"><a href="#API-路由" class="headerlink" title="API 路由"></a>API 路由</h4><p>打开<code>api.js</code>文件并编辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/api.js</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Dependencies</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> jwt = <span class="built_in">require</span>(<span class="string">'express-jwt'</span>);</span><br><span class="line"><span class="keyword">const</span> jwks = <span class="built_in">require</span>(<span class="string">'jwks-rsa'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Authentication Middleware</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">app, config</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Authentication middleware</span></span><br><span class="line">  <span class="keyword">const</span> jwtCheck = jwt(&#123;</span><br><span class="line">    secret: jwks.expressJwtSecret(&#123;</span><br><span class="line">      cache: <span class="literal">true</span>,</span><br><span class="line">      rateLimit: <span class="literal">true</span>,</span><br><span class="line">      jwksRequestsPerMinute: <span class="number">5</span>,</span><br><span class="line">      jwksUri: <span class="string">`https://<span class="subst">$&#123;config.AUTH0_DOMAIN&#125;</span>/.well-known/jwks.json`</span></span><br><span class="line">    &#125;),</span><br><span class="line">    audience: config.AUTH0_API_AUDIENCE,</span><br><span class="line">    issuer: <span class="string">`https://<span class="subst">$&#123;config.AUTH0_DOMAIN&#125;</span>/`</span>,</span><br><span class="line">    algorithm: <span class="string">'RS256'</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | API Routes</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// GET API root</span></span><br><span class="line">  app.get(<span class="string">'/api/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.send(<span class="string">'API works'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Auth0 API 结合<code>express-jwt</code>和<code>jwks-rsa</code>一起使用，我们可以在必要时实现对特定 API 路由进行保护。实现这一点，我们可以通过向希望保护的路由添加<code>jwtCheck</code>中间件函数。</p>
+<h4 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h4><p>为了方便开发，全局安装<code>nodemon</code>来监视 Node 服务器的变化，而不需要在更新之后重新启动:<br><code>npm install nodemon -g</code></p>
+<p>开发阶段，我们会经常性的修改项目，所以打算使用分开的终端窗口来启动<code>Angular App</code>和<code>Node API</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Angular App =&gt; http://localhost:4200</span></span><br><span class="line">$ ng serve</span><br><span class="line"></span><br><span class="line"><span class="comment"># Node API =&gt; http://localhost:8083/api</span></span><br><span class="line"><span class="comment"># Windows:</span></span><br><span class="line">$ SET NODE_ENV=dev</span><br><span class="line">$ nodemon server</span><br><span class="line"><span class="comment"># OR Mac:</span></span><br><span class="line">$ NODE_ENV=dev nodemon server</span><br></pre></td></tr></table></figure>
+<h3 id="Angular-创建-HomeComponent"><a href="#Angular-创建-HomeComponent" class="headerlink" title="Angular: 创建 HomeComponent"></a>Angular: 创建 HomeComponent</h3><p>运行下面的命令，添加一个主页面组件：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ng g component pages/home</span><br></pre></td></tr></table></figure>
+<p>将新创建的 Home 组件添加到路由：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app-routing.module.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123;HomeComponent&#125; <span class="keyword">from</span> <span class="string">'./pages/home/home.componet'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: <span class="string">''</span>,</span><br><span class="line">    component: HomeComponent</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="使用-Title-服务"><a href="#使用-Title-服务" class="headerlink" title="使用 Title 服务"></a>使用 Title 服务</h4><p>前面我们已经在<a href="#添加-Title-服务">Angular App Setup</a>全局注入了<code>Title</code>服务，现在我们可以直接使用它：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/pages/home/home.component.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; Title &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HomeComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  pageTitle = <span class="string">'Events'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> title: Title</span>) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.title.setTitle(<span class="keyword">this</span>.pageTitle);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码导入了 Title 服务，然后添加一个名为 pageTitle 的属性，默认值为<code>Events</code>。然后我们将 Title 服务传递给构造函数，在<code>ngOnInit()</code>生命周期方法中，我们将使用<code>Title. settitle()</code>方法将文档标题更改为本地<code>pageTitle</code>的值。通过将这个标题存储在属性中，我们还可以在组件的模板中使用它来设置标题:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/pages/home/home.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">"text-center"</span>&gt;</span>&#123;&#123; pageTitle &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>文档标题和标题现在应该显示在浏览器中。我们已经有了路由和 home 组件，接下来我们可以开始 Angular 应用的全局布局了。</p>
+<h3 id="Angular-布局和全局组件"><a href="#Angular-布局和全局组件" class="headerlink" title="Angular: 布局和全局组件"></a>Angular: 布局和全局组件</h3><p>接下来我们将会设置 Angular 应用的布局和全局元素，比如页眉、导航和页脚。我们希望应用程序可以在任何大小的浏览器中工作，因此我们将实现非画布导航。为此，我们需要向根应用程序组件<code>AppComponent</code>添加一些标记和功能，以及创建一个页眉和页脚。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ng g component header</span><br><span class="line">$ ng g component footer</span><br></pre></td></tr></table></figure>
+<div class="note danger"><p>整个项目将会忽略相应的测试代码<code>.spec.ts</code>。</p></div>
+<h4 id="Header-Component"><a href="#Header-Component" class="headerlink" title="Header Component"></a>Header Component</h4><p>打开生成的<code>HeaderComponent</code>:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/header/header.component.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, OnInit, Output, EventEmitter &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Router, NavigationStart &#125; <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; filter &#125; <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-header'</span>,</span><br><span class="line">  templateUrl: <span class="string">'./header.component.html'</span>,</span><br><span class="line">  styleUrls: [<span class="string">'./header.component.scss'</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HeaderComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  <span class="meta">@Output</span>() navToggled = <span class="keyword">new</span> EventEmitter();</span><br><span class="line">  navOpen = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> router: Router</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="comment">// If nav is open after routing, close it</span></span><br><span class="line">    <span class="keyword">this</span>.router.events</span><br><span class="line">      .pipe(filter(<span class="function"><span class="params">event</span> =&gt;</span> event <span class="keyword">instanceof</span> NavigationStart &amp;&amp; <span class="keyword">this</span>.navOpen))</span><br><span class="line">      .subscribe(<span class="function"><span class="params">event</span> =&gt;</span> <span class="keyword">this</span>.toggleNav());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toggleNav() &#123;</span><br><span class="line">    <span class="keyword">this</span>.navOpen = !<span class="keyword">this</span>.navOpen;</span><br><span class="line">    <span class="keyword">this</span>.navToggled.emit(<span class="keyword">this</span>.navOpen);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>HeaderComponent</code>包含了一个导航链接和折叠开关，我们通过<code>@Output</code>声明一个<code>EventEmitter</code>用于和父组件进行交互，通知折叠按钮的闭合。</p>
+<p><code>navOpen</code>属性默认是闭合的，所以我们在组件的<code>ngOnInit()</code>钩子中通过观察路由事件，在路由开始时，闭合菜单面板。</p>
+<p>当用户点击折叠按钮，会调用<code>toggleNav()</code>方法，它改变折叠状态，并向父组件传递新的状态，通知折叠按钮的变化。</p>
+<p><code>header.component.html</code>相关模板：</p>
+<figure class="highlight html"><figcaption><span>HTML</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/header/header.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">header</span> <span class="attr">id</span>=<span class="string">"header"</span> <span class="attr">class</span>=<span class="string">"header"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-page bg-primary"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"toggle-offcanvas bg-primary"</span> (<span class="attr">click</span>)=<span class="string">"toggleNav()"</span></span></span><br><span class="line"><span class="tag">      &gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">"header-page-siteTitle"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">routerLink</span>=<span class="string">"/"</span>&gt;</span>RSVP<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">nav</span> <span class="attr">id</span>=<span class="string">"nav"</span> <span class="attr">class</span>=<span class="string">"nav"</span> <span class="attr">role</span>=<span class="string">"navigation"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"nav-list"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span></span></span><br><span class="line"><span class="tag">          <span class="attr">routerLink</span>=<span class="string">"/"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">routerLinkActive</span>=<span class="string">"active"</span></span></span><br><span class="line"><span class="tag">          [<span class="attr">routerLinkActiveOptions</span>]=<span class="string">"&#123; exact: true &#125;"</span></span></span><br><span class="line"><span class="tag">          &gt;</span>Events<span class="tag">&lt;/<span class="name">a</span></span></span><br><span class="line"><span class="tag">        &gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><figcaption><span>CSS</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* src/app/header/header.component.scss */</span></span><br><span class="line"><span class="comment">/*--------------------</span></span><br><span class="line"><span class="comment">       HEADER</span></span><br><span class="line"><span class="comment">--------------------*/</span></span><br><span class="line"></span><br><span class="line">@<span class="keyword">import</span> <span class="string">'../../assets/scss/partials/layout.vars'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*-- Navigation --*/</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">/*-- Hamburger toggle --*/</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">/*-- Header and title --*/</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>详细代码请查阅源码，这个文件提供了<code>nav</code>和<code>header</code>的样式，以及将折叠图标动画成<code>X</code>和<code>back</code>的 CSS 样式。值得注意的是，当访问当前组件外部的类时，可以使用特殊的选择器<code>:host-context(.ancestor-class)</code>来访问组件的封装之外的类并向上访问树。</p>
+<h4 id="Footer-Component"><a href="#Footer-Component" class="headerlink" title="Footer Component"></a>Footer Component</h4><p>我们的底部非常简单,打开<code>footer.component.html</code>和<code>footer.component.scss</code>:</p>
+<figure class="highlight html"><figcaption><span>HTML</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/footer/footer.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"text-center"</span>&gt;</span></span><br><span class="line">  MIT 2018</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><figcaption><span>CSS</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* src/app/footer/footer.component.scss */</span></span><br><span class="line"><span class="comment">/*--------------------</span></span><br><span class="line"><span class="comment">       FOOTER</span></span><br><span class="line"><span class="comment">--------------------*/</span></span><br><span class="line"></span><br><span class="line">:host &#123;</span><br><span class="line">  display: block;</span><br><span class="line">  <span class="attribute">padding-bottom</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">  <span class="attribute">margin-bottom</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面把底部的 margin/padding（边距/填充） 移到宿主元素，这样段落边距就不会影响下一步窗口高度的计算。</p>
+<h4 id="App-Component"><a href="#App-Component" class="headerlink" title="App Component"></a>App Component</h4><p>现在我们可以在根组件里使用 Header 和 Footer 了。打开<code>app.component.ts</code>:</p>
+<figure class="highlight typescript"><figcaption><span>TS</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app.component.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; fromEvent &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; debounceTime &#125; <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-root'</span>,</span><br><span class="line">  templateUrl: <span class="string">'./app.component.html'</span>,</span><br><span class="line">  styleUrls: [<span class="string">'./app.component.scss'</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  navOpen: <span class="built_in">boolean</span>;</span><br><span class="line">  minHeight: <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">private</span> _initWinHeight = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    fromEvent(<span class="built_in">window</span>, <span class="string">'resize'</span>)</span><br><span class="line">      .pipe(debounceTime(<span class="number">200</span>))</span><br><span class="line">      .subscribe(<span class="function"><span class="params">event</span> =&gt;</span> <span class="keyword">this</span>._resizeFn(event));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>._initWinHeight = <span class="built_in">window</span>.innerHeight;</span><br><span class="line">    <span class="keyword">this</span>._resizeFn(<span class="literal">null</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  navToggledHandler(e: <span class="built_in">boolean</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.navOpen = e;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _resizeFn(e) &#123;</span><br><span class="line">    <span class="keyword">const</span> winHeight: <span class="built_in">number</span> = e ? e.target.innerHeight : <span class="keyword">this</span>._initWinHeight;</span><br><span class="line">    <span class="keyword">this</span>.minHeight = <span class="string">`<span class="subst">$&#123;winHeight&#125;</span>px`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面创建了一个<code>navOpen</code>属性来存储<code>HeaderComponent</code>导航面板的状态。<code>navToggledHandler</code>将处理子组件 Header 发出的<code>navToggled</code>事件，并同步更新<code>navOpen</code>的值。同时，观察订阅窗口大小调整事件,调用<code>_resizeFn()</code>处理程序，以确保布局画布的高度与浏览器视图的高度匹配。</p>
+<div class="note info"><p>我们也可以通过 layout canvas 元素上设置<code>height: 100vh</code>样式来达到同样的效果，但是由于在移动浏览器中与 vh 不一致，所以采用了 JS 代码的方式。</p></div>
+<p>打开<code>app.component.html</code>编辑模板：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/app.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"layout-overflow"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span></span></span><br><span class="line"><span class="tag">    <span class="attr">class</span>=<span class="string">"layout-canvas"</span></span></span><br><span class="line"><span class="tag">    [<span class="attr">ngClass</span>]=<span class="string">"&#123; 'nav-open': navOpen, 'nav-closed': !navOpen &#125;"</span></span></span><br><span class="line"><span class="tag">    [<span class="attr">style.min-height</span>]=<span class="string">"minHeight"</span></span></span><br><span class="line"><span class="tag">  &gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- HEADER --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">app-header</span> (<span class="attr">navToggled</span>)=<span class="string">"navToggledHandler($event)"</span>&gt;</span><span class="tag">&lt;/<span class="name">app-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- CONTENT --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"layout-view"</span> <span class="attr">class</span>=<span class="string">"layout-view"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">router-outlet</span>&gt;</span><span class="tag">&lt;/<span class="name">router-outlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- FOOTER --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">app-footer</span>&gt;</span><span class="tag">&lt;/<span class="name">app-footer</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- /.layout-canvas --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- /.layout-overflow --&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面使用了几个布局容器来管理导航面板，同时通过<code>navOpen</code>属性来动态添加/移除样式。<br><div class="note warning"><p>还记得之前 Header 组件里提到的<code>:host-context()</code>吗，Header 组件的样式里就利用了上面的<code>nav-open</code>等这些类。</p></div></p>
+<p>利用<code>[style.min-height]</code>可以动态改变元素的高度。<br><div class="note danger"><p>注意这是一个 <code>DOM</code> 属性，而不是 <code>HTML</code> 属性。注意到其中的差别是很重要的。请务必通读绑定语法:<a href="https://angular.cn/guide/template-syntax#html-attribute-vs-dom-property" target="_blank" rel="noopener">HTML 属性 vs. DOM 属性</a></p></div></p>
+<p>最后是<code>app.component.scss</code>,具体请查阅源码。</p>
+<p>至此，我们已经完成了项目的基础结构和全局组件，可以进一步开发了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这一部分介绍了 MEAN 技术栈应用程序所需的软件和工具的设置以及依赖关系。还建立了 Angular 前端的基本布局和架构。在 Angular 系列的<a href="/posts/64307">下一部分</a>中，我们将讨论身份验证和授权、功能模块规划和数据建模。</p>
+<hr>
+<blockquote>
+<p><em><strong>系列索引</strong></em></p>
+<ul>
+<li><a href="/posts/30078"><del>Angular 实战系列 - Part 1: MEAN 配置 &amp; Angular 架构</del><code>(你现在在这里)</code></a></li>
+<li><a href="/posts/64307">Angular 实战系列 - Part 2: 身份验证和数据建模</a></li>
+<li><a href="/posts/65062">Angular 实战系列 - Part 3: 抓取和展示数据</a></li>
+<li><a href="/posts/48469">Angular 实战系列 - Part 4: 访问控制，管理和详情页面</a></li>
+<li><a href="/posts/7096">Angular 实战系列 - Part 5: 动画和模板驱动表单</a></li>
+<li><a href="/posts/5650">Angular 实战系列 - Part 6: 响应式表单和自定义验证</a></li>
+<li><a href="/posts/32171">Angular 实战系列 - Part 7: 相关数据和令牌更新</a></li>
+<li><a href="/posts/25434">Angular 实战系列 - Part 8: 延迟加载，生产部署和 SSL</a></li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--Last updated: 2019-02-26 16:44 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://suchenrain.github.io/posts/30078/" title="Angular 实战系列 - Part 1: MEAN 配置 & Angular 架构">https://suchenrain.github.io/posts/30078/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/en/tags/Angular实战/" rel="tag"># Angular实战</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/en/posts/6845/" rel="next" title="Angular实战系列文章汇总页">
+                <i class="fa fa-chevron-left"></i> Angular实战系列文章汇总页
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/en/posts/64307/" rel="prev" title="Angular 实战系列 - Part 2: 身份验证和数据建模">
+                Angular 实战系列 - Part 2: 身份验证和数据建模 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/en/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/en/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/en/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍：我们打算做什么？"><span class="nav-number">1.</span> <span class="nav-text">介绍：我们打算做什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-Angular-应用"><span class="nav-number">2.</span> <span class="nav-text">配置 Angular 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-Angular-项目"><span class="nav-number">2.1.</span> <span class="nav-text">创建 Angular 项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-Title-服务"><span class="nav-number">2.2.</span> <span class="nav-text">添加 Title 服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-Bootstrap"><span class="nav-number">2.3.</span> <span class="nav-text">添加 Bootstrap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局-SCSS"><span class="nav-number">2.4.</span> <span class="nav-text">全局 SCSS</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BASE-STYLES"><span class="nav-number">2.4.1.</span> <span class="nav-text">BASE STYLES</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VARIABLES-AND-PARTIALS"><span class="nav-number">2.4.2.</span> <span class="nav-text">VARIABLES AND PARTIALS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IMPORT-GLOBAL-SCSS"><span class="nav-number">2.4.3.</span> <span class="nav-text">IMPORT GLOBAL SCSS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置托管的-MongoDB"><span class="nav-number">3.</span> <span class="nav-text">配置托管的 MongoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Auth0-的配置"><span class="nav-number">4.</span> <span class="nav-text">Auth0 的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注册免费账号"><span class="nav-number">4.1.</span> <span class="nav-text">注册免费账号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置应用程序"><span class="nav-number">4.2.</span> <span class="nav-text">配置应用程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-API"><span class="nav-number">4.3.</span> <span class="nav-text">配置 API</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-js-服务器设置"><span class="nav-number">5.</span> <span class="nav-text">Node.js 服务器设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装依赖项"><span class="nav-number">5.1.</span> <span class="nav-text">安装依赖项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务端文件结构"><span class="nav-number">5.2.</span> <span class="nav-text">服务端文件结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置项"><span class="nav-number">5.3.</span> <span class="nav-text">配置项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-Server"><span class="nav-number">5.4.</span> <span class="nav-text">Node Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#API-路由"><span class="nav-number">5.5.</span> <span class="nav-text">API 路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动项目"><span class="nav-number">5.6.</span> <span class="nav-text">启动项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Angular-创建-HomeComponent"><span class="nav-number">6.</span> <span class="nav-text">Angular: 创建 HomeComponent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Title-服务"><span class="nav-number">6.1.</span> <span class="nav-text">使用 Title 服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Angular-布局和全局组件"><span class="nav-number">7.</span> <span class="nav-text">Angular: 布局和全局组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Header-Component"><span class="nav-number">7.1.</span> <span class="nav-text">Header Component</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Footer-Component"><span class="nav-number">7.2.</span> <span class="nav-text">Footer Component</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#App-Component"><span class="nav-number">7.3.</span> <span class="nav-text">App Component</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

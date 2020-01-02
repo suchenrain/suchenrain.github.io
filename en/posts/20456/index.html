@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git,git系列," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="到了这里相信你的机器上已经有了一个 Git 仓库，并且工作区里也签出了工作副本。通常，当项目达到想要记录的状态时，我们开始对文件进行更改并将这些变更的快照提交到存储库中。 工作目录里的文件无非两种状态：已追踪或者未追踪。已追踪文件是指那些被纳入了版本控制的文件，在上一次快照中有它们的记录;它们可以是「未修改」、「已修改」、「已暂存（staged）」。简而言之，追踪的文件就是 Git 所知道的文件。">
+<meta name="keywords" content="git,git系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git系列—记录变更到版本库中">
+<meta property="og:url" content="https://suchenrain.github.io/en/posts/20456/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="到了这里相信你的机器上已经有了一个 Git 仓库，并且工作区里也签出了工作副本。通常，当项目达到想要记录的状态时，我们开始对文件进行更改并将这些变更的快照提交到存储库中。 工作目录里的文件无非两种状态：已追踪或者未追踪。已追踪文件是指那些被纳入了版本控制的文件，在上一次快照中有它们的记录;它们可以是「未修改」、「已修改」、「已暂存（staged）」。简而言之，追踪的文件就是 Git 所知道的文件。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/lifecycle.png">
+<meta property="og:updated_time" content="2018-05-31T04:55:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git系列—记录变更到版本库中">
+<meta name="twitter:description" content="到了这里相信你的机器上已经有了一个 Git 仓库，并且工作区里也签出了工作副本。通常，当项目达到想要记录的状态时，我们开始对文件进行更改并将这些变更的快照提交到存储库中。 工作目录里的文件无非两种状态：已追踪或者未追踪。已追踪文件是指那些被纳入了版本控制的文件，在上一次快照中有它们的记录;它们可以是「未修改」、「已修改」、「已暂存（staged）」。简而言之，追踪的文件就是 Git 所知道的文件。">
+<meta name="twitter:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/lifecycle.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/en/posts/20456/"/>
+
+
+
+
+
+  <title>Git系列—记录变更到版本库中 | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/en/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/en/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/en/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/en/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/en/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/en/posts/20456/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Git系列—记录变更到版本库中</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-26T17:54:55+08:00">
+                2018-05-26 17:54
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-26T17:54:55+08:00">
+                2018-05-26 17:54
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2018-05-31T12:55:00+08:00">
+                2018-05-31 12:55
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/en/categories/git系列/" itemprop="url" rel="index">
+                    <span itemprop="name">git系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  4,578
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  19&nbsp;mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <p>到了这里相信你的机器上已经有了一个 Git 仓库，并且工作区里也签出了工作副本。通常，当项目达到想要记录的状态时，我们开始对文件进行更改并将这些变更的快照提交到存储库中。</p>
+<p>工作目录里的文件无非两种状态：<code>已追踪</code>或者<code>未追踪</code>。已追踪文件是指那些被纳入了版本控制的文件，在上一次快照中有它们的记录;它们可以是<code>「未修改」</code>、<code>「已修改」</code>、<code>「已暂存（staged）」</code>。简而言之，追踪的文件就是 Git 所知道的文件。</p>
+<p>工作目录中除已追踪文件以外的所有其它文件都属于<code>未追踪</code>文件，它们既不存在于上次快照的记录中，也没有放入暂存区。 初次克隆某个仓库的时候，工作目录中的所有文件都属于已追踪文件，并处于未修改状态。</p>
+<p>编辑过工作区的某些文件之后，由于自上次提交后对它们做了修改，Git 将它们标记为<code>已修改</code>文件。 我们逐步将这些修改过的文件放入暂存区(add)，然后提交所有暂存了的修改(commit)，如此反复。所以使用 Git 时文件的生命周期大致如下：</p>
+<a id="more"></a>
+<p><img src="https://suchenrain-1255943826.file.myqcloud.com/Post/lifecycle.png" alt="git文件状态变化周期" title="git文件状态变化周期"></p>
+<hr>
+<h2 id="检查当前文件状态"><a href="#检查当前文件状态" class="headerlink" title="检查当前文件状态"></a>检查当前文件状态</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br></pre></td></tr></table></figure>
+<p>这说明现在的工作目录相当干净。换句话说，所有已跟踪文件在上次提交后都未被更改过。 此外，上面的信息还表明，当前目录下没有出现任何处于未跟踪状态的新文件，否则 Git 会在这里列出来。 最后，该命令还显示了当前所在分支，并告诉你这个分支同远程服务器上对应的分支没有偏离。</p>
+<p>新建一个文件。 如果之前并不存在这个文件，使用 git status 命令，你将看到一个新的未跟踪文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'i hate u'</span> &gt; test.md</span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Untracked files:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to include <span class="keyword">in</span> what will be committed)</span><br><span class="line"></span><br><span class="line">        test.md</span><br><span class="line"></span><br><span class="line">nothing added to commit but untracked files present (use <span class="string">"git add"</span> to track)</span><br></pre></td></tr></table></figure>
+<p>Git 不会自动将新的文件纳入跟踪范围，除非你明明白白地告诉它“我需要跟踪该文件”， 这样的处理让你不必担心将生成的二进制文件或其它不想被跟踪的文件包含进来。</p>
+<hr>
+<h2 id="跟踪新文件"><a href="#跟踪新文件" class="headerlink" title="跟踪新文件"></a>跟踪新文件</h2><p>通过使用命令 git add 开始跟踪一个文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add test.md</span><br></pre></td></tr></table></figure>
+<p>此时再运行 git status 命令，会看到 README 文件已被跟踪，并处于暂存状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        new file:   test.md</span><br></pre></td></tr></table></figure>
+<p>只要在 Changes to be committed 这行下面的，就说明是已暂存状态。git add 命令使用文件或目录的路径作为参数；如果参数是目录的路径，该命令将递归地跟踪该目录下的所有文件。</p>
+<hr>
+<h2 id="暂存已修改文件"><a href="#暂存已修改文件" class="headerlink" title="暂存已修改文件"></a>暂存已修改文件</h2><p>修改一个已被跟踪的文件 readme.md, 然后运行 git status 命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'add a line'</span> &gt; readme.md</span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        new file:   test.md</span><br><span class="line"></span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</span><br><span class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</span><br><span class="line"></span><br><span class="line">        modified:   readme.md</span><br></pre></td></tr></table></figure>
+<p>文件 readme.md 出现在 Changes not staged for commit 这行下面，说明已追踪文件的内容发生了变化，但还没有放到暂存区。 要暂存这次更新，需要运行 git add 命令。 这是个多功能命令：可以用它开始跟踪新文件，或者把已追踪的文件放到暂存区，还能用于合并时把有冲突的文件标记为已解决状态等。 将这个命令理解为“添加内容到下一次提交中”而不是“将一个文件添加到项目中”要更加合适。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git add readme.md</span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   readme.md</span><br><span class="line">        new file:   test.md</span><br></pre></td></tr></table></figure>
+<p>现在更改后的 readme.md 也已经暂存了。不过在提交记录之前，我们再次对 readme.md 进行修改并查看状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">'add another line'</span> &gt;&gt; readme.md</span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   readme.md</span><br><span class="line">        new file:   test.md</span><br><span class="line"></span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</span><br><span class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</span><br><span class="line"></span><br><span class="line">        modified:   readme.md</span><br></pre></td></tr></table></figure>
+<p>见鬼了？ 你会发现 readme.md 文件同时出现在暂存区和非暂存区。 这怎么可能呢？ 好吧，<code>实际上 Git 只不过暂存了你运行 git add 命令时的版本</code>， 如果你现在提交，readme.md 的版本是你最后一次运行 git add 命令时的那个版本，而不是你运行 git commit 时，在工作目录中的当前版本。 所以，运行了 git add 之后又作了修订的文件，需要重新运行 git add 把最新版本重新暂存起来。</p>
+<hr>
+<h2 id="状态简览"><a href="#状态简览" class="headerlink" title="状态简览"></a>状态简览</h2><p>git status 命令的输出十分详细，同时也有些啰嗦。 通过 git status -s 命令或 git status –short 命令，输出将更加简洁：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git status -s</span><br><span class="line">M  License.txt</span><br><span class="line">A  lib/file3.zc</span><br><span class="line"> M readme.md</span><br><span class="line">MM test.md</span><br><span class="line">?? lib/file4.zc</span><br></pre></td></tr></table></figure>
+<p>新添加的未跟踪文件前面有 ?? 标记，新添加到暂存区中的文件前面有 A 标记，修改过的文件前面有 M 标记。 你可能注意到了 M 有两个可以出现的位置，出现在右边的 M 表示该文件被修改了但是还没放入暂存区，出现在靠左边的 M 表示该文件被修改了并放入了暂存区。 例如，上面的状态报告显示：</p>
+<ul>
+<li>在工作区新添加了 lib/file4.zc 文件且未追踪</li>
+<li>lib/file3.zc 为工作区新添加文件并且放入了暂存区。</li>
+<li>readme.md 文件在工作区被修改了但是还没有将修改后的文件放入暂存区</li>
+<li>License.txt 文件被修改了并将修改后的文件放入了暂存区</li>
+<li>test.md 在工作区被修改并提交到暂存区后又在工作区中被修改了，所以在暂存区和工作区都有该文件被修改了的记录。</li>
+</ul>
+<hr>
+<p><strong><code>如何理解上述短格式？</code></strong></p>
+<p>短格式使用两位字母的状态码<code>XY</code>。</p>
+<p>对于合并冲突的路径，X 和 Y 显示合并的每一边的修改状态。对于那些没有合并冲突的路径，<code>X 显示了索引(暂存区)的状态</code>，并且 <code>Y 显示了工作树(工作目录)的状态</code>。对于未被追踪的路径，XY 是<code>??</code>其他状态码可以解释如下：</p>
+<ul>
+<li>‘’ = unmodified</li>
+<li>M = modified</li>
+<li>A = added</li>
+<li>D = deleted</li>
+<li>R = renamed</li>
+<li>C = copied</li>
+<li>U = updated but unmerged</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">X          Y     Meaning</span><br><span class="line">-------------------------------------------------</span><br><span class="line">         [AMD]   not updated</span><br><span class="line">M        [ MD]   updated in index</span><br><span class="line">A        [ MD]   added to index</span><br><span class="line">D                deleted from index</span><br><span class="line">R        [ MD]   renamed in index</span><br><span class="line">C        [ MD]   copied in index</span><br><span class="line">[MARC]           index and work tree matches</span><br><span class="line">[ MARC]     M    work tree changed since index</span><br><span class="line">[ MARC]     D    deleted in work tree</span><br><span class="line">[ D]        R    renamed in work tree</span><br><span class="line">[ D]        C    copied in work tree</span><br><span class="line">-------------------------------------------------</span><br><span class="line">D           D    unmerged, both deleted</span><br><span class="line">A           U    unmerged, added by us</span><br><span class="line">U           D    unmerged, deleted by them</span><br><span class="line">U           A    unmerged, added by them</span><br><span class="line">D           U    unmerged, deleted by us</span><br><span class="line">A           A    unmerged, both added</span><br><span class="line">U           U    unmerged, both modified</span><br><span class="line">-------------------------------------------------</span><br><span class="line">?           ?    untracked</span><br><span class="line">!           !    ignored</span><br><span class="line">-------------------------------------------------</span><br></pre></td></tr></table></figure>
+<p>所以可以用如下表格描述上面的输出，比如 readme.md，它在工作区被修改了，但暂存区无变化，说明文件在工作区被修改但未放入暂存区。再比如 lib/file4.zc，它在工作区和暂存区均未知状态，说明是工作区新的未追踪文件。</p>
+<table>
+<thead>
+<tr>
+<th>暂存区状态</th>
+<th>工作区状态</th>
+<th>文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M</td>
+<td></td>
+<td>License.txt</td>
+</tr>
+<tr>
+<td>A</td>
+<td></td>
+<td>lib/file3.zc</td>
+</tr>
+<tr>
+<td></td>
+<td>M</td>
+<td>readme.md</td>
+</tr>
+<tr>
+<td>M</td>
+<td>M</td>
+<td>test.md</td>
+</tr>
+<tr>
+<td>?</td>
+<td>?</td>
+<td>lib/file4.zc</td>
+</tr>
+</tbody>
+</table>
+<p>更多请参阅<a href="https://git-scm.com/docs/git-status" target="_blank" rel="noopener">git status</a></p>
+<hr>
+<h2 id="忽略特定文件"><a href="#忽略特定文件" class="headerlink" title="忽略特定文件"></a>忽略特定文件</h2><p>一般我们总会有些文件不需要纳入 Git 的管理，也不希望它们总出现在未追踪文件列表。 它们通常都是些自动生成的文件，比如日志文件，或者编译过程中创建的临时文件等。 在这种情况下，我们可以创建一个名为 .gitignore 的文件，列出要忽略的文件规则。 来看一个实际的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat .gitignore</span><br><span class="line">*.[oa]</span><br><span class="line">*~</span><br></pre></td></tr></table></figure>
+<p>第一行告诉 Git 忽略所有以 .o 或 .a 结尾的文件。一般这类对象文件和存档文件都是编译过程中出现的。 第二行告诉 Git 忽略所有以波浪符（~）结尾的文件，许多文本编辑软件（比如 Emacs）都用这样的文件名保存副本。 此外，你可能还需要忽略 log，tmp 或者 pid 目录，以及自动生成的文档等等。 要养成一开始就设置好 .gitignore 文件的习惯，以免将来误提交这类无用的文件。</p>
+<p>文件 .gitignore 的格式规范如下：</p>
+<ul>
+<li>所有空行或者以 ＃ 开头的行都会被 Git 忽略。</li>
+<li>可以使用标准的 glob 模式匹配。</li>
+<li>匹配模式可以以（/）开头防止递归。</li>
+<li>匹配模式可以以（/）结尾指定目录。</li>
+<li>要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。</li>
+</ul>
+<p>所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。 星号（）匹配零个或多个任意字符；[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号（?）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9] 表示匹配所有 0 到 9 的数字）。 使用两个星号（） 表示匹配任意中间目录，比如<code>a/**/z</code> 可以匹配 a/z, a/b/z 或 <code>a/b/c/z</code>等。</p>
+<p>我们再看一个 .gitignore 文件的例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不要追蹤檔名為 .a 結尾的檔案</span></span><br><span class="line">*.a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但是要追蹤 lib.a，即使上面已指定忽略所有的 .a 檔案</span></span><br><span class="line">!lib.a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只忽略根目錄下的 TODO 檔案，不包含子目錄下的 TODO</span></span><br><span class="line">/TODO</span><br><span class="line"></span><br><span class="line"><span class="comment"># 忽略 build/ 目錄下所有檔案</span></span><br><span class="line">build/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 忽略 doc/notes.txt，但不包含 doc/server/arch.txt</span></span><br><span class="line">doc/*.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 忽略所有在 doc/ 目錄底下的 .pdf 檔案</span></span><br><span class="line">doc/**/*.pdf</span><br></pre></td></tr></table></figure>
+<p>可以看出规范的应用顺序为从上到下，所以在制定.gitignore 文件时，<code>尽量把粗粒度规则写在上面，细粒度的放在下面</code>。</p>
+<div class="hint info"><p><strong>Tip</strong></p>
+<p>GitHub 在 <a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a> 中针对几十种项目和程序语言维护了一个很完整、好用的 .gitignore 范例文件列表，你可以试试。</p></div>
+<p>一般来说，一个 git 仓库会在根目录有这样一个.gitignore 文件, 它依次作用于整个仓库目录。然而，子目录也可以有自己的.gitignore 文件。这些嵌套的.gitignore 文件中的规则只适用于它们所在目录下的文件。</p>
+<p>更多详情可以参见<code>man gitignore</code>。</p>
+<hr>
+<h2 id="查看已暂存和未暂存的修改"><a href="#查看已暂存和未暂存的修改" class="headerlink" title="查看已暂存和未暂存的修改"></a>查看已暂存和未暂存的修改</h2><p><code>git status</code>告诉你的只是哪些文件发生了什么样的变化，如果你想知道具体的更改，那么你需要使用<code>git diff</code>命令。通常它用于回答两个问题：</p>
+<ul>
+<li>当前做的哪些更改还没有暂存？（<code>git diff</code>）</li>
+<li>有哪些更新已经暂存起来准备好了下次提交？（<code>git diff --staged</code>）</li>
+</ul>
+<p>假设我们项目当前状态如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   readme.md</span><br><span class="line"></span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</span><br><span class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</span><br><span class="line"></span><br><span class="line">        modified:   test.md</span><br></pre></td></tr></table></figure>
+<p>要查看尚未暂存的文件更新了哪些部分，不加参数直接输入 git diff：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br><span class="line">diff --git a/test.md b/test.md</span><br><span class="line">index 8e86c6b..e77b92e 100644</span><br><span class="line">--- a/test.md</span><br><span class="line">+++ b/test.md</span><br><span class="line">@@ -1,3 +1,4 @@</span><br><span class="line"> i hate u</span><br><span class="line"> i like u</span><br><span class="line"> i love u</span><br><span class="line">+i hate you</span><br></pre></td></tr></table></figure>
+<p>此命令比较的是<code>工作目录中当前文件和暂存区域快照之间的差异</code>， 也就是修改之后还没有暂存起来的变化内容。</p>
+<p>若要查看已暂存的将要添加到下次提交里的内容，可以用 git diff –cached 命令。（Git 1.6.1 及更高版本还允许使用 git diff –staged，效果是相同的，但更好记些。）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git diff --staged</span><br><span class="line">diff --git a/readme.md b/readme.md</span><br><span class="line">index f7ec434..f44d5bd 100644</span><br><span class="line">--- a/readme.md</span><br><span class="line">+++ b/readme.md</span><br><span class="line">@@ -1,2 +1,3 @@</span><br><span class="line"> add a line</span><br><span class="line"> add another line</span><br><span class="line">+test1</span><br></pre></td></tr></table></figure>
+<div class="hint success"><p><strong>小结</strong><br><code>git diff</code> &nbsp;(查看工作区和暂存区的差异)<br><code>git diff --staged</code>&nbsp; (查看暂存区和版本库的差异)</p></div>
+<div class="hint info"><p><strong>Git Diff 的插件版本</strong></p>
+<p>git 默认使用 git diff 来分析文件差异。 但是，如果你喜欢通过图形化的方式或其它格式输出方式的话，可以使用 git difftool 命令来用 Araxis ，emerge 或 vimdiff 等软件输出 diff 分析结果。 使用 git difftool –tool-help 命令来看你的系统支持哪些 Git Diff 插件。</p></div>
+<hr>
+<h2 id="提交更新"><a href="#提交更新" class="headerlink" title="提交更新"></a>提交更新</h2><p>到此，相信你已经准备好将暂存区的修改提交到版本库了。每次准备提交前，先用 <code>git status</code> 看下，是不是都已暂存起来了， 然后再运行提交命令 <code>git commit</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ git commit</span><br><span class="line"></span><br><span class="line"><span class="comment"># Please enter the commit message for your changes. Lines starting</span></span><br><span class="line"><span class="comment"># with '#' will be ignored, and an empty message aborts the commit.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># On branch master</span></span><br><span class="line"><span class="comment"># Changes to be committed:</span></span><br><span class="line"><span class="comment">#       modified:   readme.md</span></span><br><span class="line"><span class="comment">#       modified:   test.md</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">~</span><br><span class="line">~</span><br></pre></td></tr></table></figure>
+<p>这会启动文本编辑器以便输入本次提交的说明。 (默认会启用 shell 的环境变量 $EDITOR 所指定的软件，一般都是 vim 或 emacs。输入你的提交信息，保存退出完成提交。</p>
+<p>另外，你也可以在 commit 命令后添加 -m 选项，将提交信息与命令放在同一行，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">'first commit'</span></span><br><span class="line">[master 643c866] first commit</span><br><span class="line"> 2 files changed, 2 insertions(+)</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="跳过使用暂存区域"><a href="#跳过使用暂存区域" class="headerlink" title="跳过使用暂存区域"></a>跳过使用暂存区域</h2><p>尽管使用暂存区域的方式可以精心准备要提交的细节，但有时候这么做略显繁琐。 Git 提供了一个跳过使用暂存区域的方式， 只要在提交的时候，给 git commit 加上 -a 选项，Git 就会自动把所有<code>已经跟踪过的文件</code>暂存起来一并提交，从而跳过 git add 步骤：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ git status -s</span><br><span class="line"> M readme.md</span><br><span class="line">?? demofile.zc</span><br><span class="line"></span><br><span class="line">$ git commit -a -m <span class="string">'skip staged step'</span></span><br><span class="line">[master be44449] skip staged step</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line"></span><br><span class="line"><span class="comment"># untracked files remain</span></span><br><span class="line">$ git status -s</span><br><span class="line">?? demofile.zc</span><br></pre></td></tr></table></figure>
+<div class="hint warning"><p>只是针对 tracked 的文件，未追踪的文件还是在工作区！</p></div>
+<hr>
+<h2 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h2><p>假设由于不小心将某文件提交了版本库，那么如何移除呢？</p>
+<p>要从 Git 中移除某个文件，就必须要从已跟踪文件清单中移除（确切地说，是从暂存区域移除），然后提交。 可以用 <code>git rm</code> 命令完成此项工作，并<code>连带从工作目录中删除指定的文件</code>，这样以后就不会出现在未跟踪文件清单中了。</p>
+<p>如果只是简单地从工作目录中手工删除文件，运行 <code>git status</code> 时就会在 “Changes not staged for commit” 部分（也就是 未暂存清单）看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ rm test.md</span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">  (use <span class="string">"git add/rm &lt;file&gt;..."</span> to update what will be committed)</span><br><span class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</span><br><span class="line"></span><br><span class="line">        deleted:    test.md</span><br><span class="line"></span><br><span class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</span><br></pre></td></tr></table></figure>
+<p>然后再运行 <code>git rm</code> 记录此次移除文件的操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git rm test.md</span><br><span class="line">rm <span class="string">'test.md'</span></span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        deleted:    test.md</span><br></pre></td></tr></table></figure>
+<p>下一次提交时，该文件就不再纳入版本管理了。</p>
+<p>如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 -f（译注：即 force 的首字母）。 这是一种安全特性，用于防止误删还没有添加到快照的数据，这样的数据不能被 Git 恢复。</p>
+<p>另外一种情况是，我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。 换句话说，你想让文件保留在磁盘，但是并不想让 Git 继续跟踪。 当你忘记添加 .gitignore 文件，不小心把一个很大的日志文件或一堆 .a 这样的编译生成文件添加到暂存区时，这一做法尤其有用。 为达到这一目的，使用 –cached 选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached test.md</span><br></pre></td></tr></table></figure>
+<p><code>git rm</code> 命令后面可以列出文件或者目录的名字，也可以使用 glob 模式。 比方说：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm <span class="built_in">log</span>/\*.<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+<p>注意到星号 * 之前的反斜杠 \， 因为 Git 有它自己的文件模式扩展匹配方式，所以我们不用 shell 来帮忙展开。 此命令删除 log/ 目录下扩展名为 .log 的所有文件。 类似的比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm \*~</span><br></pre></td></tr></table></figure>
+<p>删除以 ~ 结尾的所有文件。</p>
+<hr>
+<h2 id="移动文件-重命名"><a href="#移动文件-重命名" class="headerlink" title="移动文件(重命名)"></a>移动文件(重命名)</h2><p>要在 Git 中对文件改名，可以这么做：</p>
+<p><code>$ git mv file_from file_to</code> 它会恰如预期般正常工作。 实际上，即便此时查看状态信息，也会明白无误地看到关于重命名操作的说明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git mv README.md README</span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">    renamed:    README.md -&gt; README</span><br></pre></td></tr></table></figure>
+<p>其实，运行 git mv 就相当于运行了下面三条命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mv README.md README</span><br><span class="line">$ git rm README.md</span><br><span class="line">$ git add README</span><br></pre></td></tr></table></figure>
+<p>如此分开操作，Git 也会意识到这是一次改名，所以不管何种方式结果都一样。 两者唯一的区别是，mv 是一条命令而另一种方式需要三条命令，直接用 git mv 轻便得多。</p>
+<hr>
+<blockquote class="info"><p>参考：<br>[1]. <a href="https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository" target="_blank" rel="noopener">Git Basics - Recording Changes to the Repository</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--Last updated: 2018-05-31 12:55 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://suchenrain.github.io/posts/20456/" title="Git系列—记录变更到版本库中">https://suchenrain.github.io/posts/20456/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/en/tags/git/" rel="tag"># git</a>
+          
+            <a href="/en/tags/git系列/" rel="tag"># git系列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/en/posts/55466/" rel="next" title="Git系列—理解Git的工作区、暂存区和版本库">
+                <i class="fa fa-chevron-left"></i> Git系列—理解Git的工作区、暂存区和版本库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/en/posts/12438/" rel="prev" title="Git系列—撤销操作">
+                Git系列—撤销操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/en/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/en/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/en/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#检查当前文件状态"><span class="nav-number">1.</span> <span class="nav-text">检查当前文件状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跟踪新文件"><span class="nav-number">2.</span> <span class="nav-text">跟踪新文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暂存已修改文件"><span class="nav-number">3.</span> <span class="nav-text">暂存已修改文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态简览"><span class="nav-number">4.</span> <span class="nav-text">状态简览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略特定文件"><span class="nav-number">5.</span> <span class="nav-text">忽略特定文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看已暂存和未暂存的修改"><span class="nav-number">6.</span> <span class="nav-text">查看已暂存和未暂存的修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交更新"><span class="nav-number">7.</span> <span class="nav-text">提交更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跳过使用暂存区域"><span class="nav-number">8.</span> <span class="nav-text">跳过使用暂存区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除文件"><span class="nav-number">9.</span> <span class="nav-text">移除文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动文件-重命名"><span class="nav-number">10.</span> <span class="nav-text">移动文件(重命名)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

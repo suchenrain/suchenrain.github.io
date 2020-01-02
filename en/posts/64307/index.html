@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Angular实战," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在本系列的第 1 部分我们已经介绍了如何配置云托管的 MongoDB, Node 服务器，还有 Angular 前端项目。 接下来本系列的第 2 部分将介绍身份验证、授权、功能模块规划和数据建模:  Angular:身份验证 角色授权">
+<meta name="keywords" content="Angular实战">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular 实战系列 - Part 2: 身份验证和数据建模">
+<meta property="og:url" content="https://suchenrain.github.io/en/posts/64307/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="在本系列的第 1 部分我们已经介绍了如何配置云托管的 MongoDB, Node 服务器，还有 Angular 前端项目。 接下来本系列的第 2 部分将介绍身份验证、授权、功能模块规划和数据建模:  Angular:身份验证 角色授权">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-02-26T09:26:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular 实战系列 - Part 2: 身份验证和数据建模">
+<meta name="twitter:description" content="在本系列的第 1 部分我们已经介绍了如何配置云托管的 MongoDB, Node 服务器，还有 Angular 前端项目。 接下来本系列的第 2 部分将介绍身份验证、授权、功能模块规划和数据建模:  Angular:身份验证 角色授权">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/en/posts/64307/"/>
+
+
+
+
+
+  <title>Angular 实战系列 - Part 2: 身份验证和数据建模 | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/en/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/en/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/en/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/en/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/en/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/en/posts/64307/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Angular 实战系列 - Part 2: 身份验证和数据建模</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-04T14:55:57+08:00">
+                2019-01-04 14:55
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-04T14:55:57+08:00">
+                2019-01-04 14:55
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2019-02-26T17:26:03+08:00">
+                2019-02-26 17:26
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/en/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/en/categories/Angular/Angular实战系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular实战系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  4,594
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  20&nbsp;mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <p>在本系列的<a href="/posts/30078">第 1 部分</a>我们已经介绍了如何配置云托管的 MongoDB, Node 服务器，还有 Angular 前端项目。</p>
+<p>接下来本系列的第 2 部分将介绍身份验证、授权、功能模块规划和数据建模:</p>
+<ol>
+<li><a href="#Angular-身份验证">Angular:身份验证</a></li>
+<li><a href="#角色授权">角色授权</a><a id="more"></a></li>
+<li><a href="#规划功能模块">规划功能模块</a></li>
+<li><a href="#数据建模">数据建模</a></li>
+</ol>
+<h3 id="Angular-身份验证"><a href="#Angular-身份验证" class="headerlink" title="Angular:身份验证"></a>Angular:身份验证</h3><p>继续第 1 部分的内容，现在添加身份验证模块，它包含：</p>
+<ul>
+<li>登录和注销</li>
+<li>用户信息和令牌管理</li>
+<li>会话持久性</li>
+<li>使用访问令牌对 HTTP 请求进行授权</li>
+</ul>
+<h4 id="安装-Auth0-js"><a href="#安装-Auth0-js" class="headerlink" title="安装 Auth0.js"></a>安装 Auth0.js</h4><p>首先安装 Auth0 依赖，用于和之前注册的 Auth0 账号进行交互：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install auth0-js@latest --save</span><br></pre></td></tr></table></figure>
+<h4 id="动态环境配置"><a href="#动态环境配置" class="headerlink" title="动态环境配置"></a>动态环境配置</h4><p>创建一个文件来存储关于应用程序环境的信息。我们目前在<code>localhost:4200</code>上进行开发，但是最终将部署在节点服务器上，在生产环境中，它会运行在反向代理上。我们需要确保开发环境不会破坏生产环境，反之亦然。</p>
+<p>创建<code>src/app/core</code>文件夹，然后添加一个名为<code>env.config.ts</code>的文件:</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/core/env.config.ts</span></span><br><span class="line"><span class="keyword">const</span> _isDev = <span class="built_in">window</span>.location.port.indexOf(<span class="string">'4200'</span>) &gt; <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">const</span> getHost = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> protocol = <span class="built_in">window</span>.location.protocol;</span><br><span class="line">  <span class="keyword">const</span> host = <span class="built_in">window</span>.location.host;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;protocol&#125;</span>//<span class="subst">$&#123;host&#125;</span>`</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> apiURI = _isDev ? <span class="string">'http://localhost:8083/api/'</span> : <span class="string">`/api/`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> ENV = &#123;</span><br><span class="line">  BASE_URI: getHost(),</span><br><span class="line">  BASE_API: apiURI</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>上述代码检测主机环境并设置应用程序的基础 URI 和基础 API URI。在需要检测和使用这些 uri 的地方，可以引入<code>ENV</code>变量。</p>
+<div class="note info"><p>另一种方法是配置<code>environments/environment.*.ts</code>。。</p></div>
+<h4 id="安全认证设定"><a href="#安全认证设定" class="headerlink" title="安全认证设定"></a>安全认证设定</h4><p>创建<code>src/app/auth/auth.config.ts</code>文件用于存储 Auth0 认证相关的配置信息：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/auth/auth.config.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; ENV &#125; <span class="keyword">from</span> <span class="string">'./../core/env.config'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> AuthConfig &#123;</span><br><span class="line">  CLIENT_ID: <span class="built_in">string</span>;</span><br><span class="line">  CLIENT_DOMAIN: <span class="built_in">string</span>;</span><br><span class="line">  AUDIENCE: <span class="built_in">string</span>;</span><br><span class="line">  REDIRECT: <span class="built_in">string</span>;</span><br><span class="line">  SCOPE: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> AUTH_CONFIG: AuthConfig = &#123;</span><br><span class="line">  CLIENT_ID: <span class="string">'[AUTH0_CLIENT_ID]'</span>,</span><br><span class="line">  CLIENT_DOMAIN: <span class="string">'[AUTH0_CLIENT_DOMAIN]'</span>, <span class="comment">// e.g., you.auth0.com</span></span><br><span class="line">  AUDIENCE: <span class="string">'[YOUR_AUTH0_API_AUDIENCE]'</span>, <span class="comment">// e.g., http://localhost:8083/api/</span></span><br><span class="line">  REDIRECT: <span class="string">`<span class="subst">$&#123;ENV.BASE_URI&#125;</span>/callback`</span>,</span><br><span class="line">  SCOPE: <span class="string">'openid profile'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这些配置信息可以在你的 Auth0 账号里找到。</p>
+<h4 id="身份认证服务"><a href="#身份认证服务" class="headerlink" title="身份认证服务"></a>身份认证服务</h4><p><code>AuthService</code>将会负责前端的身份验证逻辑,用 CLI 为生成模板：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ng g service auth/auth --spec false</span><br></pre></td></tr></table></figure>
+<p>打开该文件并添加：</p>
+<figure class="highlight ts"><figcaption><span>auth.service</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/auth/auth.service.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Router &#125; <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BehaviorSubject &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AUTH_CONFIG &#125; <span class="keyword">from</span> <span class="string">'./auth.config'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> auth0 <span class="keyword">from</span> <span class="string">'auth0-js'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AuthService &#123;</span><br><span class="line">  <span class="comment">// Create Auth0 web auth instance</span></span><br><span class="line">  <span class="keyword">private</span> _auth0 = <span class="keyword">new</span> auth0.WebAuth(&#123;</span><br><span class="line">    clientID: AUTH_CONFIG.CLIENT_ID,</span><br><span class="line">    domain: AUTH_CONFIG.CLIENT_DOMAIN,</span><br><span class="line">    responseType: <span class="string">'token'</span>,</span><br><span class="line">    redirectUri: AUTH_CONFIG.REDIRECT,</span><br><span class="line">    audience: AUTH_CONFIG.AUDIENCE,</span><br><span class="line">    scope: AUTH_CONFIG.SCOPE</span><br><span class="line">  &#125;);</span><br><span class="line">  accessToken: <span class="built_in">string</span>;</span><br><span class="line">  userProfile: <span class="built_in">any</span>;</span><br><span class="line">  expiresAt: <span class="built_in">number</span>;</span><br><span class="line">  <span class="comment">// Create a stream of logged in status to communicate throughout app</span></span><br><span class="line">  loggedIn: <span class="built_in">boolean</span>;</span><br><span class="line">  loggedIn$ = <span class="keyword">new</span> BehaviorSubject&lt;<span class="built_in">boolean</span>&gt;(<span class="keyword">this</span>.loggedIn);</span><br><span class="line">  loggingIn: <span class="built_in">boolean</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> router: Router</span>) &#123;</span><br><span class="line">    <span class="comment">// If app auth token is not expired, request new token</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">'expires_at'</span>)) &gt; <span class="built_in">Date</span>.now()) &#123;</span><br><span class="line">      <span class="keyword">this</span>.renewToken();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setLoggedIn(value: <span class="built_in">boolean</span>) &#123;</span><br><span class="line">    <span class="comment">// Update login status subject</span></span><br><span class="line">    <span class="keyword">this</span>.loggedIn$.next(value);</span><br><span class="line">    <span class="keyword">this</span>.loggedIn = value;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  login() &#123;</span><br><span class="line">    <span class="comment">// Auth0 authorize request</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.authorize();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  handleAuth() &#123;</span><br><span class="line">    <span class="comment">// When Auth0 hash parsed, get profile</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.parseHash(<span class="function">(<span class="params">err, authResult</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (authResult &amp;&amp; authResult.accessToken) &#123;</span><br><span class="line">        <span class="built_in">window</span>.location.hash = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">this</span>._getProfile(authResult);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="built_in">console</span>.error(<span class="string">`Error authenticating: <span class="subst">$&#123;err.error&#125;</span>`</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">this</span>.router.navigate([<span class="string">'/'</span>]);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _getProfile(authResult) &#123;</span><br><span class="line">    <span class="keyword">this</span>.loggingIn = <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">// Use access token to retrieve user's profile and set session</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.client.userInfo(authResult.accessToken, <span class="function">(<span class="params">err, profile</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (profile) &#123;</span><br><span class="line">        <span class="keyword">this</span>._setSession(authResult, profile);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="built_in">console</span>.warn(<span class="string">`Error retrieving profile: <span class="subst">$&#123;err.error&#125;</span>`</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _setSession(authResult, profile?) &#123;</span><br><span class="line">    <span class="keyword">this</span>.expiresAt = authResult.expiresIn * <span class="number">1000</span> + <span class="built_in">Date</span>.now();</span><br><span class="line">    <span class="comment">// Store expiration in local storage to access in constructor</span></span><br><span class="line">    localStorage.setItem(<span class="string">'expires_at'</span>, <span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.expiresAt));</span><br><span class="line">    <span class="keyword">this</span>.accessToken = authResult.accessToken;</span><br><span class="line">    <span class="keyword">this</span>.userProfile = profile;</span><br><span class="line">    <span class="comment">// Update login status in loggedIn$ stream</span></span><br><span class="line">    <span class="keyword">this</span>.setLoggedIn(<span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">this</span>.loggingIn = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _clearExpiration() &#123;</span><br><span class="line">    <span class="comment">// Remove token expiration from localStorage</span></span><br><span class="line">    localStorage.removeItem(<span class="string">'expires_at'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  logout() &#123;</span><br><span class="line">    <span class="comment">// Remove data from localStorage</span></span><br><span class="line">    <span class="keyword">this</span>._clearExpiration();</span><br><span class="line">    <span class="comment">// End Auth0 authentication session</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.logout(&#123;</span><br><span class="line">      clientId: AUTH_CONFIG.CLIENT_ID,</span><br><span class="line">      returnTo: ENV.BASE_URI</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> tokenValid(): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="comment">// Check if current time is past access token's expiration</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Date</span>.now() &lt; <span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">'expires_at'</span>));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  renewToken() &#123;</span><br><span class="line">    <span class="comment">// Check for valid Auth0 session</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.checkSession(&#123;&#125;, <span class="function">(<span class="params">err, authResult</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (authResult &amp;&amp; authResult.accessToken) &#123;</span><br><span class="line">        <span class="keyword">this</span>._getProfile(authResult);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>._clearExpiration();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码使用<code>auth.config</code>里的配置实例化了一个<code>WebAuth</code>对象，并且提供了一个 RxJS 的<code>BehaviorSubject</code>身份验证状态事件流，使得我们可以在整个应用中订阅它。</p>
+<p>构造函数在初始化时检查应用程序身份验证状态：如果用户没有从之前的会话中退出 Angular 应用程序(令牌还没有过期)，将会调用<code>renewToken()</code>的方法来验证他们在身份验证服务器上的 Auth0 会话是否仍然有效。如果是，我们会接收一个新的访问令牌。</p>
+<p><code>login()</code>方法使用<code>WebAuth</code>发起授权身份验证请求。Auth0 登录授权页面会显示给用户，然后用户可以进行登录。</p>
+<p>当用户成功验证，应用的回调页面会接收到一个<code>access_token</code>和令牌过期时间(<code>expiresIn</code>)。<code>handleAuth()</code>方法使用 Auth0 的<code>parseHash()</code>回调方法来获取用户的概要文件(<code>_getProfile()</code>)，并且通过本地存储保存令牌,过期时间,概要文件设置会话信息(<code>_setSession()</code>)，同时调用<code>setLoggedIn()</code>同步用户验证状态,以便应用程序中的任何组件知道用户已经登陆了。</p>
+<p>接着，我们创建了一些通用方法（<code>_clearExpiration</code>），用于从本地存储中轻松清除过期信息。</p>
+<p><code>logout()</code>方法清除本地存储的过期信息，并通过 Auth0 的 API 注销当前会话，并且重定向到我们指定的页面（受页）。</p>
+<p><code>tokenValid()</code>访问器，用于检查当前日期时间是否小于令牌过期日期时间。</p>
+<p>最后，我们将实现<code>renewToken()</code>方法，如果用户的身份验证会话仍然处于活动状态，则使用 Auth0 <code>checkSession()</code>方法从 Auth0 请求一个新的访问令牌。如果没有会话活动，我们将不做任何事情。我们不希望在这里产生任何错误或日志，因为没有会话并不意味着出了什么问题。</p>
+<h4 id="AuthService-全局实例"><a href="#AuthService-全局实例" class="headerlink" title="AuthService 全局实例"></a>AuthService 全局实例</h4><p>我们需要全局注册 AuthService 的单一实例，因此将在<code>app.module.ts</code>里注入依赖:</p>
+<figure class="highlight ts"><figcaption><span>app.module</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app.module.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; AuthService &#125; <span class="keyword">from</span> <span class="string">'./auth/auth.service'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">  providers: [</span><br><span class="line">    ...,</span><br><span class="line">    AuthService</span><br><span class="line">  ],</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="回调组件"><a href="#回调组件" class="headerlink" title="回调组件"></a>回调组件</h4><p>接下来，我们将创建一个回调组件。通过验证后应用程序会被重定向到此。这个组件负责接收处理身份验证信息，然后显示一条加载消息，直到散列解析完成，Angular 应用程序重定向回主页。</p>
+<div class="note info"><p>还记得我们之前已经将<code>http://localhost:4200/callback</code>和<code>http://localhost:8083/callback</code>添加到 Auth0 允许的客户端回调地址。</p></div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ng g component pages/callback</span><br></pre></td></tr></table></figure>
+<p><code>AuthService</code>服务的<code>handleAuth()</code>方法必须在该组件的构造方法里调用，以便在应用初始化时运行。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/pages/callback/callback.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">  Loading...</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后添加回调路由：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app-routing.module.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; CallbackComponent &#125; <span class="keyword">from</span> <span class="string">'./pages/callback/callback.component'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> routes: Routes = [</span><br><span class="line">  ...</span><br><span class="line">  &#123;</span><br><span class="line">    path: <span class="string">'callback'</span>,</span><br><span class="line">    component: CallbackComponent</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="在-HeaderComponent-添加登陆和注销"><a href="#在-HeaderComponent-添加登陆和注销" class="headerlink" title="在 HeaderComponent 添加登陆和注销"></a>在 HeaderComponent 添加登陆和注销</h4><p>在 Header 组件里添加 AuthService 服务：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/header/header.component.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; AuthService &#125; <span class="keyword">from</span> <span class="string">'./../auth/auth.service'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HeaderComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    ...,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> auth: AuthService</span>) &#123; &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在组件模板里添加相应元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/header/header.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">header</span> <span class="attr">id</span>=<span class="string">"header"</span> <span class="attr">class</span>=<span class="string">"header"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-page bg-primary"</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-page-authStatus"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">span</span> *<span class="attr">ngIf</span>=<span class="string">"auth.loggingIn"</span>&gt;</span>Logging in...<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ng-template</span> [<span class="attr">ngIf</span>]=<span class="string">"!auth.loggingIn"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> *<span class="attr">ngIf</span>=<span class="string">"!auth.loggedIn"</span> (<span class="attr">click</span>)=<span class="string">"auth.login()"</span>&gt;</span>Log In<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> *<span class="attr">ngIf</span>=<span class="string">"auth.loggedIn &amp;&amp; auth.userProfile"</span>&gt;</span></span><br><span class="line">          &#123;&#123; auth.userProfile.name &#125;&#125;</span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"divider"</span>&gt;</span>|<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">a</span> (<span class="attr">click</span>)=<span class="string">"auth.logout()"</span>&gt;</span>Log Out<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>相应样式这里就不占用篇幅了，具体请参照源码。</p>
+<p>我们现在可以登录我们的应用程序了! 通过单击“登录”链接并进行身份验证。登录之后，可以在 Header 的右上角看到名字和退出链接。</p>
+<p>你可以试着关闭浏览器并重新打开它，你会发现登录状态是持久的(除非令牌已经过期，或者你点击了注销)</p>
+<h3 id="角色授权"><a href="#角色授权" class="headerlink" title="角色授权"></a>角色授权</h3><p>对于我们的应用来说，只有是<code>admin</code>的用户才可以创建，更新和删除活动信息，其他普通用户只能回复活动。为了实现这些，我们需要给用户分配角色在 Node.js 的 API 和 Angular 应用里完成相应的逻辑代码。</p>
+<p>首先来看看大概的步骤：</p>
+<ol>
+<li>使用 Auth0 规则创建我们的用户角色，然后将它们添加到 ID(客户端用户信息)和 access (API)令牌。</li>
+<li>实现 Node.js API 中间件以保证只有<code>admin</code>角色的用户可以访问相应 API。</li>
+<li>Angular 中利用用户角色信息对路由和功能模块进行保护。</li>
+</ol>
+<p>快上车！</p>
+<h4 id="使用-Auth0-规则进行管理授权"><a href="#使用-Auth0-规则进行管理授权" class="headerlink" title="使用 Auth0 规则进行管理授权"></a>使用 Auth0 规则进行管理授权</h4><p>所谓<code>Rules</code>是 Auth0 提供的一个拓展，它实际上是一个 Javascript 方法，每次进行用户身份认证的时候都会执行。</p>
+<p>进入我们的<a href="https://manage.auth0.com/dashboard/us/suchenrain/rules/new" target="_blank" rel="noopener">Auth0</a>并选择创建一条<code>Set roles to a user</code>模板的 rule:</p>
+<figure class="highlight js"><figcaption><span>Assign Admin to specified user</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// set me as 'admin' role, and all others to 'user'</span></span><br><span class="line"><span class="comment">// save app_metadata to ID and tokens</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params">user, context, callback</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Roles should only be set to verified users.</span></span><br><span class="line">  <span class="keyword">if</span> (!user.email || !user.email_verified) &#123;</span><br><span class="line">    <span class="keyword">return</span> callback(<span class="keyword">new</span> UnauthorizedError(<span class="string">'Please verify your email before logging in.'</span>));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  user.app_metadata = user.app_metadata || &#123;&#125;;</span><br><span class="line">  <span class="comment">// You can add a Role based on what you want</span></span><br><span class="line">  <span class="comment">// In this case I check domain</span></span><br><span class="line">  <span class="keyword">const</span> addRolesToUser = <span class="function"><span class="keyword">function</span>(<span class="params">user,cb</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(user.email &amp;&amp; user.email === <span class="string">'[MY_REGISTERED_ACCOUNT_EMAIL]'</span>)&#123;</span><br><span class="line">      cb(<span class="literal">null</span>,[<span class="string">'admin'</span>]);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      cb(<span class="literal">null</span>,[<span class="string">'user'</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  addRolesToUser(user,<span class="function"><span class="keyword">function</span>(<span class="params">err,roles</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(err)&#123;</span><br><span class="line">      callback(err);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      user.app_metadata.roles =roles;</span><br><span class="line">      auth0.users.updateAppMetadata(user.user_id,user.app_metadata)</span><br><span class="line">        .then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          <span class="comment">// add metadata to both ID token and access token</span></span><br><span class="line">          <span class="keyword">var</span> namespace = <span class="string">'http://yourapp.com/roles'</span>;</span><br><span class="line">          <span class="keyword">var</span> userRoles = user.app_metadata.roles;</span><br><span class="line">          context.idToken[namespace] = userRoles;</span><br><span class="line">          context.accessToken[namespace] = userRoles;</span><br><span class="line">          callback(<span class="literal">null</span>,user,context);</span><br><span class="line">        &#125;)</span><br><span class="line">        .catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">          callback(err);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单起见，我们只给自己的账号分配<code>admin</code>角色，其他账号都是普通<code>user</code>。</p>
+<div class="note warning"><p>注意，上面代码还检查确保用户邮件必须是已经通过验证了。</p></div>
+<p><code>namespace</code>标识符可以是任何非 auth0 的 HTTP 或 HTTPS URL，并且不必指向实际的资源。Auth0 执行 OIDC 关于附加声明的建议，并且会静默排除任何没有名称空间的声明。<a href="https://auth0.com/docs/scopes/current#custom-claims" target="_blank" rel="noopener">[了解更多]</a></p>
+<p>现在，你可以在我们的 RSVP 程序进行登陆，登陆成功后，可以在<a href="https://manage.auth0.com/dashboard/us/suchenrain/users" target="_blank" rel="noopener">Auth0 的用户</a>查看用户的<code>Metadata</code>,你应该看到<code>app_metadata</code>大概如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"roles"</span>: [<span class="string">"admin"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在客户端接收的 ID 和访问令牌, 会附带如下的键值对:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;http://myapp.com/roles&quot;: [&quot;admin&quot;]</span><br></pre></td></tr></table></figure>
+<h4 id="Node-API-管理员中间件"><a href="#Node-API-管理员中间件" class="headerlink" title="Node API 管理员中间件"></a>Node API 管理员中间件</h4><p>现在我们的 Auth0 身份验证已经可以提供角色支持，接下来利用它来保护需要管理员访问的 API 路由。</p>
+<p>打开<code>config.js</code>并添加我们在上面设置的<code>namespace</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  ...,</span><br><span class="line">  NAMESPACE: <span class="string">'http://yourapp.com/roles'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>添加中间件代码来确认用户是否经过身份验证，以及是否具有访问 API 的管理员权限。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/api.js</span></span><br><span class="line">...</span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">app, config</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Authentication middleware</span></span><br><span class="line">  <span class="keyword">const</span> jwtCheck = jwt(&#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Check for an authenticated admin user</span></span><br><span class="line">  <span class="keyword">const</span> adminCheck = <span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> roles = req.user[config.NAMESPACE] || [];</span><br><span class="line">    <span class="keyword">if</span> (roles.indexOf(<span class="string">'admin'</span>) &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">      next();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      res.status(<span class="number">401</span>).send(&#123;<span class="attr">message</span>: <span class="string">'Not authorized for admin access'</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><code>express-jwt</code>包默认将解码后的令牌添加到<code>req.user</code>。<code>adminCheck</code>中间件查找这个属性，并在数组中查找 admin 的值。如果找到，则继续请求。如果没有，则返回 401 未授权状态，并显示一条简短的错误消息。</p>
+<h4 id="Angular-应用中的管理员授权"><a href="#Angular-应用中的管理员授权" class="headerlink" title="Angular 应用中的管理员授权"></a>Angular 应用中的管理员授权</h4><p>同样，我们需要在前端添加相应的管理员授权检测代码，我们需要修改<code>AuthService</code>服务。</p>
+<p>首先，添加同样的<code>namespace</code>:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/auth/auth.config.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">interface</span> AuthConfig &#123;</span><br><span class="line">  ...,</span><br><span class="line">  NAMESPACE: <span class="built_in">string</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> AUTH_CONFIG: AuthConfig = &#123;</span><br><span class="line">  ...,</span><br><span class="line">  NAMESPACE: <span class="string">'http://yourapp.com/roles'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接着在<code>auth.service.ts</code>检查和保存管理员授权信息：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/auth/auth.service.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AuthService &#123;</span><br><span class="line">  ...</span><br><span class="line">  isAdmin: <span class="built_in">boolean</span>;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _setSession(authResult, profile) &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// If initial login, set profile and admin information</span></span><br><span class="line">    <span class="keyword">if</span> (profile) &#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.isAdmin = <span class="keyword">this</span>._checkAdmin(profile);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Update login status in loggedIn$ stream</span></span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _checkAdmin(profile) &#123;</span><br><span class="line">    <span class="comment">// Check if the user has admin role</span></span><br><span class="line">    <span class="keyword">const</span> roles = profile[AUTH_CONFIG.NAMESPACE] || [];</span><br><span class="line">    <span class="keyword">return</span> roles.indexOf(<span class="string">'admin'</span>) &gt; <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>首先我们添加了一个属性：<code>isAdmin: boolean</code>，用来标识用户的管理员状态。另外，我们更新了<code>_setSession</code>方法，在用户通过验证后，检查了用户的角色信息并同步<code>isAdmin</code>。</p>
+<p>至此，在后端 Node API 路由和 Angular 应用中都已经实现了权限校验。</p>
+<h3 id="规划功能模块"><a href="#规划功能模块" class="headerlink" title="规划功能模块"></a>规划功能模块</h3><p>数据库、Angular 应用程序、身份验证和 Node API 基本结构已经搭建好了。现在是时候进行功能规划和数据建模了。在直接编写 API 和业务逻辑之前，规划应用程序的数据结构非常重要。</p>
+<p>让我们从更高层次的角度思考一下 RSVP 应用程序的预期功能，然后我们将推断数据库模型应该是什么样子的。</p>
+<h4 id="活动事件"><a href="#活动事件" class="headerlink" title="活动事件"></a>活动事件</h4><ul>
+<li>在首页显示可参加的公开活动事件列表，并且可以进行搜索。这些活动必须发生在将来，而不是已经过期的。</li>
+<li>管理员可以看到所有活动事件的列表，包括公开/私有/过去/将来的活动。</li>
+<li>活动详情页面，已登陆用户可以回复参与活动，并且可以查看别人的回复。</li>
+<li>活动只能被管理员创建更新和删除。</li>
+<li>删除一个活动会同时清除所有相关联的回复。</li>
+<li>公开的活动可以显示在首页，但是私有的活动也可以直接通过链接访问。</li>
+<li>活动回复和活动的 ID</li>
+</ul>
+<p><strong>活动属性</strong></p>
+<ul>
+<li>活动 ID (数据库自动生成)</li>
+<li>活动标题</li>
+<li>地点</li>
+<li>开始日期和时间</li>
+<li>结束日期和时间</li>
+<li>活动描述</li>
+<li>可见性(公开/私有)</li>
+</ul>
+<h4 id="活动回复"><a href="#活动回复" class="headerlink" title="活动回复"></a>活动回复</h4><ul>
+<li>任何已认证的用户可以参与回复将要发生的活动，不管是公开还是私有。</li>
+<li>用户不可以添加和更新一个已经结束的活动。</li>
+<li>用户可以修改他们现有的回复，但不能删除它们。</li>
+</ul>
+<p><strong>回复的属性</strong></p>
+<ul>
+<li>回复 ID</li>
+<li>用户 ID</li>
+<li>名字</li>
+<li>活动 ID</li>
+<li>是否出席</li>
+<li>额外出席人数（如果参加）</li>
+<li>评论</li>
+</ul>
+<h4 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h4><ul>
+<li>用户应该能够在他们的个人资料中查看所有的已回复列表</li>
+<li>用户数据不存储在 MongoDB 中，由 Auth0 托管。</li>
+<li>用户通过用户 ID 与他们的 RSVPs 相关联。</li>
+<li>用户只能更新自己的回复。</li>
+<li>管理员可以对活动进行增删改查。</li>
+</ul>
+<h3 id="数据建模"><a href="#数据建模" class="headerlink" title="数据建模"></a>数据建模</h3><p>我们已经对应用的功能有了大致的了解，接下来需要在<code>服务端</code>和<code>客户端</code>建立必要的数据模型。</p>
+<h4 id="创建-Mongoose-Schema"><a href="#创建-Mongoose-Schema" class="headerlink" title="创建 Mongoose Schema"></a>创建 Mongoose Schema</h4><p>通过 <code>mongoose</code> 进行 <code>MongoDB</code> 对象建模。每个 <code>mongoose</code> 模式会映射到一个 <code>MongoDB</code> 集合，并定义该集合中文档对象的原型。</p>
+<p>在<code>server</code>下新建<code>models</code>文件夹,添加<code>Event.js</code>和<code>Rsvp.js</code>:</p>
+<figure class="highlight js"><figcaption><span>Event</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/models/Event.js</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Event Model</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">'mongoose'</span>);</span><br><span class="line"><span class="keyword">const</span> Schema = mongoose.Schema;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  title: &#123; <span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  location: &#123; <span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  startDatetime: &#123; <span class="attr">type</span>: <span class="built_in">Date</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  endDatetime: &#123; <span class="attr">type</span>: <span class="built_in">Date</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  description: <span class="built_in">String</span>,</span><br><span class="line">  viewPublic: &#123; <span class="attr">type</span>: <span class="built_in">Boolean</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = mongoose.model(<span class="string">'Event'</span>, eventSchema);</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>MongoDB 会自动生成对象 ID。</p></div>
+<figure class="highlight js"><figcaption><span>Rsvp</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/models/Rsvp.js</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Rsvp Model</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">'mongoose'</span>);</span><br><span class="line"><span class="keyword">const</span> Schema = mongoose.Schema;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rsvpSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">  userId: &#123; <span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  name: &#123; <span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  eventId: &#123; <span class="attr">type</span>: <span class="built_in">String</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  attending: &#123; <span class="attr">type</span>: <span class="built_in">Boolean</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">  guests: <span class="built_in">Number</span>,</span><br><span class="line">  comments: <span class="built_in">String</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = mongoose.model(<span class="string">'Rsvp'</span>, rsvpSchema);</span><br></pre></td></tr></table></figure>
+<p>在 Node API 中，我们将利用它们从 MongoDB 中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/api.js</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | Dependencies</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">const</span> Event = <span class="built_in">require</span>(<span class="string">'./models/Event'</span>);</span><br><span class="line"><span class="keyword">const</span> Rsvp = <span class="built_in">require</span>(<span class="string">'./models/Rsvp'</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="Angular-应用中的模型"><a href="#Angular-应用中的模型" class="headerlink" title="Angular 应用中的模型"></a>Angular 应用中的模型</h4><p>同样在前端 Angular 应用里我们也需要定义 <code>Event</code> 和 <code>RSVP</code> 模型，用来接受从 Node API 检索回来的数据。通过 CLI 创建两个 <code>Class</code>:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ng g class core/models/event.model</span><br><span class="line">$ ng g class core/models/rsvp.model</span><br></pre></td></tr></table></figure>
+<p>打开生成的文件并添加：</p>
+<figure class="highlight ts"><figcaption><span>Event Model</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/core/models/event.model.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> EventModel &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> title: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> location: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> startDatetime: <span class="built_in">Date</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> endDatetime: <span class="built_in">Date</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> viewPublic: <span class="built_in">boolean</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> description?: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> _id?: <span class="built_in">string</span></span></span><br><span class="line"><span class="params">  </span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><figcaption><span>RSVP Model</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/core/models/rsvp.model.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> RsvpModel &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> userId: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> name: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> eventId: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> attending: <span class="built_in">boolean</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> guests?: <span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> comments?: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> _id?: <span class="built_in">string</span></span></span><br><span class="line"><span class="params">  </span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="在-MongoDB-里创建和初始化-Collections"><a href="#在-MongoDB-里创建和初始化-Collections" class="headerlink" title="在 MongoDB 里创建和初始化 Collections"></a>在 MongoDB 里创建和初始化 Collections</h4><p>为了查询数据库，我们准备在 MongoDB 里创建必要的 collection 和一些原始数据。这一切都将通过之前提到的 MongoBooster 来完成：</p>
+<h5 id="创建-Collection"><a href="#创建-Collection" class="headerlink" title="创建 Collection"></a>创建 Collection</h5><p>通过 MongoBooster 连接到我们托管的 MyLab 数据库，并创建<code>events</code>和<code>rsvps</code>两个 collections.</p>
+<h5 id="添加原始数据"><a href="#添加原始数据" class="headerlink" title="添加原始数据"></a>添加原始数据</h5><p>打开 Mongo shell：</p>
+<figure class="highlight sql"><figcaption><span>Add Events</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection("events").insert([&#123;</span><br><span class="line">    "title": "Test Event Past",</span><br><span class="line">    "location": "Home",</span><br><span class="line">    "description": "This event took place in the past.",</span><br><span class="line">    "startDatetime": ISODate("2018-05-05T06:00:00.000+08:00"),</span><br><span class="line">    "endDatetime": ISODate("2018-05-05T08:00:00.000+08:00"),</span><br><span class="line">    "viewPublic": true</span><br><span class="line">&#125;,</span><br><span class="line">...</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><figcaption><span>Add RSVP</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection("rsvps").insert([&#123;</span><br><span class="line">    "userId": "[Auth0_USER_ID]",<span class="comment">--auth0|5c3dc9607493d4385206e45</span></span><br><span class="line">    "eventId": "[Event_Object_ID]",<span class="comment">--5c3ed83c22a9361ec0ac215d</span></span><br><span class="line">    "attending": true,</span><br><span class="line">    "comments": "i will attend on time.",</span><br><span class="line">    "guests": 5,</span><br><span class="line">    "name": "chen zhuang"</span><br><span class="line">&#125;,</span><br><span class="line">...</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<p>记得替换上面相应的数据，<code>userId</code>对应 Auth0 上的已认证的用户，<code>eventId</code>对应我们已经插入的原始 event 数据。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>在 Angular 实战系列的第 2 部分中，我们已经介绍了 MEAN 应用程序的身份验证和授权、功能规划和数据建模。在本系列教程的<a href="/posts/65062">第 3 部分</a>中，我们将使用 Node API 从数据库中获取数据，并使用 Angular 显示数据，完成过滤和排序。</p>
+<hr>
+<blockquote>
+<p><em><strong>系列索引</strong></em></p>
+<ul>
+<li><a href="/posts/30078">Angular 实战系列 - Part 1: MEAN 配置 &amp; Angular 架构</a></li>
+<li><a href="/posts/64307"><del>Angular 实战系列 - Part 2: 身份验证和数据建模</del><code>(你现在在这里)</code></a></li>
+<li><a href="/posts/65062">Angular 实战系列 - Part 3: 抓取和展示数据</a></li>
+<li><a href="/posts/48469">Angular 实战系列 - Part 4: 访问控制，管理和详情页面</a></li>
+<li><a href="/posts/7096">Angular 实战系列 - Part 5: 动画和模板驱动表单</a></li>
+<li><a href="/posts/5650">Angular 实战系列 - Part 6: 响应式表单和自定义验证</a></li>
+<li><a href="/posts/32171">Angular 实战系列 - Part 7: 相关数据和令牌更新</a></li>
+<li><a href="/posts/25434">Angular 实战系列 - Part 8: 延迟加载，生产部署和 SSL</a></li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--Last updated: 2019-02-26 17:26 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://suchenrain.github.io/posts/64307/" title="Angular 实战系列 - Part 2: 身份验证和数据建模">https://suchenrain.github.io/posts/64307/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/en/tags/Angular实战/" rel="tag"># Angular实战</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/en/posts/30078/" rel="next" title="Angular 实战系列 - Part 1: MEAN 配置 & Angular 架构">
+                <i class="fa fa-chevron-left"></i> Angular 实战系列 - Part 1: MEAN 配置 & Angular 架构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/en/posts/65062/" rel="prev" title="Angular 实战系列 - Part 3: 抓取和展示数据">
+                Angular 实战系列 - Part 3: 抓取和展示数据 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/en/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/en/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/en/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Angular-身份验证"><span class="nav-number">1.</span> <span class="nav-text">Angular:身份验证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-Auth0-js"><span class="nav-number">1.1.</span> <span class="nav-text">安装 Auth0.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态环境配置"><span class="nav-number">1.2.</span> <span class="nav-text">动态环境配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安全认证设定"><span class="nav-number">1.3.</span> <span class="nav-text">安全认证设定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#身份认证服务"><span class="nav-number">1.4.</span> <span class="nav-text">身份认证服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AuthService-全局实例"><span class="nav-number">1.5.</span> <span class="nav-text">AuthService 全局实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回调组件"><span class="nav-number">1.6.</span> <span class="nav-text">回调组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在-HeaderComponent-添加登陆和注销"><span class="nav-number">1.7.</span> <span class="nav-text">在 HeaderComponent 添加登陆和注销</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#角色授权"><span class="nav-number">2.</span> <span class="nav-text">角色授权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Auth0-规则进行管理授权"><span class="nav-number">2.1.</span> <span class="nav-text">使用 Auth0 规则进行管理授权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-API-管理员中间件"><span class="nav-number">2.2.</span> <span class="nav-text">Node API 管理员中间件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Angular-应用中的管理员授权"><span class="nav-number">2.3.</span> <span class="nav-text">Angular 应用中的管理员授权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规划功能模块"><span class="nav-number">3.</span> <span class="nav-text">规划功能模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#活动事件"><span class="nav-number">3.1.</span> <span class="nav-text">活动事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#活动回复"><span class="nav-number">3.2.</span> <span class="nav-text">活动回复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户"><span class="nav-number">3.3.</span> <span class="nav-text">用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据建模"><span class="nav-number">4.</span> <span class="nav-text">数据建模</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-Mongoose-Schema"><span class="nav-number">4.1.</span> <span class="nav-text">创建 Mongoose Schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Angular-应用中的模型"><span class="nav-number">4.2.</span> <span class="nav-text">Angular 应用中的模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在-MongoDB-里创建和初始化-Collections"><span class="nav-number">4.3.</span> <span class="nav-text">在 MongoDB 里创建和初始化 Collections</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建-Collection"><span class="nav-number">4.3.1.</span> <span class="nav-text">创建 Collection</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加原始数据"><span class="nav-number">4.3.2.</span> <span class="nav-text">添加原始数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="angular,ng-conf," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="翻译自：version-6-of-angular-now-available  Angular 6.0.0 已经发布啦! 这是一个重要的版本，因为我们更多地将关注点从Angular自身底层框架转移到了相关的工具链上,如何让Angular的快速开发在以后变得更加简单。  作为这次新版本发布的一部分, 我们升级了框架包的主版本(@angular/core, @angular/common, @angu">
+<meta name="keywords" content="angular,ng-conf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular 6.0发布啦">
+<meta property="og:url" content="https://suchenrain.github.io/posts/64464/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="翻译自：version-6-of-angular-now-available  Angular 6.0.0 已经发布啦! 这是一个重要的版本，因为我们更多地将关注点从Angular自身底层框架转移到了相关的工具链上,如何让Angular的快速开发在以后变得更加简单。  作为这次新版本发布的一部分, 我们升级了框架包的主版本(@angular/core, @angular/common, @angu">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/1_V3Kfghg_jIV0ubxmAnCXBA.jpeg">
+<meta property="og:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/1_vD2u7I_a_uxs33qcdo2R6g.gif">
+<meta property="og:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/1_PKi-6dOhlb61g8CM2JCx-Q.png">
+<meta property="og:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/1_De1Vnm2m1yID_EL_xRYIyw.png">
+<meta property="og:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/1_2MO1hno7d30iTPIZ9CnBzw.png">
+<meta property="og:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/1_6uz18nxGzAtk5ftoDZv_iQ.gif">
+<meta property="og:updated_time" content="2020-01-02T10:33:02.163Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular 6.0发布啦">
+<meta name="twitter:description" content="翻译自：version-6-of-angular-now-available  Angular 6.0.0 已经发布啦! 这是一个重要的版本，因为我们更多地将关注点从Angular自身底层框架转移到了相关的工具链上,如何让Angular的快速开发在以后变得更加简单。  作为这次新版本发布的一部分, 我们升级了框架包的主版本(@angular/core, @angular/common, @angu">
+<meta name="twitter:image" content="https://suchenrain-1255943826.file.myqcloud.com/Post/1_V3Kfghg_jIV0ubxmAnCXBA.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/posts/64464/"/>
+
+
+
+
+
+  <title>angular 6.0发布啦 | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            时间轴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/posts/64464/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">angular 6.0发布啦</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T18:23:34+08:00">
+                2018-05-12 18:23
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T18:23:34+08:00">
+                2018-05-12 18:23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-01-02T18:33:02+08:00">
+                2020-01-02 18:33
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,361
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9&nbsp;分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <blockquote class="info"><p>翻译自：<a href="https://blog.angular.io/version-6-of-angular-now-available-cc56b0efa7a4" target="_blank" rel="noopener">version-6-of-angular-now-available</a></p>
+</blockquote>
+<p>Angular 6.0.0 已经发布啦! 这是一个重要的版本，因为我们更多地将关注点从Angular自身底层框架转移到了相关的工具链上,如何让Angular的快速开发在以后变得更加简单。</p>
+<p><img src="https://suchenrain-1255943826.file.myqcloud.com/Post/1_V3Kfghg_jIV0ubxmAnCXBA.jpeg" alt="a photo by Manu Murthy of the Angular Team"></p>
+<p>作为这次新版本发布的一部分, 我们升级了框架包的主版本(<code>@angular/core</code>, <code>@angular/common</code>, <code>@angular/compiler</code>, etc), Angular CLI, 以及 Angular Material + CDK。为了区分交叉兼容性，我们更改了主版本号，所以现在发布的都是6.0.0版本。而这些项目的小版本和补丁版本将根据项目的需要发布。</p>
+<p>你可以通过我们的changelogs来查看全部变更列表: <a href="https://github.com/angular/angular/blob/master/CHANGELOG.md" target="_blank" rel="noopener">framework</a>, <a href="https://github.com/angular/material2/blob/master/CHANGELOG.md" target="_blank" rel="noopener">material+cdk</a>, <a href="https://github.com/angular/angular-cli/releases" target="_blank" rel="noopener">cli</a>.</p>
+<h2 id="ng-update"><a href="#ng-update" class="headerlink" title="ng update"></a>ng update</h2><p><code>ng update &lt;package&gt;</code> 是一个CLI的新命令。它会分析你项目的 <code>package.json</code>文件并且利用Angular的相关知识智能地为你推荐更新. 实际例子请查阅<a href="https://update.angular.io/" target="_blank" rel="noopener">update guide</a>.<br><a id="more"></a><br>不仅可以通过<code>ng update</code> 来帮助你使用依赖包的合适版本,及保持包的同步, 第三方也可以通过<a href="https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2" target="_blank" rel="noopener">schematics</a>提供更新脚本 . 如果你的一个依赖包提供了<code>ng update</code> schematic, 它们可以在需要进行破坏更改时自动更新代码！</p>
+<p><code>ng update</code> 不会取代你的包管理器, 而是借助于npm或者yarn来管理依赖项。除了更新依赖项和对等的依赖项之外, 如果有需要，<code>ng update</code>会对你的项目做相应的转换。</p>
+<p>举个例子，<code>ng update @angular/core</code> 会更新所有的Angualr框架包，连同RxJS和TypeScrit。并且它会运行这些依赖项的任何可用的schematics，从而保证项目最新。作为这一命令的一部分，我们将自动将<code>RxJS -compat</code>安装到应用程序中，以使更加顺利的使用RxJS v6。</p>
+<p>我们期望在未来的几个月里会看到更多的库和包添加<code>ng update</code>的schematics，而且我们已经从企业组件库团队那里听说过，他们计划使用<code>ng update</code>来通过自动化的方式来推动重要的变化，以节省开发人员的时间。</p>
+<p>Learn more about <a href="https://github.com/angular/devkit/blob/master/docs/specifications/update.md" target="_blank" rel="noopener">how the ng update command works</a>. 想创建属于你自己的<code>ng update</code> schematic, 请移步 <a href="https://github.com/ReactiveX/rxjs/blob/8c5d680494a8bc986e638f6138447917c7ba180f/package.json#L231-L233" target="_blank" rel="noopener">package.json of rxjs</a> 以及 <a href="https://github.com/ReactiveX/rxjs/blob/master/migrations/collection.json" target="_blank" rel="noopener">collection.json</a>.</p>
+<h2 id="ng-add"><a href="#ng-add" class="headerlink" title="ng add"></a>ng add</h2><p>另一个新的CLI命令<code>ng add &lt;package&gt;</code>使您的项目更容易添加新的功能。<code>ng add</code>将使用你的包管理器来下载新的依赖项，并调用安装脚本(实现为schematic)，该脚本可以通过配置更改更新项目，添加额外的依赖项(例如，poly填充)，或者使用特定于包的初始化代码。</p>
+<p>在你的新<code>ng new</code>应用程序中尝试以下几点:</p>
+<ul>
+<li><code>ng add @angular/pwa</code> — 通过添加应用程序清单和<code>service worker</code>，将应用程序转换为PWA。</li>
+<li><code>ng add @ng-bootstrap/schematics</code> — 添加 ng-bootstrap 到你的项目中。</li>
+<li><code>ng add @angular/material</code> — 安装和设置 Angular Material和主题，并将新的开始组件注册到<code>ng generate</code></li>
+<li><code>ng add @clr/angular@next</code> — 从虚拟机安装和设置Clarity</li>
+<li><code>ng add @angular/elements</code> — 添加必须的<code>document-register-element.js</code> polyfill（填充）以及<code>angular elements</code>相关依赖 (see below)</li>
+</ul>
+<p>因为<code>ng add</code>是建立在schematics和npm注册表之上的，我们希望相关库和社区能够帮助我们构建一个丰富的<code>ng add</code>支持包生态系统。</p>
+<p>查阅 <a href="https://github.com/angular/material2/blob/master/src/lib/schematics/collection.json" target="_blank" rel="noopener">Angular Material’s ng-add schematic</a> 例子来开始构建你自己的 ng-add schematics.</p>
+<h2 id="Angular-Elements"><a href="#Angular-Elements" class="headerlink" title="Angular Elements"></a>Angular Elements</h2><p>Angular Elements的第一个版本集中于允许你通过将其作为定制元素注册在现有的angular应用程序中引导angular组件。我们在angular.io上广泛使用这一点并作为我们的内容管理系统的一部分，从而允许通过嵌入的HTML对功能进行动态引导。这代替了在静态html内容中手工引导的angular组件的需要。</p>
+<p>更多请查阅<a href="https://stackblitz.com/edit/angular-f3nrpv?file=app%2Fapp.module.ts" target="_blank" rel="noopener">an example of registering a component as a custom element</a> 或更多关于 <a href="https://angular.io/guide/elements" target="_blank" rel="noopener">Angular Elements</a>.</p>
+<p>油管视频 <a href="https://www.youtube.com/watch?v=4u9_kdkvTsc" target="_blank" rel="noopener">Angular Elements Quick Start</a> </p>
+<h2 id="Angular-Material-CDK-Components"><a href="#Angular-Material-CDK-Components" class="headerlink" title="Angular Material + CDK Components"></a>Angular Material + CDK Components</h2><p>最大的变化就是用于显示分层数据的新的树组件。下面的模式来自数据表组件, CDK提供了核心树指令。使用Angular Material所提供的和Material设计一样的样式。 我们最近讨论了这个组件，所以请查看更多信息。这些新的树组件都有样式(Material’s <code>mat-tree</code>)和没有样式的版本(CDK’s <code>cdk-tree</code>)。</p>
+<p>在树组件的旁边，我们也有新的徽章和底板组件。标识符有助于显示一些有用的信息，比如未读项计数。bottom -sheets是一种特殊类型的以移动为中心的对话框，它从viewport的底部出现，通常用于在操作之后呈现一个选项列表。</p>
+<p><code>@angular/cdk/overlay</code>包是cdk中最强大的基础设施之一。随着版本6的发布，这个包现在包含了新的定位逻辑，可以帮助弹出窗口在所有情况下智能地保持在屏幕上。</p>
+<h2 id="Angular-Material-Starter-Components"><a href="#Angular-Material-Starter-Components" class="headerlink" title="Angular Material Starter Components"></a>Angular Material Starter Components</h2><p><img src="https://suchenrain-1255943826.file.myqcloud.com/Post/1_vD2u7I_a_uxs33qcdo2R6g.gif" alt="ng generate for adding a dashboard to your project"></p>
+<p>一旦您运行了<code>ng add @angular/material</code>以向现有应用程序添加材料，您还将能够生成3个新的启动组件。</p>
+<h3 id="Material-Sidenav"><a href="#Material-Sidenav" class="headerlink" title="Material Sidenav"></a>Material Sidenav</h3><p>现在，您可以生成一个starter组件，包括带有应用程序名称和边导航的工具栏。该组件基于断点响应。</p>
+<p>Run:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate @angular/material:material-nav --name=my-nav</span><br></pre></td></tr></table></figure>
+<p>这将创建这个starter组件:</p>
+<p><img src="https://suchenrain-1255943826.file.myqcloud.com/Post/1_PKi-6dOhlb61g8CM2JCx-Q.png" alt="material-nav"></p>
+<h3 id="Material-Dashboard"><a href="#Material-Dashboard" class="headerlink" title="Material Dashboard"></a>Material Dashboard</h3><p>现在，您可以生成一个包含动态网格列表的starter dashboard组件。</p>
+<p>Run:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate @angular/material:material-dashboard --name=my-dashboard</span><br></pre></td></tr></table></figure>
+<p>这将创建这个starter组件:</p>
+<p><img src="https://suchenrain-1255943826.file.myqcloud.com/Post/1_De1Vnm2m1yID_EL_xRYIyw.png" alt="material-dashboard"></p>
+<h3 id="Material-Data-Table"><a href="#Material-Data-Table" class="headerlink" title="Material Data Table"></a>Material Data Table</h3><p>您可以生成一个启动数据表组件，它预先配置了一个数据源来进行排序和分页。</p>
+<p>Run:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate @angular/material:material-table --name=my-table</span><br></pre></td></tr></table></figure>
+<p>这将创建这个starter组件:</p>
+<p><img src="https://suchenrain-1255943826.file.myqcloud.com/Post/1_2MO1hno7d30iTPIZ9CnBzw.png" alt="material-table"></p>
+<p>了解更多<a href="https://material.angular.io/guide/schematics" target="_blank" rel="noopener">Angular Material Schematics.</a></p>
+<h2 id="CLI-Workspaces"><a href="#CLI-Workspaces" class="headerlink" title="CLI Workspaces"></a>CLI Workspaces</h2><p>CLI v6现在支持包含多个项目的工作空间，例如多个应用程序或库。CLI项目现在将使用<code>angular.json</code>替<code>.angular-cli.json</code>用于构建和项目配置。</p>
+<p>每个CLI工作区都有项目，每个项目都有目标，每个目标都可以有配置。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"projects"</span>: &#123;</span><br><span class="line">    <span class="attr">"my-project-name"</span>: &#123;</span><br><span class="line">      <span class="attr">"projectType"</span>: <span class="string">"application"</span>,</span><br><span class="line">      <span class="attr">"architect"</span>: &#123;</span><br><span class="line">        <span class="attr">"build"</span>: &#123;</span><br><span class="line">          <span class="attr">"configurations"</span>: &#123;</span><br><span class="line">            <span class="attr">"production"</span>: &#123;&#125;,</span><br><span class="line">            <span class="attr">"demo"</span>: &#123;&#125;,</span><br><span class="line">            <span class="attr">"staging"</span>: &#123;&#125;,</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"serve"</span>: &#123;&#125;,</span><br><span class="line">        <span class="attr">"extract-i18n"</span>: &#123;&#125;,</span><br><span class="line">        <span class="attr">"test"</span>: &#123;&#125;,</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"my-project-name-e2e"</span>: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>了解更多新版配置文件<a href="https://github.com/angular/angular-cli/wiki/angular-workspace" target="_blank" rel="noopener">new configuration file</a></p>
+<h2 id="Library-Support"><a href="#Library-Support" class="headerlink" title="Library Support"></a>Library Support</h2><p>我们的CLI中最需要的特性之一是支持创建和构建库，我们可以很自豪地介绍:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate library &lt;name&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://suchenrain-1255943826.file.myqcloud.com/Post/1_6uz18nxGzAtk5ftoDZv_iQ.gif" alt="ng generate library within an existing project"></p>
+<p>该命令将在CLI工作区中创建一个库项目，并将其配置为测试和构建。</p>
+<p><a href="https://github.com/angular/angular-cli/wiki/stories-create-library" target="_blank" rel="noopener">Learn more about creating libraries with the Angular CLI</a></p>
+<h2 id="Tree-Shakable-Providers"><a href="#Tree-Shakable-Providers" class="headerlink" title="Tree Shakable Providers"></a>Tree Shakable Providers</h2><p>为了使你的应用程序更小，我们已经从模块引用服务的模式转换为服务引用模块。这意味着允许我们只将模块中注入的服务捆绑到你的代码库中。</p>
+<h3 id="Before"><a href="#Before" class="headerlink" title="Before"></a>Before</h3><figure class="highlight typescript"><figcaption><span>app.module.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">  providers: [MyService]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><figcaption><span>my-service.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyService &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="After"><a href="#After" class="headerlink" title="After"></a>After</h3><p>我们的NgModule中不需要引用。</p>
+<figure class="highlight typescript"><figcaption><span>my-service.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>(&#123;</span><br><span class="line">  providedIn: <span class="string">'root'</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyService &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://angular.io/guide/dependency-injection" target="_blank" rel="noopener">Read more about Dependency Injection</a></p>
+<h2 id="Animations-Performance-Improvements"><a href="#Animations-Performance-Improvements" class="headerlink" title="Animations Performance Improvements"></a>Animations Performance Improvements</h2><p>我们已经更新了动画的实现，将不再需要<a href="https://angular.io/guide/browser-support#enabling-polyfills" target="_blank" rel="noopener">web 动画填充库</a>. 这意味着你可以从你的程序中移除这些填充库并减少大约47KB的包大小, 同时增加Safari的动画性能。</p>
+<h2 id="RxJS-v6"><a href="#RxJS-v6" class="headerlink" title="RxJS v6"></a>RxJS v6</h2><p>Angular已经更新到使用v6的RxJS。RxJS是一个独立的项目，在几周前发布了v6。RxJS v6带来了几个主要的更改，以及向后兼容包RxJS -compat，它将使您的应用程序正常工作。</p>
+<p>RxJS已经被重新整理，使它更容易被树摇（tree-shakable），确保只有你使用的RxJS片段包含在最终的生产包中。</p>
+<p>如果您使用<code>ng update</code>，您的应用程序应该可以继续工作，但是您可以了解更多关于<a href="https://github.com/ReactiveX/rxjs/blob/master/MIGRATION.md" target="_blank" rel="noopener">5.5 to 6.0 migration</a>.</p>
+<h2 id="Long-Term-Support-LTS"><a href="#Long-Term-Support-LTS" class="headerlink" title="Long Term Support (LTS)"></a>Long Term Support (LTS)</h2><p>我们正在扩大对所有主要产品的长期支持。</p>
+<p>之前我们宣布只有v4和v6是LTS版本，但是为了使从一个专业升级到下一个更容易，并且给更大的项目更多的时间来计划更新，我们决定从v4开始扩展对所有主要版本的长期支持。</p>
+<p>每个主要的版本将被支持18个月，大约6个月的积极开发，然后是12个月的关键补丁和安全补丁</p>
+<p>了解更多关于如何<a href="https://angular.io/guide/releases" target="_blank" rel="noopener">Angular versions and releases</a>.</p>
+<h2 id="How-to-update-to-6-0-0"><a href="#How-to-update-to-6-0-0" class="headerlink" title="How to update to 6.0.0"></a>How to update to 6.0.0</h2><p>访问<a href="https://update.angular.io/" target="_blank" rel="noopener">update.angular.io</a> 来获取关于更新应用程序的信息和指南。</p>
+<p>更新通常遵循3个步骤，并将利用新的ng update工具。</p>
+<ol>
+<li>Update @angular/cli</li>
+<li>Update your Angular framework packages</li>
+<li>Update other dependencies</li>
+</ol>
+<p>让开发人员轻松地了解最新版本对我们来说非常重要，所以让我们知道您在评论中对这个版本的看法!</p>
+<h2 id="What-about-Ivy"><a href="#What-about-Ivy" class="headerlink" title="What about Ivy?"></a>What about Ivy?</h2><p>在<a href="https://youtu.be/dIxknqPOWms?t=1360" target="_blank" rel="noopener">ng-conf我们提到了一个叫做Ivy的新项目</a> — 我们的下一代渲染管道。Ivy目前正在开发中，并不是6.0版的一部分。我们将在接下来的几个月里宣布一项关于Ivy的选择预览。关注这个博客的最新信息。</p>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--上次更新: 2020-01-02 18:33 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>加油</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://suchenrain.github.io/posts/64464/" title="angular 6.0发布啦">https://suchenrain.github.io/posts/64464/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+            <a href="/tags/ng-conf/" rel="tag"># ng-conf</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/27331/" rel="next" title="Hexo Next主题使用汇总（不定期更新）">
+                <i class="fa fa-chevron-left"></i> Hexo Next主题使用汇总（不定期更新）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/40446/" rel="prev" title="git command cheat sheet">
+                git command cheat sheet <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ng-update"><span class="nav-number">1.</span> <span class="nav-text">ng update</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ng-add"><span class="nav-number">2.</span> <span class="nav-text">ng add</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Angular-Elements"><span class="nav-number">3.</span> <span class="nav-text">Angular Elements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Angular-Material-CDK-Components"><span class="nav-number">4.</span> <span class="nav-text">Angular Material + CDK Components</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Angular-Material-Starter-Components"><span class="nav-number">5.</span> <span class="nav-text">Angular Material Starter Components</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Material-Sidenav"><span class="nav-number">5.1.</span> <span class="nav-text">Material Sidenav</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Material-Dashboard"><span class="nav-number">5.2.</span> <span class="nav-text">Material Dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Material-Data-Table"><span class="nav-number">5.3.</span> <span class="nav-text">Material Data Table</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLI-Workspaces"><span class="nav-number">6.</span> <span class="nav-text">CLI Workspaces</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Library-Support"><span class="nav-number">7.</span> <span class="nav-text">Library Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tree-Shakable-Providers"><span class="nav-number">8.</span> <span class="nav-text">Tree Shakable Providers</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Before"><span class="nav-number">8.1.</span> <span class="nav-text">Before</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#After"><span class="nav-number">8.2.</span> <span class="nav-text">After</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Animations-Performance-Improvements"><span class="nav-number">9.</span> <span class="nav-text">Animations Performance Improvements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RxJS-v6"><span class="nav-number">10.</span> <span class="nav-text">RxJS v6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Long-Term-Support-LTS"><span class="nav-number">11.</span> <span class="nav-text">Long Term Support (LTS)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-update-to-6-0-0"><span class="nav-number">12.</span> <span class="nav-text">How to update to 6.0.0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-about-Ivy"><span class="nav-number">13.</span> <span class="nav-text">What about Ivy?</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

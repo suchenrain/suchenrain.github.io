@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="浏览器跨域," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是跨域？浏览器的同源策略在解释跨域的概念之前，先让我们来了解下浏览器的同源策略，这也是为什么会有跨域的由来。 同源策略是一项约定，是浏览器的行为，限制了从同一个源下的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。 所谓同源是指 协议+域名+端口 三者都相同，不满足这个条件即为非同源，即使两个不同域名指向同一 IP 地址。 当协议、子域名、主域名、端口号">
+<meta name="keywords" content="浏览器跨域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解跨域及常见解决方法">
+<meta property="og:url" content="https://suchenrain.github.io/en/posts/25206/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="什么是跨域？浏览器的同源策略在解释跨域的概念之前，先让我们来了解下浏览器的同源策略，这也是为什么会有跨域的由来。 同源策略是一项约定，是浏览器的行为，限制了从同一个源下的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。 所谓同源是指 协议+域名+端口 三者都相同，不满足这个条件即为非同源，即使两个不同域名指向同一 IP 地址。 当协议、子域名、主域名、端口号">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://user-images.githubusercontent.com/7972688/70301816-67620880-1836-11ea-92a6-2189966be65c.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/7972688/70307150-74392900-1843-11ea-902c-dd15f2c424cb.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/7972688/70318876-05b49500-185c-11ea-8bc3-4a4d7baffc49.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/7972688/70419499-84017900-1aa0-11ea-94ea-257159001358.png">
+<meta property="og:updated_time" content="2020-01-02T10:33:02.163Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解跨域及常见解决方法">
+<meta name="twitter:description" content="什么是跨域？浏览器的同源策略在解释跨域的概念之前，先让我们来了解下浏览器的同源策略，这也是为什么会有跨域的由来。 同源策略是一项约定，是浏览器的行为，限制了从同一个源下的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。 所谓同源是指 协议+域名+端口 三者都相同，不满足这个条件即为非同源，即使两个不同域名指向同一 IP 地址。 当协议、子域名、主域名、端口号">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/7972688/70301816-67620880-1836-11ea-92a6-2189966be65c.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/en/posts/25206/"/>
+
+
+
+
+
+  <title>深入理解跨域及常见解决方法 | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/en/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/en/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/en/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/en/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/en/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/en/posts/25206/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深入理解跨域及常见解决方法</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-09T18:23:34+08:00">
+                2019-10-09 18:23
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-09T18:23:34+08:00">
+                2019-10-09 18:23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-01-02T18:33:02+08:00">
+                2020-01-02 18:33
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/en/categories/前端之路/" itemprop="url" rel="index">
+                    <span itemprop="name">前端之路</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  2,628
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  12&nbsp;mins
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <h2 id="什么是跨域？"><a href="#什么是跨域？" class="headerlink" title="什么是跨域？"></a>什么是跨域？</h2><h3 id="浏览器的同源策略"><a href="#浏览器的同源策略" class="headerlink" title="浏览器的同源策略"></a>浏览器的同源策略</h3><p>在解释跨域的概念之前，先让我们来了解下浏览器的同源策略，这也是为什么会有跨域的由来。</p>
+<p>同源策略是一项约定，是浏览器的行为，限制了从同一个源下的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的重要安全机制。</p>
+<p>所谓<strong>同源</strong>是指 <strong><code>协议</code></strong>+<strong><code>域名</code></strong>+<strong><code>端口</code></strong> 三者都相同，不满足这个条件即为<strong>非同源</strong>，即使两个不同域名指向同一 IP 地址。 <strong>当协议、子域名、主域名、端口号中任意一个不相同时，都算作不同域。</strong> 不同域之间相互请求资源，就算作<code>跨域</code>。</p>
+<a id="more"></a>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>子域名</th>
+<th>主域名</th>
+<th>端口号</th>
+<th>资源地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>http://</td>
+<td>www.</td>
+<td>abc.com</td>
+<td>:8080</td>
+<td>/scripts/jquery.js</td>
+</tr>
+<tr>
+<td>https://</td>
+<td>cdn.</td>
+<td>abc.com</td>
+<td>:3000</td>
+<td>/b.js</td>
+</tr>
+</tbody>
+</table>
+<p><strong>同源策略限制的内容</strong>：</p>
+<ul>
+<li>Cookie、LocalStorage、IndexedDB 等存储性内容</li>
+<li>DOM 节点</li>
+<li>AJAX 请求发送后，响应结果被浏览器拦截（即请求发送了，服务器响应了）</li>
+</ul>
+<p><strong>注意</strong>：有三个标签是允许跨域加载资源的：</p>
+<ul>
+<li><code>&lt;img src=XXX&gt;</code></li>
+<li><code>&lt;link href=XXX&gt;</code></li>
+<li><code>&lt;script src=XXX&gt;</code></li>
+</ul>
+<p>总结一下就是： <strong>同源策略是浏览器的一种安全行为，是为了阻止一个域下的文档或脚本读取另一个域下的资源污染自身，所以拦截了响应。</strong> 这也是为什么表单提交可以跨域（因为没有获取新的内容）。</p>
+<h2 id="常用的解决方案"><a href="#常用的解决方案" class="headerlink" title="常用的解决方案"></a>常用的解决方案</h2><h3 id="1-JSONP-json-with-padding"><a href="#1-JSONP-json-with-padding" class="headerlink" title="1.JSONP (json with padding)"></a>1.JSONP (json with padding)</h3><h4 id="1-原理"><a href="#1-原理" class="headerlink" title="1) 原理"></a>1) 原理</h4><p>利用<code>&lt;script&gt;</code>标签不受跨域限制，将回调函数名作为参数附带在请求中，服务器接受到请求后，进行特殊处理：把接收到的函数名和需要给它的数据拼接成一个字符串返回，客户端会调用相应声明的函数，对返回的数据进行处理。</p>
+<p><img src="https://user-images.githubusercontent.com/7972688/70301816-67620880-1836-11ea-92a6-2189966be65c.png" alt="image"></p>
+<h4 id="2-示例"><a href="#2-示例" class="headerlink" title="2) 示例"></a>2) 示例</h4><p>封装 jsonp 请求</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="function"><span class="keyword">function</span> <span class="title">jsonp</span>(<span class="params">&#123; url, params, cb &#125;</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">let</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</span></span><br><span class="line"><span class="javascript">      <span class="built_in">window</span>[cb] = <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span></span><br><span class="line"><span class="undefined">        resolve(data);</span></span><br><span class="line"><span class="javascript">        <span class="built_in">document</span>.body.removeChild(script);</span></span><br><span class="line"><span class="undefined">      &#125;;</span></span><br><span class="line"><span class="undefined">      params = &#123;</span></span><br><span class="line"><span class="undefined">        ...params,</span></span><br><span class="line"><span class="undefined">        cb</span></span><br><span class="line"><span class="undefined">      &#125;;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">let</span> arrs = [];</span></span><br><span class="line"><span class="javascript">      <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> params) &#123;</span></span><br><span class="line"><span class="javascript">        arrs.push(<span class="string">`<span class="subst">$&#123;key&#125;</span>=<span class="subst">$&#123;params[key]&#125;</span>`</span>);</span></span><br><span class="line"><span class="undefined">      &#125;</span></span><br><span class="line"><span class="javascript">      script.src = <span class="string">`<span class="subst">$&#123;url&#125;</span>?<span class="subst">$&#123;arrs.join(<span class="string">'&amp;'</span>)&#125;</span>`</span>;</span></span><br><span class="line"><span class="javascript">      <span class="built_in">document</span>.body.appendChild(script);</span></span><br><span class="line"><span class="undefined">    &#125;);</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">  jsonp(&#123;</span></span><br><span class="line"><span class="javascript">    url: <span class="string">'http://localhost:3000/say'</span>,</span></span><br><span class="line"><span class="undefined">    params: &#123;</span></span><br><span class="line"><span class="javascript">      wd: <span class="string">'Iloveyou'</span></span></span><br><span class="line"><span class="undefined">    &#125;,</span></span><br><span class="line"><span class="javascript">    cb: <span class="string">'show'</span></span></span><br><span class="line"><span class="javascript">  &#125;).then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(data);</span></span><br><span class="line"><span class="undefined">  &#125;);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上述代码向<code>http://localhost:3000/say?wd=Iloveyou&amp;cb=show</code>发起请求，服务器返回<code>show(&#39;我不爱你&#39;)</code>,因而前台将会调用 show 方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">let</span> app = express();</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/say'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> &#123; wd, cb &#125; = req.query;</span><br><span class="line">  <span class="built_in">console</span>.log(wd);</span><br><span class="line">  <span class="built_in">console</span>.log(cb);</span><br><span class="line">  res.end(<span class="string">`<span class="subst">$&#123;cb&#125;</span>('我不爱你')`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> server = app.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> host = server.address().address;</span><br><span class="line">  <span class="keyword">var</span> port = server.address().port;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'应用实例，访问地址为 http://%s:%s'</span>, host, port);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="3-优缺点"><a href="#3-优缺点" class="headerlink" title="3) 优缺点"></a>3) 优缺点</h4><p>简单兼容性好，解决主流浏览器跨域数据访问。缺点是<code>仅支持GET</code>方法，且需要服务器做支持才能实现。</p>
+<h3 id="2-CORS"><a href="#2-CORS" class="headerlink" title="2.CORS"></a>2.CORS</h3><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">CORS(cross-origin resource share)</a>跨域资源共享 只是在 HTTP 协议内部，新增了若干个 header 字段 ，来制定 <code>跨域资源共享</code> 的实现规则。</p>
+<p>目前所有浏览器都支持该功能(IE8+：IE8/9 需要使用 XDomainRequest 对象来支持 CORS）)，CORS 也已经成为主流的跨域解决方案。浏览器会自动进行 CORS 通信，实现 CORS 通信的关键在于后端。只要后端实现了 CORS，就实现了跨域。根据浏览器发送的请求可以分为两种情况。</p>
+<h4 id="1-简单请求"><a href="#1-简单请求" class="headerlink" title="1) 简单请求"></a>1) 简单请求</h4><p>若请求满足所有下述条件，则该请求可视为“简单请求”：</p>
+<ul>
+<li>使用下列方法之一：<ul>
+<li>GET</li>
+<li>HEAD</li>
+<li>POST</li>
+</ul>
+</li>
+<li>Fetch 规范定义了对 CORS 安全的首部字段集合，不得人为设置该集合之外的其他首部字段。该集合为：<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Content-Type （需要注意额外的限制）</li>
+<li>DPR</li>
+<li>Downlink</li>
+<li>Save-Data</li>
+<li>Viewport-Width</li>
+<li>Width</li>
+</ul>
+</li>
+<li>Content-Type 的值仅限于下列三者之一：<ul>
+<li>text/plain</li>
+<li>multipart/form-data</li>
+<li>application/x-www-form-urlencoded</li>
+</ul>
+</li>
+<li>请求中的任意 XMLHttpRequestUpload 对象均没有注册任何事件监听器；XMLHttpRequestUpload 对象可以使用 XMLHttpRequest.upload 属性访问。</li>
+<li>请求中没有使用 ReadableStream 对象。</li>
+</ul>
+<p>对于简单请求，只服务端设置 Access-Control-Allow-Origin 即可，前端无须设置，若要带 cookie 请求：前后端都需要设置。</p>
+<p>需注意的是：由于同源策略的限制，所读取的 cookie 为跨域请求接口所在域的 cookie，而非当前页。如果想实现当前页 cookie 的写入，可参考 nginx 反向代理中设置 proxy_cookie_domain 和 NodeJs 中间件代理中 cookieDomainRewrite 参数的设置。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="javascript">  <span class="built_in">document</span>.cookie = <span class="string">'name=chen'</span>;</span></span><br><span class="line"><span class="javascript">  xhr.withCredentials = <span class="literal">true</span>;</span></span><br><span class="line"><span class="javascript">  xhr.open(<span class="string">'POST'</span>, <span class="string">'http://localhost:4000'</span>, <span class="literal">true</span>);</span></span><br><span class="line"><span class="javascript">  xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">if</span> ((xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt; <span class="number">300</span>) || xhr.status === <span class="number">304</span>) &#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(xhr.response);</span></span><br><span class="line"><span class="undefined">      &#125;</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  &#125;;</span></span><br><span class="line"><span class="undefined">  xhr.send();</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = http.createServer(<span class="function">(<span class="params">request, response</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (request.url === <span class="string">'/'</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (request.method === <span class="string">'GET'</span>) &#123;</span><br><span class="line">      response.writeHead(<span class="number">200</span>, &#123;</span><br><span class="line">        <span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'http://localhost:3000'</span></span><br><span class="line">      &#125;);</span><br><span class="line">      response.end(<span class="string">"&#123;name:'chen',password:'test'&#125;"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (request.method === <span class="string">'POST'</span>) &#123;</span><br><span class="line">      response.writeHead(<span class="number">200</span>, &#123;</span><br><span class="line">        <span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'http://localhost:3000'</span>,</span><br><span class="line">        <span class="string">'Access-Control-Allow-Credentials'</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="comment">//  此处设置的cookie还是http://localhost:4000的而非http://localhost:3000，因为后端也不能跨域写cookie(nginx反向代理可以实现)，</span></span><br><span class="line">        <span class="comment">//  但只要http://localhost:4000中写入一次cookie认证，后面的跨域接口都能从http://localhost:4000中获取cookie，从而实现所有的接口都能跨域访问</span></span><br><span class="line">        <span class="string">'Set-Cookie'</span>: <span class="string">'l=a123456;Path=/;Domain=http://localhost:3000;HttpOnly'</span> <span class="comment">// HttpOnly的作用是让js无法读取cookie</span></span><br><span class="line">      &#125;);</span><br><span class="line">      response.end(<span class="string">'true'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  response.end(<span class="string">'false'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">4000</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'the server is running at http://localhost:4000'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-images.githubusercontent.com/7972688/70307150-74392900-1843-11ea-902c-dd15f2c424cb.png" alt="image"></p>
+<h4 id="2-复杂请求"><a href="#2-复杂请求" class="headerlink" title="2) 复杂请求"></a>2) 复杂请求</h4><p>不符合以上条件的请求就肯定是复杂请求了。<br>复杂请求的 CORS 请求，会在正式通信之前，增加一次 HTTP 查询请求，称为 <strong><code>预检</code></strong> 请求,该请求是 <code>option</code> 方法的，通过该请求来知道服务端是否允许跨域请求。</p>
+<p>复杂请求例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// index.html</span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="javascript">  <span class="built_in">document</span>.cookie = <span class="string">'name=chen'</span>;</span></span><br><span class="line"><span class="javascript">  xhr.withCredentials = <span class="literal">true</span>;</span></span><br><span class="line"><span class="javascript">  xhr.open(<span class="string">'GET'</span>, <span class="string">'http://localhost:4000/getData'</span>, <span class="literal">true</span>);</span></span><br><span class="line"><span class="javascript">  xhr.setRequestHeader(<span class="string">'name'</span>, <span class="string">'chen'</span>);</span></span><br><span class="line"><span class="javascript">  xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">if</span> ((xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt; <span class="number">300</span>) || xhr.status === <span class="number">304</span>) &#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(xhr.response);</span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(xhr.getResponseHeader(<span class="string">'name'</span>));</span></span><br><span class="line"><span class="undefined">      &#125;</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  &#125;;</span></span><br><span class="line"><span class="undefined">  xhr.send();</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">let</span> app = express();</span><br><span class="line"><span class="keyword">let</span> whiteList = [<span class="string">'http://localhost:3000'</span>];</span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> origin = req.headers.origin;</span><br><span class="line">  <span class="keyword">if</span> (whiteList.includes(origin)) &#123;</span><br><span class="line">    <span class="comment">// 设置哪个源可以访问我</span></span><br><span class="line">    res.setHeader(<span class="string">'Access-Control-Allow-Origin'</span>, origin);</span><br><span class="line">    <span class="comment">// 允许携带哪个头访问我</span></span><br><span class="line">    res.setHeader(<span class="string">'Access-Control-Allow-Headers'</span>, <span class="string">'name'</span>);</span><br><span class="line">    <span class="comment">// 允许哪个方法访问我</span></span><br><span class="line">    res.setHeader(<span class="string">'Access-Control-Allow-Methods'</span>, <span class="string">'PUT'</span>);</span><br><span class="line">    <span class="comment">// 允许携带cookie</span></span><br><span class="line">    res.setHeader(<span class="string">'Access-Control-Allow-Credentials'</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="comment">// 预检的存活时间</span></span><br><span class="line">    res.setHeader(<span class="string">'Access-Control-Max-Age'</span>, <span class="number">6</span>);</span><br><span class="line">    <span class="comment">// 允许返回的头</span></span><br><span class="line">    res.setHeader(<span class="string">'Access-Control-Expose-Headers'</span>, <span class="string">'name'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (req.method === <span class="string">'OPTIONS'</span>) &#123;</span><br><span class="line">      <span class="comment">// res.end();</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.put(<span class="string">'/getData'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(req.headers);</span><br><span class="line">  res.setHeader(<span class="string">'name'</span>, <span class="string">'jw'</span>);</span><br><span class="line">  res.end(<span class="string">"i don't love you"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/getData'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(req.headers);</span><br><span class="line">  res.end(<span class="string">'i love u'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(express.static(__dirname));</span><br><span class="line">app.listen(<span class="number">4000</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'serve at 4000'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上述代码由<a href="http://localhost:3000/index.html向http://localhost:4000/跨域请求，正如我们上面所说的，后端是实现" target="_blank" rel="noopener">http://localhost:3000/index.html向http://localhost:4000/跨域请求，正如我们上面所说的，后端是实现</a> CORS 通信的关键，需要对引起跨域的因素在 OPTION 中进行相应的处理。</p>
+<h3 id="3-ngnix-反向代理"><a href="#3-ngnix-反向代理" class="headerlink" title="3.ngnix 反向代理"></a>3.ngnix 反向代理</h3><h4 id="1-跨域原理"><a href="#1-跨域原理" class="headerlink" title="1) 跨域原理"></a>1) 跨域原理</h4><p>同源策略是浏览器的安全策略，不是 HTTP 协议的一部分。而服务器端调用 HTTP 接口只是使用 HTTP 协议，不会执行 JS 脚本，不需要同源策略，因此也就不存在跨越问题。</p>
+<h4 id="2-实现思路"><a href="#2-实现思路" class="headerlink" title="2) 实现思路"></a>2) 实现思路</h4><p>通过<code>nginx</code>配置一个代理服务器（域名与 domain1 相同，端口不同）做跳板机，反向代理访问 domain2 接口，并且可以顺便修改 cookie 中 domain 信息，方便当前域 cookie 写入，实现跨域登录。</p>
+<p><img src="https://user-images.githubusercontent.com/7972688/70318876-05b49500-185c-11ea-8bc3-4a4d7baffc49.png" alt="image"></p>
+<h4 id="3-示例代码"><a href="#3-示例代码" class="headerlink" title="3) 示例代码"></a>3) 示例代码</h4><p>nginx 相关配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">     listen       80;</span><br><span class="line">     server_name  www.domain1.com;</span><br><span class="line">     location / &#123;</span><br><span class="line">         root [前端代码路径];</span><br><span class="line">         index index.html;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> server &#123;</span><br><span class="line">    listen       81;</span><br><span class="line">    server_name  www.domain1.com;</span><br><span class="line"></span><br><span class="line">     location / &#123;</span><br><span class="line">         proxy_pass  http://www.domain2.com:8080; #反向代理</span><br><span class="line">         proxy_cookie_domain www.domain2.com www.domain1.com; #修改cookie里的domain</span><br><span class="line"></span><br><span class="line">         add_header Access-Control-Allow-Origin http://www.domain1.com;</span><br><span class="line">         add_header Access-Control-Allow-Credentials true;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>前端代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// index.html</span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="javascript">  <span class="comment">// 前端开关：浏览器是否读写cookie</span></span></span><br><span class="line"><span class="javascript">  xhr.withCredentials = <span class="literal">true</span>;</span></span><br><span class="line"><span class="javascript">  <span class="comment">// 访问nginx中的代理服务器</span></span></span><br><span class="line"><span class="javascript">  xhr.open(<span class="string">'get'</span>, <span class="string">'http://www.domain1.com:81/?user=admin'</span>, <span class="literal">true</span>);</span></span><br><span class="line"><span class="undefined">  xhr.send();</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Nodejs 后台：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server.js</span></span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">var</span> server = http.createServer();</span><br><span class="line"><span class="keyword">var</span> qs = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line">server.on(<span class="string">'request'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> params = qs.parse(req.url.substring(<span class="number">2</span>));</span><br><span class="line">  <span class="comment">// 向前台写cookie</span></span><br><span class="line">  res.writeHead(<span class="number">200</span>, &#123;</span><br><span class="line">    <span class="string">'Set-Cookie'</span>: <span class="string">'l=a123456;Path=/;Domain=www.domain2.com;HttpOnly'</span> <span class="comment">// HttpOnly:脚本无法读取</span></span><br><span class="line">  &#125;);</span><br><span class="line">  res.write(<span class="built_in">JSON</span>.stringify(params));</span><br><span class="line">  res.end();</span><br><span class="line">&#125;);</span><br><span class="line">server.listen(<span class="string">'8080'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Server is running at port 8080...'</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="4-Nodejs-中间件代理"><a href="#4-Nodejs-中间件代理" class="headerlink" title="4.Nodejs 中间件代理"></a>4.Nodejs 中间件代理</h3><h4 id="1-原理-1"><a href="#1-原理-1" class="headerlink" title="1)原理"></a>1)原理</h4><p>原理和上面的 nginx 大致相同，都是利用服务器之间无需遵守同源策略，通过一个代理服务器，实现请求的转发以及设置 CORS。</p>
+<p><img src="https://user-images.githubusercontent.com/7972688/70419499-84017900-1aa0-11ea-94ea-257159001358.png" alt="image"></p>
+<h4 id="2-实现思路-1"><a href="#2-实现思路-1" class="headerlink" title="2) 实现思路"></a>2) 实现思路</h4><p>node + express + http-proxy-middleware 搭建 proxy 服务器</p>
+<h4 id="3-示例代码-1"><a href="#3-示例代码-1" class="headerlink" title="3) 示例代码"></a>3) 示例代码</h4><p>前端代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span></span><br><span class="line"><span class="javascript">  <span class="comment">// 前端开关：浏览器是否读写cookie</span></span></span><br><span class="line"><span class="javascript">  xhr.withCredentials = <span class="literal">true</span>;</span></span><br><span class="line"><span class="javascript">  <span class="comment">// 访问nginx中的代理服务器</span></span></span><br><span class="line"><span class="javascript">  xhr.open(<span class="string">'get'</span>, <span class="string">'http://www.domain1.com:4000/?user=admin'</span>, <span class="literal">true</span>);</span></span><br><span class="line"><span class="undefined">  xhr.send();</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>中间件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> proxy = <span class="built_in">require</span>(<span class="string">'http-proxy-middleware'</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line"></span><br><span class="line">app.use(</span><br><span class="line">  <span class="string">'/'</span>,</span><br><span class="line">  proxy(&#123;</span><br><span class="line">    target: <span class="string">'http://www.domain2.com:8080'</span>,</span><br><span class="line">    changeOrigin: <span class="literal">true</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 修改响应头信息，实现跨域并允许带cookie</span></span><br><span class="line">    onProxyReq: <span class="function"><span class="keyword">function</span>(<span class="params">proxyRes, req, res</span>) </span>&#123;</span><br><span class="line">      res.setHeader(<span class="string">'Access-Control-Allow-Origin'</span>, <span class="string">'http://www.domain1.com'</span>);</span><br><span class="line">      res.setHeader(<span class="string">'Access-Control-Allow-Credentials'</span>, <span class="string">'true'</span>);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 修改响应中的cookie域</span></span><br><span class="line">    cookieDomainRewrite: <span class="string">'www.domain1.com'</span> <span class="comment">// false 为不修改</span></span><br><span class="line">  &#125;)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">81</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Proxy server is running at port 81...'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>后台接口：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line"><span class="keyword">var</span> qs = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line"></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> params = qs.parse(req.url.substring(<span class="number">2</span>));</span><br><span class="line"></span><br><span class="line">  res.setHeader(</span><br><span class="line">    <span class="string">'Set-Cookie'</span>,</span><br><span class="line">    <span class="string">'l=a123456;Path=/;Domain=www.domain2.com;HttpOnly'</span></span><br><span class="line">  );</span><br><span class="line">  res.write(<span class="built_in">JSON</span>.stringify(params));</span><br><span class="line">  res.end();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">8080</span>, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Server is running at port 8080...'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://github.com/ljianshu/Blog/issues/55" target="_blank" rel="noopener">九种跨域方式实现原理（完整版）</a></li>
+<li><a href="https://segmentfault.com/a/1190000011145364" target="_blank" rel="noopener">前端常见跨域解决方案（全）</a></li>
+<li><a href="https://juejin.im/post/5afd79aa6fb9a07ac162a540" target="_blank" rel="noopener">深入跨域问题(4) - 利用代理解决跨域</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--Last updated: 2020-01-02 18:33 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://suchenrain.github.io/posts/25206/" title="深入理解跨域及常见解决方法">https://suchenrain.github.io/posts/25206/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/en/tags/浏览器跨域/" rel="tag"># 浏览器跨域</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/en/posts/1659/" rel="next" title="Redux核心概念词汇表">
+                <i class="fa fa-chevron-left"></i> Redux核心概念词汇表
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/en/posts/52887/" rel="prev" title="你需要知道的HTML知识">
+                你需要知道的HTML知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/en/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/en/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/en/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是跨域？"><span class="nav-number">1.</span> <span class="nav-text">什么是跨域？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器的同源策略"><span class="nav-number">1.1.</span> <span class="nav-text">浏览器的同源策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的解决方案"><span class="nav-number">2.</span> <span class="nav-text">常用的解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-JSONP-json-with-padding"><span class="nav-number">2.1.</span> <span class="nav-text">1.JSONP (json with padding)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-原理"><span class="nav-number">2.1.1.</span> <span class="nav-text">1) 原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-示例"><span class="nav-number">2.1.2.</span> <span class="nav-text">2) 示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-优缺点"><span class="nav-number">2.1.3.</span> <span class="nav-text">3) 优缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-CORS"><span class="nav-number">2.2.</span> <span class="nav-text">2.CORS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简单请求"><span class="nav-number">2.2.1.</span> <span class="nav-text">1) 简单请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-复杂请求"><span class="nav-number">2.2.2.</span> <span class="nav-text">2) 复杂请求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ngnix-反向代理"><span class="nav-number">2.3.</span> <span class="nav-text">3.ngnix 反向代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-跨域原理"><span class="nav-number">2.3.1.</span> <span class="nav-text">1) 跨域原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-实现思路"><span class="nav-number">2.3.2.</span> <span class="nav-text">2) 实现思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例代码"><span class="nav-number">2.3.3.</span> <span class="nav-text">3) 示例代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Nodejs-中间件代理"><span class="nav-number">2.4.</span> <span class="nav-text">4.Nodejs 中间件代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-原理-1"><span class="nav-number">2.4.1.</span> <span class="nav-text">1)原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-实现思路-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">2) 实现思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例代码-1"><span class="nav-number">2.4.3.</span> <span class="nav-text">3) 示例代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

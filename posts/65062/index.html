@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Angular实战," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在本系列的第 2 部分我们已经介绍身份认证，授权，功能规划以及数据建模。 接下来本系列的第 3 部分将介绍如何通过 Node API 从 MongoDB 检索数据以及通过 Angular 在前段显示和过滤数据:  API:获取 Events 数据">
+<meta name="keywords" content="Angular实战">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Angular 实战系列 - Part 3: 抓取和展示数据">
+<meta property="og:url" content="https://suchenrain.github.io/posts/65062/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="在本系列的第 2 部分我们已经介绍身份认证，授权，功能规划以及数据建模。 接下来本系列的第 3 部分将介绍如何通过 Node API 从 MongoDB 检索数据以及通过 Angular 在前段显示和过滤数据:  API:获取 Events 数据">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-03-04T08:17:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Angular 实战系列 - Part 3: 抓取和展示数据">
+<meta name="twitter:description" content="在本系列的第 2 部分我们已经介绍身份认证，授权，功能规划以及数据建模。 接下来本系列的第 3 部分将介绍如何通过 Node API 从 MongoDB 检索数据以及通过 Angular 在前段显示和过滤数据:  API:获取 Events 数据">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/posts/65062/"/>
+
+
+
+
+
+  <title>Angular 实战系列 - Part 3: 抓取和展示数据 | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            时间轴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/posts/65062/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Angular 实战系列 - Part 3: 抓取和展示数据</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-08T18:55:57+08:00">
+                2019-01-08 18:55
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-08T18:55:57+08:00">
+                2019-01-08 18:55
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-04T16:17:14+08:00">
+                2019-03-04 16:17
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/Angular实战系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular实战系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,509
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  21&nbsp;分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <p>在本系列的<a href="/posts/64307">第 2 部分</a>我们已经介绍身份认证，授权，功能规划以及数据建模。</p>
+<p>接下来本系列的第 3 部分将介绍如何通过 Node API 从 MongoDB 检索数据以及通过 Angular 在前段显示和过滤数据:</p>
+<ol>
+<li><a href="#API-获取-Events-数据">API:获取 Events 数据</a><a id="more"></a></li>
+<li><a href="#Angular-获取-Events-数据">Angular:获取 Events 数据</a></li>
+<li><a href="#Angular-创建-Utility-服务">Angular: 创建 Utility 服务</a></li>
+<li><a href="#Angular-创建过滤-排序服务">Angular: 创建过滤/排序服务</a></li>
+<li><a href="#Angular-首页活动事件列表">Angular: 首页活动事件列表</a></li>
+</ol>
+<hr>
+<h3 id="API-获取-Events-数据"><a href="#API-获取-Events-数据" class="headerlink" title="API:获取 Events 数据"></a>API:获取 Events 数据</h3><p>让我们继续上次的内容。我们的数据库中已经有数据，所以现在是用 API 检索数据的时候了。我们将从编写四个 API 开始，它们将分别从 MongoDB 获取如下数据:</p>
+<ul>
+<li>将要发生的公开活动列表</li>
+<li>包含所有活动的列表(需要 admin 权限)</li>
+<li>活动详情(需要身份认证)</li>
+<li>活动的回复列表(需要身份认证)</li>
+</ul>
+<p>打开<code>server/api.js</code>, 让我们开始吧！</p>
+<h4 id="GET-Future-Public-Events"><a href="#GET-Future-Public-Events" class="headerlink" title="GET Future Public Events"></a>GET Future Public Events</h4><p>获取未来的公开的活动列表数据：</p>
+<figure class="highlight js"><figcaption><span>api/events</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/api.js</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> | API Routes</span></span><br><span class="line"><span class="comment"> |--------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">const</span> _eventListProjection = <span class="string">'title startDatetime endDatetime viewPublic'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// GET list of public events starting in the future</span></span><br><span class="line">  app.get(<span class="string">'/api/events'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    Event.find(&#123;<span class="attr">viewPublic</span>: <span class="literal">true</span>, <span class="attr">startDatetime</span>: &#123; <span class="attr">$gte</span>: <span class="keyword">new</span> <span class="built_in">Date</span>() &#125;&#125;, _eventListProjection, (err, events) =&gt; &#123;</span><br><span class="line">      <span class="keyword">let</span> eventsArr = [];</span><br><span class="line">      <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.status(<span class="number">500</span>).send(&#123;<span class="attr">message</span>: err.message&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (events) &#123;</span><br><span class="line">        events.forEach(<span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">          eventsArr.push(event);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      res.send(eventsArr);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<h4 id="GET-All-Public-and-Private-Events"><a href="#GET-All-Public-and-Private-Events" class="headerlink" title="GET All Public and Private Events"></a>GET All Public and Private Events</h4><p>获取所有的活动列表(包含过去和将来的公开或私密活动)：</p>
+<figure class="highlight js"><figcaption><span>api/events/admin</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/api.js</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// GET list of all events, public and private (admin only)</span></span><br><span class="line">  app.get(<span class="string">'/api/events/admin'</span>, jwtCheck, adminCheck, (req, res) =&gt; &#123;</span><br><span class="line">    Event.find(&#123;&#125;, _eventListProjection, (err, events) =&gt; &#123;</span><br><span class="line">      <span class="keyword">let</span> eventsArr = [];</span><br><span class="line">      <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.status(<span class="number">500</span>).send(&#123;<span class="attr">message</span>: err.message&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (events) &#123;</span><br><span class="line">        events.forEach(<span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">          eventsArr.push(event);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      res.send(eventsArr);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>注意，这里添加了<code>jwtCheck</code>和<code>adminCheck</code>中间件对请求进行身份校验。只有管理员才能通过列表和所有活动进行交互，虽然普通用户也可以并只限于通过直接链接查看私密活动信息!(简单起见，本系列不会继续深入细化数据权限校验，不过你可以自己研究研究，这并不是什么难事)</p>
+<h4 id="GET-Event-Details"><a href="#GET-Event-Details" class="headerlink" title="GET Event Details"></a>GET Event Details</h4><p>获取特定活动信息:</p>
+<figure class="highlight js"><figcaption><span>api/event/:id</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/api.js</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// GET event by event ID</span></span><br><span class="line">  app.get(<span class="string">'/api/event/:id'</span>, jwtCheck, (req, res) =&gt; &#123;</span><br><span class="line">    Event.findById(req.params.id, (err, event) =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.status(<span class="number">500</span>).send(&#123;<span class="attr">message</span>: err.message&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (!event) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.status(<span class="number">400</span>).send(&#123;<span class="attr">message</span>: <span class="string">'Event not found.'</span>&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      res.send(event);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<h4 id="GET-RSVPs-for-an-Event"><a href="#GET-RSVPs-for-an-Event" class="headerlink" title="GET RSVPs for an Event"></a>GET RSVPs for an Event</h4><p>获取特定活动的回复信息：</p>
+<figure class="highlight js"><figcaption><span>api/event/:eventId/rsvps</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/api.js</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// GET RSVPs by event ID</span></span><br><span class="line">  app.get(<span class="string">'/api/event/:eventId/rsvps'</span>, jwtCheck, (req, res) =&gt; &#123;</span><br><span class="line">    Rsvp.find(&#123;<span class="attr">eventId</span>: req.params.eventId&#125;, (err, rsvps) =&gt; &#123;</span><br><span class="line">      <span class="keyword">let</span> rsvpsArr = [];</span><br><span class="line">      <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.status(<span class="number">500</span>).send(&#123;<span class="attr">message</span>: err.message&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (rsvps) &#123;</span><br><span class="line">        rsvps.forEach(<span class="function"><span class="params">rsvp</span> =&gt;</span> &#123;</span><br><span class="line">          rsvpsArr.push(rsvp);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      res.send(rsvpsArr);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<h3 id="Angular-获取-Events-数据"><a href="#Angular-获取-Events-数据" class="headerlink" title="Angular:获取 Events 数据"></a>Angular:获取 Events 数据</h3><p>Node API 已经就绪了，我们只需在 Angular 中请求它们然后显示返回的数据就可以啦。</p>
+<h4 id="添加-HttpClientModule-模块"><a href="#添加-HttpClientModule-模块" class="headerlink" title="添加 HttpClientModule 模块"></a>添加 HttpClientModule 模块</h4><p>首先我们需要在根模块导入<code>HttpClientModule</code>,因为我们需要通过 HTTP(s)服务调用后台 API:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; HttpClientModule &#125; <span class="keyword">from</span> <span class="string">'@angular/common/http'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">  imports: [</span><br><span class="line">    ...,</span><br><span class="line">    HttpClientModule</span><br><span class="line">  ],</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="创建-API-服务"><a href="#创建-API-服务" class="headerlink" title="创建 API 服务"></a>创建 API 服务</h4><p>现在我们将创建一个 API 服务专注于从 Node API 返回特定的数据。通过 CLI 在<code>src/app/core</code>文件夹生成<code>api.service.ts</code>:</p>
+<figure class="highlight ts"><figcaption><span>api.service.ts</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  HttpClient,</span><br><span class="line">  HttpErrorResponse,</span><br><span class="line">  HttpHeaders</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'@angular/common/http'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Observable, throwError <span class="keyword">as</span> ObservableThrowError &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; catchError, retryWhen &#125; <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AuthService &#125; <span class="keyword">from</span> <span class="string">'../auth/auth.service'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ENV &#125; <span class="keyword">from</span> <span class="string">'./env.config'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; EventModel &#125; <span class="keyword">from</span> <span class="string">'./models/event.model'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; RsvpModel &#125; <span class="keyword">from</span> <span class="string">'./models/rsvp.model'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ApiService &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> http: HttpClient, <span class="keyword">private</span> auth: AuthService</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">get</span> _authHeader(): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`Bearer <span class="subst">$&#123;this.auth.accessToken&#125;</span>`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">get</span> _setAuthHeader(): <span class="built_in">any</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      headers: <span class="keyword">new</span> HttpHeaders().set(<span class="string">'Authorization'</span>, <span class="keyword">this</span>._authHeader)</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _handleError(err: HttpErrorResponse | <span class="built_in">any</span>): Observable&lt;<span class="built_in">any</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> errorMsg = err.message || <span class="string">'Error: Unable to complete request.'</span>;</span><br><span class="line">    <span class="keyword">if</span> (err.message &amp;&amp; err.message.indexOf(<span class="string">'No JWT present'</span>) &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="keyword">this</span>.auth.login();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ObservableThrowError(errorMsg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// GET list of public , future events</span></span><br><span class="line">  getEvent$(): Observable&lt;EventModel[]&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.http</span><br><span class="line">      .get&lt;EventModel[]&gt;(<span class="string">`<span class="subst">$&#123;ENV.BASE_API&#125;</span>events`</span>)</span><br><span class="line">      .pipe(catchError(<span class="function"><span class="params">error</span> =&gt;</span> <span class="keyword">this</span>._handleError(error)));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// GET all event - private and public (admin only)</span></span><br><span class="line">  getAdminEvent$(): Observable&lt;<span class="built_in">Array</span>&lt;EventModel&gt;&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.http</span><br><span class="line">      .get&lt;<span class="built_in">Array</span>&lt;EventModel&gt;&gt;(</span><br><span class="line">        <span class="string">`<span class="subst">$&#123;ENV.BASE_API&#125;</span>events/admin`</span>,</span><br><span class="line">        <span class="keyword">this</span>._setAuthHeader</span><br><span class="line">      )</span><br><span class="line">      .pipe(catchError(<span class="function"><span class="params">error</span> =&gt;</span> <span class="keyword">this</span>._handleError(error)));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// GET event by id (login required)</span></span><br><span class="line">  getEventById$(id: <span class="built_in">string</span>): Observable&lt;EventModel&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.http</span><br><span class="line">      .get&lt;EventModel&gt;(<span class="string">`<span class="subst">$&#123;ENV.BASE_API&#125;</span>event/<span class="subst">$&#123;id&#125;</span>`</span>, <span class="keyword">this</span>._setAuthHeader)</span><br><span class="line">      .pipe(catchError(<span class="function"><span class="params">error</span> =&gt;</span> <span class="keyword">this</span>._handleError(error)));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// GET RSVPs by event ID (login required)</span></span><br><span class="line">  getRsvpsByEventId$(eventId: <span class="built_in">string</span>): Observable&lt;RsvpModel[]&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.http</span><br><span class="line">      .get&lt;<span class="built_in">Array</span>&lt;RsvpModel&gt;&gt;(</span><br><span class="line">        <span class="string">`<span class="subst">$&#123;ENV.BASE_API&#125;</span>event/<span class="subst">$&#123;eventId&#125;</span>/rsvps`</span>,</span><br><span class="line">        <span class="keyword">this</span>._setAuthHeader</span><br><span class="line">      )</span><br><span class="line">      .pipe(catchError(<span class="function"><span class="params">error</span> =&gt;</span> <span class="keyword">this</span>._handleError(error)));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>我们会发出未经身份验证和身份验证的请求，因此我们将导入<code>HttpClient</code>和<code>HttpHeaders</code>(以添加带有访问令牌的授权头部)以及<code>HttpErrorResponse</code>。如果在尝试发出经过身份验证的请求时没有发现 JWT，我们还需要<code>AuthService</code>来提示登录。</p>
+<p>我们将使用 API 调用创建流，因此我们将从 RxJS 导入<code>Observable</code>和<code>ObservableThrowError</code>以及可链式调用的 <code>catchError</code>操作符。我们需要环境配置中的 ENV 来获得适当的 API uri。最后，为了声明事件流的类型，我们需要前面创建的模型(<code>EventModel</code>和<code>RsvpModel</code>)。</p>
+<p>为了发出经过身份验证的请求，我们需要使用存储在本地存储中的访问令牌设置一个授权头，这个访问令牌来自我们在第 2 部分中创建的<a href="/posts/64307/#Angular-身份验证">身份认证服务</a>。我们将创建一个名为<code>_authHeader</code> 的访问器方法，使用当前存储的访问令牌返回必要的授权值。如果在会话期间以静默方式更新身份验证(稍后我们将实现静默的令牌更新)，则令牌可能会更改，因此我们将在每个请求时从服务中获取它，以确保其有效性。</p>
+<p>最后，我们需要处理 API 错误信息。成功调用则将返回响应作为主体(在我们的示例中，返回 JSON)。如果调用失败，则检查错误消息，并在必要时提示重新登录，取消可观察对象，并在发生其他错误时生成错误提示。</p>
+<h4 id="API-服务注入"><a href="#API-服务注入" class="headerlink" title="API 服务注入"></a>API 服务注入</h4><p>为了使 API 服务能在整个应用中使用，需要在根模块注入依赖：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app.module.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; ApiService &#125; <span class="keyword">from</span> <span class="string">'./core/api.service'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...</span><br><span class="line">  providers: [</span><br><span class="line">    ...,</span><br><span class="line">    ApiService</span><br><span class="line">  ],</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="创建加载组件"><a href="#创建加载组件" class="headerlink" title="创建加载组件"></a>创建加载组件</h4><p>由于我们将进行异步 API 调用，所以最好也有一个加载状态。或者，我们可以使用<a href="https://angular.io/api/router/Resolve" target="_blank" rel="noopener">route resolve</a>来防止在返回必要的 API 数据之前加载路由，但这可能会让应用程序在导航时显得迟缓。相反，我们可以显示一个带有非常简单的组件的加载图标:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ng g component core/loading --is --it --flat</span><br></pre></td></tr></table></figure>
+<p>现在需要一个合适的加载图标，你可以从<a href="https://loading.io/" target="_blank" rel="noopener">loading.io</a>选择你喜欢的。然后将它放在<code>src/assets/images</code>。接着编辑我们的<code>loading.component.ts</code>:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/core/loading.component.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-loading'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;img src="/assets/images/loading.svg" /&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">  styles: [</span><br><span class="line">    <span class="string">`</span></span><br><span class="line"><span class="string">      :host &#123;</span></span><br><span class="line"><span class="string">        display: block;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">      img &#123;</span></span><br><span class="line"><span class="string">        display: block;</span></span><br><span class="line"><span class="string">        margin: 20px auto;</span></span><br><span class="line"><span class="string">        width: 50px;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> LoadingComponent &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>我们的加载组件就完成了，简单吧！让我们试着把回调组件的<code>Loading...</code>字样替换成我们的加载组件：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/pages/callback/callback.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">app-loading</span>&gt;</span><span class="tag">&lt;/<span class="name">app-loading</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>你会发现，当成功登陆跳转时，将会显示我们的加载图标。</p>
+<h3 id="Angular-创建-Utility-服务"><a href="#Angular-创建-Utility-服务" class="headerlink" title="Angular: 创建 Utility 服务"></a>Angular: 创建 Utility 服务</h3><p>在开始构建组件之前，让我们先创建一个可以在整个开发过程中利用的的实用程序服务。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ng g service core/utils</span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><figcaption><span>Utils</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/core/utils.service.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; DatePipe &#125; <span class="keyword">from</span> <span class="string">'@angular/common'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UtilsService &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> datePipe: DatePipe</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  isLoaded(loading: <span class="built_in">boolean</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> loading === <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  eventDates(start, end): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="comment">// Display single-day events as "Jan 7, 2018"</span></span><br><span class="line">    <span class="comment">// Display multi-day events as "Aug 12, 2017 - Aug 13, 2017"</span></span><br><span class="line">    <span class="keyword">const</span> startDate = <span class="keyword">this</span>.datePipe.transform(start, <span class="string">'mediumDate'</span>);</span><br><span class="line">    <span class="keyword">const</span> endDate = <span class="keyword">this</span>.datePipe.transform(end, <span class="string">'mediumDate'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (startDate === endDate) &#123;</span><br><span class="line">      <span class="keyword">return</span> startDate;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;startDate&#125;</span> - <span class="subst">$&#123;endDate&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  eventDatesTimes(start, end): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="comment">// Display single-day events as "1/7/2018, 5:30 PM - 7:30 PM"</span></span><br><span class="line">    <span class="comment">// Display multi-day events as "8/12/2017, 8:00 PM - 8/13/2017, 10:00 AM"</span></span><br><span class="line">    <span class="keyword">const</span> _shortDate = <span class="string">'M/d/yyyy'</span>;</span><br><span class="line">    <span class="keyword">const</span> startDate = <span class="keyword">this</span>.datePipe.transform(start, _shortDate);</span><br><span class="line">    <span class="keyword">const</span> startTime = <span class="keyword">this</span>.datePipe.transform(start, <span class="string">'shortTime'</span>);</span><br><span class="line">    <span class="keyword">const</span> endDate = <span class="keyword">this</span>.datePipe.transform(end, _shortDate);</span><br><span class="line">    <span class="keyword">const</span> endTime = <span class="keyword">this</span>.datePipe.transform(end, <span class="string">'shortTime'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (startDate === endDate) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;startDate&#125;</span>, <span class="subst">$&#123;startTime&#125;</span> - <span class="subst">$&#123;endTime&#125;</span>`</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;startDate&#125;</span>, <span class="subst">$&#123;startTime&#125;</span> - <span class="subst">$&#123;endDate&#125;</span>, <span class="subst">$&#123;endTime&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  eventPast(eventEnd): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="comment">// Check if event has already ended</span></span><br><span class="line">    <span class="keyword">const</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">    <span class="keyword">const</span> then = <span class="keyword">new</span> <span class="built_in">Date</span>(eventEnd.toString());</span><br><span class="line">    <span class="keyword">return</span> now &gt;= then;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们使用了 Angular 内置的<code>DatePipe</code>,所以我们需要导入它，并且在根模块里注入依赖。</p>
+<p><code>isLoaded()</code>用于检查传入值是否严格等于<code>false</code>,我们打算在每个组件里添加一个<code>loading</code>属性用于同步 API 调用的的状态，因为<code>loading</code>值可能会为<code>undefined</code>，所以通过这个公用方法可以防止显示错误的 UI。</p>
+<p>然后<code>eventDates()</code>和<code>eventDatesTimes()</code>用于转换时间的显示格式。而<code>eventPast()</code>用于检查是否是过去的时间，从而告诉我们活动已经过期。</p>
+<p>为了全局使用这个通用的服务，在根模块注入相应依赖。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app.module.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; DatePipe &#125; <span class="keyword">from</span> <span class="string">'@angular/common'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; UtilsService &#125; <span class="keyword">from</span> <span class="string">'./core/utils.service'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  providers: [</span><br><span class="line">    ...,</span><br><span class="line">    DatePipe,</span><br><span class="line">    UtilsService</span><br><span class="line">  ],</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="Angular-创建过滤-排序服务"><a href="#Angular-创建过滤-排序服务" class="headerlink" title="Angular: 创建过滤/排序服务"></a>Angular: 创建过滤/排序服务</h3><p>对于获取的数据数组，我们需要添加一些方法来组织它们。就如同 AngularJS 里面的内置过滤器，比如<code>filter</code>和<code>orderBy</code>。虽然 Angular 使用<a href="https://angular.io/guide/pipes" target="_blank" rel="noopener">pipes</a>来转换数据，但是并不提供用于过滤或排序的开箱即用管道。(<a href="https://angular.io/guide/pipes#appendix-no-filterpipe-or-orderbypipe" target="_blank" rel="noopener">原因</a>)</p>
+<p>出于性能和影响最小化的考虑，我们将不创建自定义管道来实现筛选或排序功能。这只会重新引入 Angular 团队试图通过删除这些过滤器来解决的问题。相反，正确的方法是使用服务。</p>
+<p>我们将会添加几个全局通用的服务方法用于搜索，过滤和排序: <code>$ ng g service core/filter-sort</code></p>
+<p>打开<code>src/app/core/filter-sort.service.ts</code>:</p>
+<figure class="highlight ts"><figcaption><span>filter-sort</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; DatePipe &#125; <span class="keyword">from</span> <span class="string">'@angular/common'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> FilterSortService &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> datePipe: DatePipe</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _objArrayCheck(array: <span class="built_in">any</span>[]): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="comment">// Checks if the first item in the array is an object</span></span><br><span class="line">    <span class="comment">// (assumes same-shape for all array items)</span></span><br><span class="line">    <span class="comment">// Necessary because some arrays passed in may have</span></span><br><span class="line">    <span class="comment">// models that don't match &#123;[key: string]: any&#125;[]</span></span><br><span class="line">    <span class="comment">// This check prevents uncaught reference errors</span></span><br><span class="line">    <span class="keyword">const</span> item0 = array[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> check = !!(</span><br><span class="line">      array.length &amp;&amp;</span><br><span class="line">      item0 !== <span class="literal">null</span> &amp;&amp;</span><br><span class="line">      <span class="built_in">Object</span>.prototype.toString.call(item0) === <span class="string">'[object Object]'</span></span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> check;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  search(</span><br><span class="line">    array: <span class="built_in">any</span>[],</span><br><span class="line">    query: <span class="built_in">string</span>,</span><br><span class="line">    excludeProps?: <span class="built_in">string</span> | <span class="built_in">string</span>[],</span><br><span class="line">    dateFormat?: <span class="built_in">string</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="comment">// Match query to strings and Date objects / ISO UTC strings</span></span><br><span class="line">    <span class="comment">// Optionally exclude properties from being searched</span></span><br><span class="line">    <span class="comment">// If matching dates, can optionally pass in date format string</span></span><br><span class="line">    <span class="keyword">if</span> (!query || !<span class="keyword">this</span>._objArrayCheck(array)) &#123;</span><br><span class="line">      <span class="keyword">return</span> array;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> lQuery = query.toLowerCase();</span><br><span class="line">    <span class="keyword">const</span> isoDateRegex = <span class="regexp">/\d&#123;4&#125;-\d&#123;2&#125;-\d&#123;2&#125;T\d&#123;2&#125;:\d&#123;2&#125;:\d&#123;2&#125;.\d&#123;3&#125;Z/</span>; <span class="comment">// ISO UTC</span></span><br><span class="line">    <span class="keyword">const</span> dateF = dateFormat ? dateFormat : <span class="string">'medium'</span>;</span><br><span class="line">    <span class="keyword">const</span> filteredArray = array.filter(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> item) &#123;</span><br><span class="line">        <span class="keyword">if</span> (item.hasOwnProperty(key)) &#123;</span><br><span class="line">          <span class="keyword">if</span> (!excludeProps || excludeProps.indexOf(key) === <span class="number">-1</span>) &#123;</span><br><span class="line">            <span class="keyword">const</span> thisVal = item[key];</span><br><span class="line">            <span class="keyword">if</span> (</span><br><span class="line">              <span class="comment">// Value is a string and NOT a UTC date</span></span><br><span class="line">              <span class="keyword">typeof</span> thisVal === <span class="string">'string'</span> &amp;&amp;</span><br><span class="line">              !thisVal.match(isoDateRegex) &amp;&amp;</span><br><span class="line">              thisVal.toLowerCase().indexOf(lQuery) !== <span class="number">-1</span></span><br><span class="line">            ) &#123;</span><br><span class="line">              <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">              <span class="comment">// Value is a Date object or UTC string</span></span><br><span class="line">              (thisVal <span class="keyword">instanceof</span> <span class="built_in">Date</span> ||</span><br><span class="line">                thisVal.toString().match(isoDateRegex)) &amp;&amp;</span><br><span class="line">              <span class="comment">// https://angular.io/api/common/DatePipe</span></span><br><span class="line">              <span class="comment">// Matching date format string passed in as param (or default to 'medium')</span></span><br><span class="line">              <span class="keyword">this</span>.datePipe</span><br><span class="line">                .transform(thisVal, dateF)</span><br><span class="line">                .toLowerCase()</span><br><span class="line">                .indexOf(lQuery) !== <span class="number">-1</span></span><br><span class="line">            ) &#123;</span><br><span class="line">              <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> filteredArray;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  noSearchResults(arr: <span class="built_in">any</span>[], query: <span class="built_in">string</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="comment">// Check if array searched by query returned any results</span></span><br><span class="line">    <span class="keyword">return</span> !!(!arr.length &amp;&amp; query);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  orderByDate(array: <span class="built_in">any</span>[], prop: <span class="built_in">string</span>, reverse?: <span class="built_in">boolean</span>) &#123;</span><br><span class="line">    <span class="comment">// Order an array of objects by a date property</span></span><br><span class="line">    <span class="comment">// Default: ascending (1992-&gt;2017 | Jan-&gt;Dec)</span></span><br><span class="line">    <span class="keyword">if</span> (!prop || !<span class="keyword">this</span>._objArrayCheck(array)) &#123;</span><br><span class="line">      <span class="keyword">return</span> array;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> sortedArray = array.sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> dateA = <span class="keyword">new</span> <span class="built_in">Date</span>(a[prop]).getTime();</span><br><span class="line">      <span class="keyword">const</span> dateB = <span class="keyword">new</span> <span class="built_in">Date</span>(b[prop]).getTime();</span><br><span class="line">      <span class="keyword">return</span> !reverse ? dateA - dateB : dateB - dateA;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> sortedArray;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>_objArrayCheck()</code>方法，用于确保我们尝试搜索或排序的数组包含对象。如果没有，就会产生未捕获的引用错误，因此我们希望有一种方法来防止这种情况。</p>
+<p><code>search()</code>方法接受要筛选的对象数组、要搜索的查询、要从搜索中排除的任何可选属性(单个属性字符串或属性数组)，以及可选的日期格式字符串。<code>dateFormat</code>应该是<code>Angular DatePipe</code>中的一种格式。这允许用户搜索原始数据中可读性差得多的日期。开发可以确定他们想要查询的格式。例如，如果转换 UTC 日期字符串或 JavaScript 日期对象，用户可以查询 Jan 并接收数据中实际值为 2017-01-07T15:00:00.000Z 的结果。</p>
+<p>如果查询是<code>falsey</code>，我们将返回未经过滤的数组。否则，我们将把查询设置为小写，因为我们的搜索应该不区分大小写(我们将对查询的值执行相同的操作)。由于 UTC 日期在 JavaScript 中被识别为字符串而不是日期，因此我们将使用正则表达式将其与其他字符串区分开来。如果没有传递<code>dateFormat</code>参数，我们将默认为<code>medium</code>(例如，2010 年 9 月 3 日，12:05:08 PM)。</p>
+<p>接下来，我们将使用数组方法<code>filter()</code>对数组进行筛选。我们将遍历数组中每个对象中的每个属性，首先确保对象包含<code>hasOwnProperty()</code>方法中的属性。如果键不匹配<code>excludeProps</code>中传递的任何内容，将检查与<code>query</code>匹配的值.</p>
+<p>这对于不同的值类型是不同的。搜索处理字符串、JavaScript 日期对象和 UTC 字符串。如果我们想确保搜索不查询某些属性，我们将确保在调用组件中的方法时将它们作为<code>excludedProps</code>传入。</p>
+<p><code>noSearchResults()</code>方法只接受一个数组和一个查询，如果该数组为空且有查询，则返回 true。</p>
+<p><code>orderByDate()</code>方法接受一个对象数组、包含要排序的日期值的属性和一个可选的反向参数，以将排序顺序从升序更改为降序。如果没有传递属性，则返回未排序的数组。</p>
+<p>在根模块注入依赖：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app.module.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; FilterSortService &#125; <span class="keyword">from</span> <span class="string">'./core/filter-sort.service'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  providers: [</span><br><span class="line">    ...,</span><br><span class="line">    FilterSortService</span><br><span class="line">  ],</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>现在我们可以在组件中根据日期搜索和排序活动事件列表。</p>
+<h3 id="Angular-首页活动事件列表"><a href="#Angular-首页活动事件列表" class="headerlink" title="Angular: 首页活动事件列表"></a>Angular: 首页活动事件列表</h3><p>组件应该获取和显示事件列表。我们已经创建了 Node API 来返回该数据，并实现了 API 服务来获取它。现在我们需要在组件里订阅这些数据并显示在页面。</p>
+<p>为了使用<a href="https://angular.io/api/forms/NgModel" target="_blank" rel="noopener"><code>ngModel</code></a>指令，我们需要在根模块导入<code>FormsModule</code>:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app.module.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; FormsModule &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  imports: [</span><br><span class="line">    ...,</span><br><span class="line">    FormsModule</span><br><span class="line">  ],</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>接着，更新我们的主页组件，让它可以显示公开的活动信息。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/pages/home/home.component.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, OnInit, OnDestroy &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Title &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ApiService &#125; <span class="keyword">from</span> <span class="string">'./../../core/api.service'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; UtilsService &#125; <span class="keyword">from</span> <span class="string">'./../../core/utils.service'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FilterSortService &#125; <span class="keyword">from</span> <span class="string">'./../../core/filter-sort.service'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Subscription &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; EventModel &#125; <span class="keyword">from</span> <span class="string">'./../../core/models/event.model'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-home'</span>,</span><br><span class="line">  templateUrl: <span class="string">'./home.component.html'</span>,</span><br><span class="line">  styleUrls: [<span class="string">'./home.component.scss'</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HomeComponent <span class="keyword">implements</span> OnInit, OnDestroy &#123;</span><br><span class="line">  pageTitle = <span class="string">'Events'</span>;</span><br><span class="line">  eventListSub: Subscription;</span><br><span class="line">  eventList: EventModel[];</span><br><span class="line">  filteredEvents: EventModel[];</span><br><span class="line">  loading: <span class="built_in">boolean</span>;</span><br><span class="line">  error: <span class="built_in">boolean</span>;</span><br><span class="line">  query: <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> title: Title,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> utils: UtilsService,</span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> api: ApiService,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> fs: FilterSortService</span></span><br><span class="line"><span class="params">  </span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.title.setTitle(<span class="keyword">this</span>.pageTitle);</span><br><span class="line">    <span class="keyword">this</span>._getEventList();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> _getEventList() &#123;</span><br><span class="line">    <span class="keyword">this</span>.loading = <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">// Get future, public events</span></span><br><span class="line">    <span class="keyword">this</span>.eventListSub = <span class="keyword">this</span>.api.getEvents$().subscribe(</span><br><span class="line">      res =&gt; &#123;</span><br><span class="line">        <span class="keyword">this</span>.eventList = res;</span><br><span class="line">        <span class="keyword">this</span>.filteredEvents = res;</span><br><span class="line">        <span class="keyword">this</span>.loading = <span class="literal">false</span>;</span><br><span class="line">      &#125;,</span><br><span class="line">      err =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.error(err);</span><br><span class="line">        <span class="keyword">this</span>.loading = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">this</span>.error = <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  searchEvents() &#123;</span><br><span class="line">    <span class="keyword">this</span>.filteredEvents = <span class="keyword">this</span>.fs.search(</span><br><span class="line">      <span class="keyword">this</span>.eventList,</span><br><span class="line">      <span class="keyword">this</span>.query,</span><br><span class="line">      <span class="string">'_id'</span>,</span><br><span class="line">      <span class="string">'mediumDate'</span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  resetQuery() &#123;</span><br><span class="line">    <span class="keyword">this</span>.query = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">this</span>.filteredEvents = <span class="keyword">this</span>.eventList;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnDestroy() &#123;</span><br><span class="line">    <span class="keyword">this</span>.eventListSub.unsubscribe();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- src/app/pages/home/home.component.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">"text-center"</span>&gt;</span>&#123;&#123; pageTitle &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">app-loading</span> *<span class="attr">ngIf</span>=<span class="string">"loading"</span>&gt;</span><span class="tag">&lt;/<span class="name">app-loading</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ng-template</span> [<span class="attr">ngIf</span>]=<span class="string">"utils.isLoaded(loading)"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ng-template</span> [<span class="attr">ngIf</span>]=<span class="string">"eventList"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ng-template</span> [<span class="attr">ngIf</span>]=<span class="string">"eventList.length"</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- Search events --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"sr-only"</span> <span class="attr">for</span>=<span class="string">"search"</span>&gt;</span>Search<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"search input-group mb-3"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"input-group-prepend"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"input-group-text"</span>&gt;</span>Search<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span></span></span><br><span class="line"><span class="tag">          <span class="attr">id</span>=<span class="string">"search"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">type</span>=<span class="string">"text"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">class</span>=<span class="string">"form-control"</span></span></span><br><span class="line"><span class="tag">          [(<span class="attr">ngModel</span>)]=<span class="string">"query"</span></span></span><br><span class="line"><span class="tag">          (<span class="attr">keyup</span>)=<span class="string">"searchEvents()"</span></span></span><br><span class="line"><span class="tag">        /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"input-group-append"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">            <span class="attr">class</span>=<span class="string">"btn btn-danger"</span></span></span><br><span class="line"><span class="tag">            (<span class="attr">click</span>)=<span class="string">"resetQuery()"</span></span></span><br><span class="line"><span class="tag">            [<span class="attr">disabled</span>]=<span class="string">"!query"</span></span></span><br><span class="line"><span class="tag">          &gt;</span></span><br><span class="line">            &amp;times;</span><br><span class="line">          <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">&lt;!-- No search results --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">p</span></span></span><br><span class="line"><span class="tag">        *<span class="attr">ngIf</span>=<span class="string">"fs.noSearchResults(filteredEvents, query)"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">"alert alert-warning"</span></span></span><br><span class="line"><span class="tag">      &gt;</span></span><br><span class="line">        No events found for <span class="tag">&lt;<span class="name">em</span> <span class="attr">class</span>=<span class="string">"text-danger"</span>&gt;</span>&#123;&#123; query &#125;&#125;<span class="tag">&lt;/<span class="name">em</span>&gt;</span>, sorry!</span><br><span class="line">      <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">&lt;!-- Events listing --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"list-group"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span></span></span><br><span class="line"><span class="tag">          *<span class="attr">ngFor</span>=<span class="string">"let event of fs.orderByDate(filteredEvents, 'startDatetime')"</span></span></span><br><span class="line"><span class="tag">          [<span class="attr">routerLink</span>]=<span class="string">"['/event', event._id]"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">class</span>=<span class="string">"list-group-item list-group-item-action flex-column align-items-start"</span></span></span><br><span class="line"><span class="tag">        &gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"d-flex w-100 justify-content-between"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h5</span> <span class="attr">class</span>=<span class="string">"mb-1"</span> [<span class="attr">innerHTML</span>]=<span class="string">"event.title"</span>&gt;</span><span class="tag">&lt;/<span class="name">h5</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">small</span></span></span><br><span class="line"><span class="tag">              &gt;</span>&#123;&#123; utils.eventDates(event.startDatetime, event.endDatetime)</span><br><span class="line">              &#125;&#125;<span class="tag">&lt;/<span class="name">small</span></span></span><br><span class="line"><span class="tag">            &gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- No upcoming public events available --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> *<span class="attr">ngIf</span>=<span class="string">"!eventList.length"</span> <span class="attr">class</span>=<span class="string">"alert alert-info"</span>&gt;</span></span><br><span class="line">      No upcoming public events available.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Error loading events --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span> *<span class="attr">ngIf</span>=<span class="string">"error"</span> <span class="attr">class</span>=<span class="string">"alert alert-danger"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">strong</span>&gt;</span>Oops!<span class="tag">&lt;/<span class="name">strong</span>&gt;</span> There was an error retrieving event data.</span><br><span class="line">  <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ng-template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>我们已经介绍了如何使用 Node API 从数据库中获取数据，以及如何在 Angular 中操作和显示数据。在本系列教程的<a href="/posts/48469">下一部分</a>中，我们将处理访问管理、显示管理事件列表以及开发带有选项卡子组件的事件详细信息页面。</p>
+<blockquote>
+<p><em><strong>系列索引</strong></em></p>
+<ul>
+<li><a href="/posts/30078">Angular 实战系列 - Part 1: MEAN 配置 &amp; Angular 架构</a></li>
+<li><a href="/posts/64307">Angular 实战系列 - Part 2: 身份验证和数据建模</a></li>
+<li><a href="/posts/65062"><del>Angular 实战系列 - Part 3: 抓取和展示数据</del><code>(你现在在这里)</code></a></li>
+<li><a href="/posts/48469">Angular 实战系列 - Part 4: 访问控制，管理和详情页面</a></li>
+<li><a href="/posts/7096">Angular 实战系列 - Part 5: 动画和模板驱动表单</a></li>
+<li><a href="/posts/5650">Angular 实战系列 - Part 6: 响应式表单和自定义验证</a></li>
+<li><a href="/posts/32171">Angular 实战系列 - Part 7: 相关数据和令牌更新</a></li>
+<li><a href="/posts/25434">Angular 实战系列 - Part 8: 延迟加载，生产部署和 SSL</a></li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--上次更新: 2019-03-04 16:17 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>加油</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://suchenrain.github.io/posts/65062/" title="Angular 实战系列 - Part 3: 抓取和展示数据">https://suchenrain.github.io/posts/65062/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Angular实战/" rel="tag"># Angular实战</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/64307/" rel="next" title="Angular 实战系列 - Part 2: 身份验证和数据建模">
+                <i class="fa fa-chevron-left"></i> Angular 实战系列 - Part 2: 身份验证和数据建模
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/48469/" rel="prev" title="Angular 实战系列 - Part 4: 访问控制，管理和详情页面">
+                Angular 实战系列 - Part 4: 访问控制，管理和详情页面 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#API-获取-Events-数据"><span class="nav-number">1.</span> <span class="nav-text">API:获取 Events 数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GET-Future-Public-Events"><span class="nav-number">1.1.</span> <span class="nav-text">GET Future Public Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET-All-Public-and-Private-Events"><span class="nav-number">1.2.</span> <span class="nav-text">GET All Public and Private Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET-Event-Details"><span class="nav-number">1.3.</span> <span class="nav-text">GET Event Details</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET-RSVPs-for-an-Event"><span class="nav-number">1.4.</span> <span class="nav-text">GET RSVPs for an Event</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Angular-获取-Events-数据"><span class="nav-number">2.</span> <span class="nav-text">Angular:获取 Events 数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-HttpClientModule-模块"><span class="nav-number">2.1.</span> <span class="nav-text">添加 HttpClientModule 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-API-服务"><span class="nav-number">2.2.</span> <span class="nav-text">创建 API 服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#API-服务注入"><span class="nav-number">2.3.</span> <span class="nav-text">API 服务注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建加载组件"><span class="nav-number">2.4.</span> <span class="nav-text">创建加载组件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Angular-创建-Utility-服务"><span class="nav-number">3.</span> <span class="nav-text">Angular: 创建 Utility 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Angular-创建过滤-排序服务"><span class="nav-number">4.</span> <span class="nav-text">Angular: 创建过滤/排序服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Angular-首页活动事件列表"><span class="nav-number">5.</span> <span class="nav-text">Angular: 首页活动事件列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>

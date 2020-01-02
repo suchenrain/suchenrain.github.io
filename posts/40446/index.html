@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-cn,en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="668o7JYPf2OrZcw2TaXzygnYV_qteQouRuPIFYQvi0k" />
+<meta name="baidu-site-verification" content="SDwBN8XAYL" />
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git,git系列,git命令," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="更新日志 2018-06-04&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git log 2018-06-03&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git add + git commit 2018-05-31&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git status 2018-05-24&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git init 2018-05-23">
+<meta name="keywords" content="git,git系列,git命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git command cheat sheet">
+<meta property="og:url" content="https://suchenrain.github.io/posts/40446/index.html">
+<meta property="og:site_name" content="ZChen">
+<meta property="og:description" content="更新日志 2018-06-04&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git log 2018-06-03&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git add + git commit 2018-05-31&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git status 2018-05-24&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git init 2018-05-23">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-07-04T15:16:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git command cheat sheet">
+<meta name="twitter:description" content="更新日志 2018-06-04&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git log 2018-06-03&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git add + git commit 2018-05-31&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git status 2018-05-24&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;git init 2018-05-23">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'ZChen'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://suchenrain.github.io/posts/40446/"/>
+
+
+
+
+
+  <title>git command cheat sheet | ZChen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZChen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">Fake it until you make it</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            时间轴
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+      <div class="header-right">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://suchenrain.github.io/posts/40446/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZChen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zchen.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZChen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">git command cheat sheet</h2>
+        
+        <div class="mobile-post-meta">
+          <span class="created-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-15T20:12:00+08:00">
+                2018-05-15 20:12
+              </time>
+            
+          </span>
+        </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-15T20:12:00+08:00">
+                2018-05-15 20:12
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-07-04T23:16:08+08:00">
+                2019-07-04 23:16
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git系列/" itemprop="url" rel="index">
+                    <span itemprop="name">git系列</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git系列/git命令/" itemprop="url" rel="index">
+                    <span itemprop="name">git命令</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,009
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  19&nbsp;分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body   " itemprop="articleBody" data-license="nd">
+
+      
+      
+
+      
+        <h2 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h2><ul>
+<li>2018-06-04&nbsp;&nbsp;&nbsp;&nbsp;git log</li>
+<li>2018-06-03&nbsp;&nbsp;&nbsp;&nbsp;git add + git commit</li>
+<li>2018-05-31&nbsp;&nbsp;&nbsp;&nbsp;git status</li>
+<li>2018-05-24&nbsp;&nbsp;&nbsp;&nbsp;git init</li>
+<li>2018-05-23&nbsp;&nbsp;&nbsp;&nbsp;git config</li>
+<li>2018-05-15&nbsp;&nbsp;&nbsp;&nbsp;初稿</li>
+</ul>
+<hr>
+<h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>实话说 git 是笔者用过的并觉得最好的版本控制系统，相较于 Microsoft 的 TFS 以及 SVN，git 都要优雅许多。然而接触它这么久，还是不敢说已经完全掌握并理解它，但这并不妨碍我对它的热爱。以前也记录过使用的一些总结，后来由于某种原因丢失了，所以想温故而知新。</p>
+<div class="hint warning"><p><strong>注意</strong>：本文的关注点在于如何使用 git 所提供的命令上，诸如环境安装，配置此类问题均不在范畴。</p></div>
+<a id="more"></a>
+<hr>
+<h2 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h2><p>git-init - 用于创建空的 Git 仓库或者重新初始化一个已存在的 Git 仓库。</p>
+<p>以下均假设未设置 Git 相关参数环境变量，如<code>GIT_DIR</code>，<code>GIT_TEMPLATE_DIR</code> etc.</p>
+<figure class="highlight bash"><figcaption><span>以下在git version 2.13.0.windows.1运行测试通过</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建git仓库</span></span><br><span class="line">$ git init  <span class="comment"># 将当前目录初始化为Git仓库</span></span><br><span class="line">$ git init [directory]  <span class="comment"># 在当前路径新建`directory`目录并初始化为Git仓库</span></span><br><span class="line">$ <span class="built_in">pwd</span></span><br><span class="line">/c/WorkBench/suchenrain/temptest</span><br><span class="line">$ git init test1</span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> C:/WorkBench/suchenrain/temptest/test1/.git/</span><br><span class="line"></span><br><span class="line">$ git init [path] <span class="comment"># 在指定的路径`path`下初始化Git仓库</span></span><br><span class="line">$ git init to/<span class="built_in">test</span>  <span class="comment"># 相对路径即 ./to/test</span></span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> C:/WorkBench/suchenrain/temptest/to/<span class="built_in">test</span>/.git/</span><br><span class="line"></span><br><span class="line">$ git init /to/<span class="built_in">test</span> <span class="comment"># 根路径（Git安装路径）</span></span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> C:/WorkSpace/Develop/Git/to/<span class="built_in">test</span>/.git/</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 裸仓库</span></span><br><span class="line">$ git init --bare <span class="comment"># 只生成Git版本库，没有工作区(适用于git服务器)</span></span><br><span class="line">$ git init --bare bare</span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> C:/WorkBench/suchenrain/temptest/bare/</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span> bare</span><br><span class="line">$ tree -F -L 1</span><br><span class="line">.</span><br><span class="line">|-- HEAD</span><br><span class="line">|-- config</span><br><span class="line">|-- description</span><br><span class="line">|-- hooks/</span><br><span class="line">|-- info/</span><br><span class="line">|-- objects/</span><br><span class="line">`-- refs/</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 分离版本库（指定git版本库的路径，而不是默认的./.git。常用于移动已有仓库的版本库）</span></span><br><span class="line">$ git init --separate-git-dir fake src</span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> C:/WorkBench/suchenrain/temptest/fake/</span><br><span class="line">$ tree -F -a -L 2</span><br><span class="line">.</span><br><span class="line">|-- fake/               <span class="comment"># git版本库</span></span><br><span class="line">|   |-- HEAD</span><br><span class="line">|   |-- config</span><br><span class="line">|   |-- description</span><br><span class="line">|   |-- hooks/</span><br><span class="line">|   |-- info/</span><br><span class="line">|   |-- objects/</span><br><span class="line">|   `-- refs/</span><br><span class="line">`-- src/                <span class="comment"># 工作区</span></span><br><span class="line">    `-- .git            <span class="comment"># 版本库路径信息文件</span></span><br><span class="line"></span><br><span class="line">$ vi src/.git</span><br><span class="line">gitdir: C:/WorkBench/suchenrain/temptest/fake       <span class="comment"># 版本库路径为fake</span></span><br><span class="line">~</span><br><span class="line">~</span><br><span class="line">~</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 仓库访问权限</span></span><br><span class="line">$ git init --shared[=(<span class="literal">false</span>|<span class="literal">true</span>|<span class="built_in">umask</span>|group|all|world|everybody|0xxx)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># false等价于umask 这是默认设置，表示使用系统默认的文件权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># group (or true) 仓库组可写。Note that the umask still applies to the other permission bits</span></span><br><span class="line">(e.g. <span class="keyword">if</span> <span class="built_in">umask</span> is 0022, using group will not remove <span class="built_in">read</span> privileges from other (non-group) users)</span><br><span class="line"></span><br><span class="line"><span class="comment"># all (or world or everybody)</span></span><br><span class="line">Same as group, but make the repository readable by all users.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 0xxx</span></span><br><span class="line"><span class="comment"># u-user g-group o-others</span></span><br><span class="line"><span class="comment"># rwx</span></span><br><span class="line"><span class="comment"># 4 stands for "read",</span></span><br><span class="line"><span class="comment"># 2 stands for "write",</span></span><br><span class="line"><span class="comment"># 1 stands for "execute", and</span></span><br><span class="line"><span class="comment"># 0 stands for "no permission."</span></span><br><span class="line">$ git init --shared=0660 testShared</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆仓库到当前目录下</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;repo&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 克隆仓库到指定目录</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;repo&gt; &lt;directory&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 克隆仓库并签出指定分支（默认为master分支）</span></span><br><span class="line">$ git <span class="built_in">clone</span> -b &lt;branch&gt; &lt;repo&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 克隆带有子模块的仓库，正常命令只会包含子模块的空目录</span></span><br><span class="line"><span class="comment"># 自动初始化并更新仓库中的每一个子模块</span></span><br><span class="line">$ git <span class="built_in">clone</span> --recursive &lt;repo&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ git submodule init</span><br><span class="line">$ git submodule update</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="git-config"><a href="#git-config" class="headerlink" title="git config"></a>git config</h2><figure class="highlight bash"><figcaption><span>以下在git version 2.15.0.windows.1 运行测试通过</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有配置</span></span><br><span class="line">$ git config -l, --list</span><br><span class="line"><span class="comment"># 查看配置并显示配置来源</span></span><br><span class="line">$ git config --show-origin -l</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 设置配置</span></span><br><span class="line">$ git config --system user.name <span class="string">"John Doe"</span> <span class="comment"># 设置system级别用户名</span></span><br><span class="line">$ git config --global user.name <span class="string">"suchenxiaoyu"</span> <span class="comment"># 设置global级别用户名</span></span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 读取配置</span></span><br><span class="line">$ git config user.name <span class="comment"># 读取最终生效的配置</span></span><br><span class="line">$ git config --get user.name <span class="comment"># 读取最终生效的配置</span></span><br><span class="line">suchenxiaoyu</span><br><span class="line">$ git config --get-all user.name <span class="comment"># 读取所有配置</span></span><br><span class="line">John Doe</span><br><span class="line">suchenxiaoyu</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 添加配置</span></span><br><span class="line">$ git config --add user.name <span class="built_in">test</span> <span class="comment"># 添加repository级别配置</span></span><br><span class="line">$ git config --global --add user.name <span class="built_in">test</span> <span class="comment"># 添加global级别配置(增加一条配置不管存在与否)</span></span><br><span class="line">$ git config --show-origin --get-all user.name <span class="comment"># 读取user.name的所有配置值并显示来源</span></span><br><span class="line">file:<span class="string">"C:\\Program Files\\Git\\mingw64/etc/gitconfig"</span>    John Doe</span><br><span class="line">file:C:/Users/Administrator/.gitconfig                  suchenxiaoyu</span><br><span class="line">file:C:/Users/Administrator/.gitconfig                  <span class="built_in">test</span></span><br><span class="line">file:.git/config                                        <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 移除配置</span></span><br><span class="line">$ git config --global --<span class="built_in">unset</span> user.name <span class="comment"># 移除global级别用户名（适合只有一条记录的配置）</span></span><br><span class="line">warning: user.name has multiple values</span><br><span class="line">$ git config --global --<span class="built_in">unset</span>-all user.name <span class="comment"># 移除global级别用户名的所有配置</span></span><br><span class="line">$ git config --show-origin --get-all user.name</span><br><span class="line">file:<span class="string">"C:\\Program Files\\Git\\mingw64/etc/gitconfig"</span>    John Doe</span><br><span class="line">file:.git/config        <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line">$ git config --<span class="built_in">unset</span> user.name <span class="comment">#移除repository级别user.name</span></span><br><span class="line">$ git config --show-origin --get-all user.name</span><br><span class="line">file:<span class="string">"C:\\Program Files\\Git\\mingw64/etc/gitconfig"</span>    John Doe <span class="comment">#user.name只剩system级别配置</span></span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line">$ git config --show-origin --get-regexp user  <span class="comment"># 根据正则获取配置信息，如 获取所有级别包含user的配置</span></span><br><span class="line">file:<span class="string">"C:\\Program Files\\Git\\mingw64/etc/gitconfig"</span>    user.name John Doe</span><br><span class="line">file:C:/Users/Administrator/.gitconfig                  user.email suchenxiaoyu@gmail.com</span><br><span class="line">file:C:/Users/Administrator/.gitconfig                  xuser.name haha</span><br><span class="line">file:.git/config                                        user.name te</span><br><span class="line">file:.git/config                                        user.hello te</span><br><span class="line">file:.git/config                                        xuser.name haha</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line">$ git config --remove-section  user    <span class="comment"># remove a section: name</span></span><br><span class="line"><span class="comment"># (移除repository级别的用户节点 user.name,user.email,etc.)</span></span><br><span class="line">$ git config --show-origin --get-regexp user</span><br><span class="line">file:<span class="string">"C:\\Program Files\\Git\\mingw64/etc/gitconfig"</span>    user.name John Doe</span><br><span class="line">file:C:/Users/Administrator/.gitconfig                  user.email suchenxiaoyu@gmail.com</span><br><span class="line">file:C:/Users/Administrator/.gitconfig                  xuser.name haha</span><br><span class="line">file:.git/config                                        xuser.name haha</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a>git status</h2><p><code>git status</code> 用于查看当前工作区文件状态。</p>
+<figure class="highlight bash"><figcaption><span>以下在git version 2.17.1.windows.2运行测试通过</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看工作区当前状态</span></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 短格式-输出两位字母状态码</span></span><br><span class="line">$ git status -s, --short</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 附加输出已暂存的具体变化，一个-v相当于 diff --cached</span></span><br><span class="line"><span class="comment"># 两个-v 相当于再附加上未暂存的具体变化</span></span><br><span class="line">$ git status -v -v</span><br><span class="line">On branch master</span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        modified:   test.md</span><br><span class="line"></span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</span><br><span class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</span><br><span class="line"></span><br><span class="line">        modified:   readme.md</span><br><span class="line"></span><br><span class="line">Changes to be committed:</span><br><span class="line">diff --git c/test.md i/test.md</span><br><span class="line">index e77b92e..23ff8f0 100644</span><br><span class="line">--- c/test.md</span><br><span class="line">+++ i/test.md</span><br><span class="line">@@ -2,3 +2,4 @@ i hate u</span><br><span class="line"> i like u</span><br><span class="line"> i love u</span><br><span class="line"> i hate you</span><br><span class="line">+i like you</span><br><span class="line">--------------------------------------------------</span><br><span class="line">Changes not staged <span class="keyword">for</span> commit:</span><br><span class="line">diff --git i/readme.md w/readme.md</span><br><span class="line">index d8ac117..4094f29 100644</span><br><span class="line">--- i/readme.md</span><br><span class="line">+++ w/readme.md</span><br><span class="line">@@ -3,3 +3,4 @@ add another line</span><br><span class="line"> test1</span><br><span class="line"> test2</span><br><span class="line"> test3</span><br><span class="line">+test4</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 简洁状态下也显示分支信息（搭配 -s）</span></span><br><span class="line">$ git status -s -b</span><br><span class="line"><span class="comment">## master</span></span><br><span class="line"> M readme.md</span><br><span class="line">M  test.md</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"><span class="comment"># 显示已经隐藏起来的条目数量</span></span><br><span class="line">$ git stash   <span class="comment"># 隐藏当前工作目录的变化</span></span><br><span class="line">Saved working directory and index state WIP on master: be44449 skip staged step</span><br><span class="line">$ git status --show-stash</span><br><span class="line">On branch master</span><br><span class="line">nothing to commit, working tree clean</span><br><span class="line">Your stash currently has 1 entry</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h2><p>add 命令用于将工作区变化放入暂存区。</p>
+<figure class="highlight bash"><figcaption><span>以下在git version 2.17.1.windows.2运行测试通过</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 特定文件</span></span><br><span class="line">$ git add readme.md</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定目录下(包括子目录)的所有变化</span></span><br><span class="line">$ git add lib = git add lib/</span><br><span class="line"><span class="comment"># 当前目录下所有变化</span></span><br><span class="line">$ git add .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂存已忽略的文件</span></span><br><span class="line">$ git add -f temp.dll</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入交互模式</span></span><br><span class="line">$ git add -i [path]</span><br><span class="line"></span><br><span class="line">           staged     unstaged path</span><br><span class="line">  1:    unchanged        +1/-0 lib/file4.zc</span><br><span class="line">  2:    unchanged        +1/-0 readme.md</span><br><span class="line">  3:        +2/-0        +1/-0 test.md</span><br><span class="line"></span><br><span class="line">*** Commands ***</span><br><span class="line">  1: status       2: update       3: revert       4: add untracked</span><br><span class="line">  5: patch        6: diff         7: quit         8: <span class="built_in">help</span></span><br><span class="line">What now&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交互式地选择补丁(等同于交互模式下选择patch子命令)</span></span><br><span class="line">$ git add -p, -patch</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong><code>交互模式</code></strong></p>
+<p>进入交互模式后默认输出 status 子命令的结果，并且处于交互命令循环中。此时光标以一个<code>&gt;</code>结尾，可以通过键入选项数字或者类似<code>s</code>,<code>sta</code>等使选择唯一的字母。</p>
+<p>主命令循环有 6 个子命令：</p>
+<h3 id="status"><a href="#status" class="headerlink" title="status"></a>status</h3><p>用于显示暂存区和版本库及工作区的变化</p>
+<ul>
+<li>staged - 显示暂存区版本库当前版本的变化，即将会提交的变化。</li>
+<li>unstaged - 显示工作区与暂存区的变化，即可以暂存的变化。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">         staged     unstaged path</span><br><span class="line">1:    unchanged        +1/-0 lib/file4.zc</span><br><span class="line">2:    unchanged        +1/-0 readme.md</span><br><span class="line">3:        +2/-0        +1/-0 test.md <span class="comment"># 已暂存的变化（新增2行内容），未暂存的变化（新增一行内容）</span></span><br></pre></td></tr></table></figure>
+<h3 id="update"><a href="#update" class="headerlink" title="update"></a>update</h3><p>用于暂存选择的变化。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">*** Commands ***</span><br><span class="line">  1: status       2: update       3: revert       4: add untracked</span><br><span class="line">  5: patch        6: diff         7: quit         8: <span class="built_in">help</span></span><br><span class="line">What now&gt; 2</span><br><span class="line">           staged     unstaged path</span><br><span class="line">  1:    unchanged        +1/-0 lib/file4.zc</span><br><span class="line">  2:    unchanged        +1/-0 readme.md</span><br><span class="line">  3:        +2/-0        +1/-0 test.md</span><br><span class="line">Update&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>注意此时已经在 update 子命令下<code>&gt;&gt;</code>，你可以通过如下方式选择你需要暂存的变化：</p>
+<ul>
+<li><code>1,2</code> 以<code>,</code>分隔多个选择</li>
+<li><code>1-3</code>或 <code>1-</code>进行范围选择</li>
+<li><code>-2</code>取消选中</li>
+</ul>
+<p>选择完之后，已选中的变化会以<code>*</code>高亮显示。<code>空行回车</code>即可暂存所选中的变化。</p>
+<figure class="highlight bash"><figcaption><span>以下在git version 2.17.1.windows.2运行测试通过</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Update&gt;&gt; 3</span><br><span class="line">           staged     unstaged path</span><br><span class="line">  1:    unchanged        +1/-0 lib/file4.zc</span><br><span class="line">  2:    unchanged        +1/-0 readme.md</span><br><span class="line">* 3:        +2/-0        +1/-0 test.md</span><br><span class="line">Update&gt;&gt;</span><br><span class="line">updated 1 path</span><br><span class="line"></span><br><span class="line">*** Commands ***</span><br><span class="line">  1: status       2: update       3: revert       4: add untracked</span><br><span class="line">  5: patch        6: diff         7: quit         8: <span class="built_in">help</span></span><br><span class="line">What now&gt; 1</span><br><span class="line">           staged     unstaged path</span><br><span class="line">  1:    unchanged        +1/-0 lib/file4.zc</span><br><span class="line">  2:    unchanged        +1/-0 readme.md</span><br><span class="line">  3:        +3/-0      nothing test.md  <span class="comment"># 工作区变化已经全部暂存</span></span><br></pre></td></tr></table></figure>
+<h3 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h3><p>类似 update 命令，用于将选中的已暂存变化回退至版本库中的当前版本。如果是新路径，即将新追踪的文件回退至未追踪状态。</p>
+<h3 id="add-untracked"><a href="#add-untracked" class="headerlink" title="add untracked"></a>add untracked</h3><p>类似 update 和 revert，用于追踪新文件。</p>
+<h3 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h3><p>类似 update 但是更细致化，当你选择需要暂存的变化后，会将暂存区与工作区的差异（即将要放入暂存区的变化）依次显示并询问你的动作。这实际上相当于更加<code>细粒度的暂存</code>你选择的那些变化。</p>
+<p>可用的动作：</p>
+<ul>
+<li>y - stage this hunk(暂存当前变化块)</li>
+<li>n - do not stage this hunk(不暂存)</li>
+<li>q - quit; do not stage this hunk or any of the remaining ones(退出 patch)</li>
+<li>a - stage this hunk and all later hunks in the file(暂存所有)</li>
+<li>d - do not stage this hunk or any of the later hunks in the file(不暂存当前文件的此处及之后的变化块)</li>
+<li>g - select a hunk to go to(跳转至其它变化块)</li>
+<li>/ - search for a hunk matching the given regex(搜索指定的变化块)</li>
+<li>j - leave this hunk undecided, see next undecided hunk(跳过当前变化块，跳至<code>下一个未决定</code>的变化块)</li>
+<li>J - leave this hunk undecided, see next hunk(跳过当前变化块，跳至<code>下一个</code>变化块)</li>
+<li>k - leave this hunk undecided, see previous undecided hunk(跳过当前变化块，跳至<code>前一个未决定</code>的变化块)</li>
+<li>K - leave this hunk undecided, see previous hunk(跳过当前变化块，跳至<code>前一个</code>的变化块)</li>
+<li>s - split the current hunk into smaller hunks(将当前变化块分割成更小的变化块,<code>细粒度</code>)</li>
+<li>e - manually edit the current hunk(手动编辑当前变化块+ -操作)</li>
+<li>? - print h</li>
+</ul>
+<h3 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h3><p>用于查看将要提交的内容（暂存区与版本库当前版本）。</p>
+<hr>
+<h2 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h2><p>用于将暂存区的变化更新到版本库中，在新的提交中储存暂存区的当前内容，以及来自用户描述更改的日志消息。</p>
+<figure class="highlight bash"><figcaption><span>以下在git version 2.17.1.windows.2运行测试通过</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自动暂存所有被修改或删除的已追踪文件并提交</span></span><br><span class="line"><span class="comment"># (未追踪文件不受影响)</span></span><br><span class="line"><span class="comment"># 用于跳过手动stage</span></span><br><span class="line">$ git commit -a, --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交互式地选择补丁提交</span></span><br><span class="line">$ git commit -p, --patch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交互式模式</span></span><br><span class="line">$ git commit --interactive</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复用指定的提交信息</span></span><br><span class="line">$ git commit -C &lt;commit&gt;, --reuse-message=&lt;commit&gt;</span><br><span class="line">$ git commit -c &lt;commit&gt;, --reedit-message=&lt;commit&gt; <span class="comment"># 可以另外再编辑</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定作者信息(override)</span></span><br><span class="line">$ git commit --author=author@example.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定提交信息 (-m 与 -c,-C及-F互斥)</span></span><br><span class="line">$ git commit -m <span class="string">'commit message'</span></span><br><span class="line">$ git commit -m <span class="string">'first message'</span> -m <span class="string">'second message'</span> <span class="comment"># 最终以段落形式串联</span></span><br><span class="line">$ git <span class="built_in">log</span> -1</span><br><span class="line">commit fe9e1ce441873311a532239a3cca709acbd2d59f (HEAD -&gt; master)</span><br><span class="line">Author: suchenxiaoyu &lt;suchenxiaoyu@gmail.com&gt;</span><br><span class="line">Date:   Mon Jun 4 18:20:11 2018 +0800</span><br><span class="line"></span><br><span class="line">    first</span><br><span class="line"></span><br><span class="line">    second</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换/修正上一次提交</span></span><br><span class="line">$ git commit --amend  <span class="comment"># 默认使用上一次提交的所有信息</span></span><br><span class="line">$ git commit --amend -m <span class="string">'replace message'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 预提交(模拟提交)</span></span><br><span class="line">$ git commit --dry-run</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a>git log</h2><p>用于查看历史提交日志。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看最近2次提交并显示内容差异</span></span><br><span class="line">$ git <span class="built_in">log</span> -p -2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交的简略统计信息</span></span><br><span class="line">$ git <span class="built_in">log</span> --<span class="built_in">stat</span></span><br><span class="line">commit 817c17b5d37a6f1f44b0d5a87466895a2b327cfa (HEAD -&gt; master)</span><br><span class="line">Author: suchenxiaoyu &lt;suchenxiaoyu@gmail.com&gt;</span><br><span class="line">Date:   Mon Jun 4 18:20:11 2018 +0800</span><br><span class="line"></span><br><span class="line">    <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line"> readme.md | 1 +</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只显示 --stat 中最后的行数修改添加移除统计</span></span><br><span class="line">$ git <span class="built_in">log</span> --shortstat</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"><span class="comment"># 仅在提交信息后显示已修改的文件清单</span></span><br><span class="line">$ git <span class="built_in">log</span> --name-only</span><br><span class="line"><span class="comment"># 显示新增、修改、删除的文件清单(状态码)</span></span><br><span class="line">$ git <span class="built_in">log</span> --name-status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅显示 SHA-1 的前几个字符</span></span><br><span class="line">$ git <span class="built_in">log</span> --abbrev-commit</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用较短的相对时间显示（比如，“2 weeks ago”）</span></span><br><span class="line">$ git <span class="built_in">log</span> --relative-date</span><br><span class="line"></span><br><span class="line"><span class="comment"># ASCII图形(显示分支与合并)</span></span><br><span class="line">$ git <span class="built_in">log</span> --graph</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"><span class="comment"># 仅显示最近的n条提交</span></span><br><span class="line">$ git <span class="built_in">log</span> -n</span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅显示指定时间之前/后的提交</span></span><br><span class="line">$ git <span class="built_in">log</span> --since,--after=&lt;time format&gt;</span><br><span class="line">$ git <span class="built_in">log</span> --until,--before=&lt;time format&gt;</span><br><span class="line"></span><br><span class="line">$ git <span class="built_in">log</span> --since=2.days  <span class="comment"># 两天前开始的提交</span></span><br><span class="line">$ git <span class="built_in">log</span> --since=<span class="string">"2018-06-02"</span></span><br><span class="line">$ git <span class="built_in">log</span> --since=<span class="string">"3 days 5 minutes ago"</span> <span class="comment"># 距现在3天零5分钟内的提交</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定作者的提交</span></span><br><span class="line">$ git <span class="built_in">log</span> --author=gitster</span><br><span class="line"><span class="comment"># 指定提交者的提交</span></span><br><span class="line">$ git <span class="built_in">log</span> --committer=commiter</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交说明中包含指定关键字的提交（多个关键字时需要使用--all-match,否则是或关系）</span></span><br><span class="line">$ git <span class="built_in">log</span> --grep=&lt;text&gt;</span><br><span class="line">$ git <span class="built_in">log</span> --grep=skip --grep=staged --all-match <span class="comment"># 同时包含'skip'和'staged'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示添加或移除了某些字符串的提交</span></span><br><span class="line">$ git <span class="built_in">log</span> -Slove <span class="comment"># 显示新加或者删除'love'改动的提交</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 只关心特定文件或目录的历史提交</span></span><br><span class="line">$ git <span class="built_in">log</span> -- lib/file1.zc <span class="comment"># 特定文件</span></span><br><span class="line">$ git <span class="built_in">log</span> -- lib <span class="comment"># 特定目录</span></span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"><span class="comment"># 指定日志展示的格式（oneline | short | full |fuller）</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line">817c17b5d37a6f1f44b0d5a87466895a2b327cfa (HEAD -&gt; master) <span class="built_in">test</span></span><br><span class="line">be444493d956aee03d387276a883358ebe77410e skip staged step</span><br><span class="line">05cb82feb2f77d9d83642b61c14835c35b138258 skip stage step</span><br><span class="line">643c8668bf7857ce49ebf7a4d778a3c69623881e first commit</span><br><span class="line">0f6c323da12fd853d640146f12dd70b8d6d516d2 demo 1</span><br><span class="line">82af2fec9c052826abbb642b26948d0ff932dd93 <span class="built_in">test</span></span><br><span class="line">84b6ea98f62b7d06b98b4a94c515ae6a548376f2 initial project version</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"><span class="comment"># 自定义日志格式</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=format:<span class="string">"%h - %an, %ar : %s"</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=<span class="string">"%h , %s"</span> <span class="comment"># 简写形式</span></span><br><span class="line">817c17b - suchenxiaoyu, 38 minutes ago : <span class="built_in">test</span></span><br><span class="line">be44449 - suchenxiaoyu, 4 days ago : skip staged step</span><br><span class="line">643c866 - suchenxiaoyu, 4 days ago : first commit</span><br><span class="line">0f6c323 - John Doe, 4 days ago : demo 1</span><br><span class="line">82af2fe - John Doe, 5 days ago : <span class="built_in">test</span></span><br><span class="line">84b6ea9 - suchenxiaoyu, 11 days ago : initial project version</span><br><span class="line"></span><br><span class="line">---------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<p><code>git log --pretty=format</code> 常用的选项:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">%H    提交对象（commit）的完整哈希字串</span><br><span class="line">%h    提交对象的简短哈希字串</span><br><span class="line">%T    树对象（tree）的完整哈希字串</span><br><span class="line">%t    树对象的简短哈希字串</span><br><span class="line">%P    父对象（parent）的完整哈希字串</span><br><span class="line">%p    父对象的简短哈希字串</span><br><span class="line">%an   作者（author）的名字</span><br><span class="line">%ae   作者的电子邮件地址</span><br><span class="line">%ad   作者修订日期（可以用 --date= 选项定制格式）</span><br><span class="line">%ar   作者修订日期，按多久以前的方式显示</span><br><span class="line">%cn   提交者（committer）的名字</span><br><span class="line">%ce   提交者的电子邮件地址</span><br><span class="line">%<span class="built_in">cd</span>   提交日期</span><br><span class="line">%cr   提交日期，按多久以前的方式显示</span><br><span class="line">%s    提交说明</span><br></pre></td></tr></table></figure>
+<div class="hint info"><p><strong>作者</strong>指的是实际作出修改的人，<strong>提交者</strong>指的是最后将此工作成果提交到仓库的人。(分布式 Git)</p></div>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示从2018/6/1开始到1分钟之前这段时间内由'suchenxiaoyu'对文件'readme.md'的非合并提交</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=<span class="string">"%h - %s"</span> --author=suchenxiaoyu --since=<span class="string">"2018-06-01"</span> \</span><br><span class="line">&gt; --before=<span class="string">"a minute ago"</span> --no-merges -- readme.md</span><br><span class="line">817c17b - <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://git-scm.com/docs" title="Git Reference" target="_blank" rel="noopener">Git Reference</a></li>
+<li><a href="https://git-scm.com/book/en/v2" title="Pro Git" target="_blank" rel="noopener">Pro Git</a></li>
+<li><a href="http://gitbook.liuhui998.com/index.html" title="Git Community Book 中文版" target="_blank" rel="noopener">Git Community Book</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+    
+    
+      <div>
+        
+        <div style="text-align:center;padding: 2rem 0 0;color: #d5274e;font-size:.8rem;line-height: 1rem; font-weight: bold;">
+          &lt;!--上次更新: 2019-07-04 23:16 --&gt; 
+        </div>
+    
+      </div>
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不贪心，但要有颗大大的心。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>加油</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ZChen 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ZChen 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ZChen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://suchenrain.github.io/posts/40446/" title="git command cheat sheet">https://suchenrain.github.io/posts/40446/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/git系列/" rel="tag"># git系列</a>
+          
+            <a href="/tags/git命令/" rel="tag"># git命令</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/64464/" rel="next" title="angular 6.0发布啦">
+                <i class="fa fa-chevron-left"></i> angular 6.0发布啦
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/46722/" rel="prev" title="Git系列—Git配置详解">
+                Git系列—Git配置详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/zchen.jpg"
+                alt="ZChen" />
+            
+              <p class="site-author-name" itemprop="name">ZChen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/suchenrain" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:769118228@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#更新日志"><span class="nav-number">1.</span> <span class="nav-text">更新日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于"><span class="nav-number">2.</span> <span class="nav-text">关于</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-init"><span class="nav-number">3.</span> <span class="nav-text">git init</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-clone"><span class="nav-number">4.</span> <span class="nav-text">git clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-config"><span class="nav-number">5.</span> <span class="nav-text">git config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-status"><span class="nav-number">6.</span> <span class="nav-text">git status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-add"><span class="nav-number">7.</span> <span class="nav-text">git add</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#status"><span class="nav-number">7.1.</span> <span class="nav-text">status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update"><span class="nav-number">7.2.</span> <span class="nav-text">update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#revert"><span class="nav-number">7.3.</span> <span class="nav-text">revert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#add-untracked"><span class="nav-number">7.4.</span> <span class="nav-text">add untracked</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#patch"><span class="nav-number">7.5.</span> <span class="nav-text">patch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#diff"><span class="nav-number">7.6.</span> <span class="nav-text">diff</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-commit"><span class="nav-number">8.</span> <span class="nav-text">git commit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-log"><span class="nav-number">9.</span> <span class="nav-text">git log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">10.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a target="_blank" href="https://github.com/suchenrain/suchenrain.github.io">suchenrain</a></span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">世界美好，你也是。</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+
+<!--崩溃欺骗-->
+<script type="text/javascript" src="/js/src/crash_cheat.js"></script>
+
+
+<!-- 转载提示 -->
+<script type="text/javascript" src="/js/src/license-tooltip.js"></script>
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+
+
+</html>
